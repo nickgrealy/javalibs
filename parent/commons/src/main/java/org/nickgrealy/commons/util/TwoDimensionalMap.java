@@ -1,6 +1,6 @@
 package org.nickgrealy.commons.util;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -29,7 +29,7 @@ public class TwoDimensionalMap<A, B, V> extends NotNullableMap<A, NotNullableMap
 
     /** {@inheritDoc} */
     @Override
-    public void put(A a, List<B> b1, V v) {
+    public void put(A a, Collection<B> b1, V v) {
         for (B b : b1) {
             nullSafeGet(a).put(b, v);
         }

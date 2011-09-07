@@ -1,10 +1,10 @@
 package org.nickgrealy.commons.conversion;
 
-import static java.lang.String.format;
-
 import java.util.List;
+import java.util.Set;
 
 import org.nickgrealy.commons.exceptions.ConverterNotFoundException;
+import org.nickgrealy.commons.util.ClassUtil;
 import org.nickgrealy.commons.util.ITwoDimensionalMap;
 import org.nickgrealy.commons.util.TwoDimensionalMap;
 
@@ -16,7 +16,7 @@ import org.nickgrealy.commons.util.TwoDimensionalMap;
  */
 public class ConverterFactory {
 
-    private static final String CONVERTER_NOT_FOUND_2 = "A converter could not be found! fromClass=%s toClass=%s";
+    private final ClassUtil classUtil = new ClassUtil();
 
     private final ITwoDimensionalMap<Class<?>, Class<?>, IConverter<?>> fieldsMap;
 
@@ -29,7 +29,7 @@ public class ConverterFactory {
     public ConverterFactory(List<IConverter<?>> converters) {
         fieldsMap = new TwoDimensionalMap<Class<?>, Class<?>, IConverter<?>>();
         for (IConverter<?> converter : converters) {
-            final List<Class<?>> classes = converter.getTargetClasses();
+            final Set<Class<?>> classes = converter.getTargetClasses();
             fieldsMap.put(converter.getBaseClass(), classes, converter);
         }
     }
@@ -44,7 +44,10 @@ public class ConverterFactory {
      * @return true if a converter exists, otherwise false.
      */
     public boolean hasConverter(Class<?> from, Class<?> to) {
-        return fieldsMap.containsKey(from, to);
+        // ensure we're NOT dealing with primitives...
+        final Class<?> newFrom = classUtil.convertPrimitiveToObjectClass(from);
+        final Class<?> newTo = classUtil.convertPrimitiveToObjectClass(to);
+        return fieldsMap.containsKey(newFrom, newTo);
     }
 
     /**
@@ -65,11 +68,14 @@ public class ConverterFactory {
         if (from == null || to == null) {
             return null;
         }
-        final IConverter<?> converter = fieldsMap.get(from.getClass(), to);
+        // ensure we're NOT dealing with primitives...
+        final Class<A> newFrom = (Class<A>) classUtil.convertPrimitiveToObjectClass(from.getClass());
+        final Class<B> newTo = (Class<B>) classUtil.convertPrimitiveToObjectClass(to);
+        final IConverter<?> converter = fieldsMap.get(newFrom, newTo);
         if (converter == null) {
-            throw new ConverterNotFoundException(format(CONVERTER_NOT_FOUND_2, from.getClass(), to));
+            throw new ConverterNotFoundException(newFrom, newTo);
         }
-        return ((IConverter<A>) converter).convert(from, to);
+        return ((IConverter<A>) converter).convert(from, newTo);
     }
 
 }

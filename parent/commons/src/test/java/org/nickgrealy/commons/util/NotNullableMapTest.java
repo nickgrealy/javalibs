@@ -1,8 +1,10 @@
 package org.nickgrealy.commons.util;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
@@ -10,8 +12,16 @@ import org.junit.Test;
 import org.nickgrealy.commons.exceptions.AssertionException;
 
 /**
- * TODO Test the following methods: constructor, containsKey, containsValue,
- * get, put, putAll, remove.
+ * Test the following methods:
+ * <ul>
+ * <li>constructor</li>
+ * <li>get</li>
+ * <li>put</li>
+ * <li>containsKey</li>
+ * <li>containsValue</li>
+ * <li>putAll</li>
+ * <li>remove</li>
+ * </ul>
  * 
  * 
  * @author nick.grealy
@@ -19,16 +29,29 @@ import org.nickgrealy.commons.exceptions.AssertionException;
 public class NotNullableMapTest {
 
     private static final String TEST = "Test";
-    private Map<Object, Object> map;
+
+    private NotNullableMap<Object, Object> map;
+
+    private Map<Object, Object> mapPass;
+    private Map<Object, Object> mapFail;
 
     @Before
     public void setUp() {
         map = new NotNullableMap<Object, Object>();
+        mapPass = new HashMap<Object, Object>();
+        mapFail = new HashMap<Object, Object>();
+        mapPass.put(TEST, TEST);
+        mapFail.put(TEST, null);
     }
 
     @Test
-    public void testConstructor() {
-        fail();
+    public void testConstructorGoodMap() {
+        new NotNullableMap<Object, Object>(mapPass);
+    }
+
+    @Test(expected = AssertionException.class)
+    public void testConstructorBadMap() {
+        new NotNullableMap<Object, Object>(mapFail);
     }
 
     /* put */
@@ -70,4 +93,73 @@ public class NotNullableMapTest {
         map.put(TEST, TEST);
         assertEquals(TEST, map.get(TEST));
     }
+
+    /* containsKey */
+
+    @Test
+    public void containsKey1() {
+        map.containsKey(TEST);
+    }
+
+    @Test(expected = AssertionException.class)
+    public void containsKey2() {
+        map.containsKey(null);
+    }
+
+    /* containsValue */
+
+    @Test
+    public void containsValue1() {
+        map.containsValue(TEST);
+    }
+
+    @Test(expected = AssertionException.class)
+    public void containsValue2() {
+        map.containsValue(null);
+    }
+
+    /* putAll */
+
+    @Test
+    public void putAll1() {
+        map.putAll(mapPass);
+    }
+
+    @Test(expected = AssertionException.class)
+    public void putAll2() {
+        map.putAll(mapFail);
+    }
+
+    /* remove */
+
+    @Test
+    public void remove1() {
+        map.putAll(mapPass);
+        map.remove(TEST);
+    }
+
+    @Test(expected = AssertionException.class)
+    public void remove2() {
+        map.putAll(mapPass);
+        map.remove(null);
+    }
+
+    /* all else */
+
+    @Test
+    public void delegateMethods() {
+        assertTrue(map.isEmpty());
+        map.putAll(mapPass);
+        assertFalse(map.isEmpty());
+        assertEquals(1, map.size());
+        assertEquals(1, map.entrySet().size());
+        assertEquals(1, map.keySet().size());
+        assertEquals(1, map.values().size());
+        assertTrue(mapPass.hashCode() == map.hashCode());
+        assertTrue(mapFail.hashCode() != map.hashCode());
+        assertTrue(map.equals(mapPass));
+        map.clear();
+        assertTrue(map.isEmpty());
+    }
+
 }

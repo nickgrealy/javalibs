@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.nickgrealy.commons.exceptions.AssertionException;
+import org.nickgrealy.commons.util.ClassUtil;
+import org.nickgrealy.commons.util.StringUtil;
 
 /**
  * Used to make assertions. Throws an {@link AssertionException} if the
@@ -31,6 +33,10 @@ public final class Assert {
     private static final String ASSERT_EQUALS_MESG_3 = "Expected did not match actual! field=%s expected=%s actual=%s";
     private static final String ASSERT_NOTNULL_MESG_1 = "Actual must not be null! field=%s";
     private static final String ASSERT_NULL_MESG_1 = "Actual must be null! field=%s";
+    private static final String ASSERT_NOTPRIMITIVE_MESG_2 = "Actual must not be a primitive class! field=%s actual=%s";
+
+    private final ClassUtil classUtil = new ClassUtil();
+    private final StringUtil stringUtil = new StringUtil();
 
     private final Object actual;
     private final String identifier;
@@ -78,6 +84,20 @@ public final class Assert {
     }
 
     /**
+     * Asserts actual is not a primitive.
+     * 
+     * @return this.
+     */
+    public Assert isNotPrimitive() {
+        isNotNull();
+        isInstanceOf(Class.class);
+        if (classUtil.isPrimitiveClass((Class<?>) actual)) {
+            throw new AssertionException(format(ASSERT_NOTPRIMITIVE_MESG_2, identifier, actual));
+        }
+        return this;
+    }
+
+    /**
      * Asserts actual is true.
      * 
      * @return this.
@@ -85,7 +105,7 @@ public final class Assert {
     public Assert isTrue() {
         isNotNull();
         if (!Boolean.TRUE.equals(actual)) {
-            throw new AssertionException(format("Actual value is not true! field=% actual=%s", identifier, actual));
+            throw new AssertionException(format("Actual value is not true! field=%s actual=%s", identifier, actual));
         }
         return this;
     }
@@ -98,7 +118,7 @@ public final class Assert {
     public Assert isFalse() {
         isNotNull();
         if (!Boolean.FALSE.equals(actual)) {
-            throw new AssertionException(format("Actual value is not false! field=% actual=%s", identifier, actual));
+            throw new AssertionException(format("Actual value is not false! field=%s actual=%s", identifier, actual));
         }
         return this;
     }
@@ -122,24 +142,31 @@ public final class Assert {
     /**
      * Asserts actual is an instance of any of the givenClasses.
      * 
+     * @param givenClass
+     *            Class<?>
      * @param givenClasses
      *            Class<?>...
      * @return this.
      */
-    public Assert isInstanceOf(Class<?>... givenClasses) {
+    public Assert isInstanceOf(Class<?> givenClass, Class<?>... givenClasses) {
+        check("givenClass", givenClass).isNotNull();
         check("givenClasses", givenClasses).isNotNull();
-        isNotNull();
+        isNotNull(); // actual is not null
         boolean anyTrue = false;
-        for (Class<?> clazz : givenClasses) {
-            if (actual.getClass().isAssignableFrom(clazz)) {
-                anyTrue = true;
-                break;
+        if (actual.getClass().isAssignableFrom(givenClass)) {
+            anyTrue = true;
+        } else {
+            for (Class<?> clazz2 : givenClasses) {
+                if (actual.getClass().isAssignableFrom(clazz2)) {
+                    anyTrue = true;
+                    break;
+                }
             }
         }
         if (!anyTrue) {
             throw new AssertionException(format(
-                    "Actual is not an instance of any givenClasses! identifier=%s givenClasses=%s", identifier,
-                    givenClasses));
+                    "Actual is not an instance of any givenClasses! identifier=%s actual=%s givenClasses=%s",
+                    identifier, actual.getClass(), stringUtil.toString(givenClasses)));
         }
         return this;
     }
@@ -151,12 +178,12 @@ public final class Assert {
      *            Integer
      * @return this.
      */
-    public Assert gt(Integer expected) {
+    public Assert isGt(Integer expected) {
         // TODO Test logic!
         isNotNull();
-        isInstanceOf(byte.class, Byte.class, short.class, Short.class, int.class, Integer.class, long.class,
-                Long.class, float.class, Float.class, double.class, Double.class);
-        if ((Integer) actual <= expected) {
+        isInstanceOf(int.class, Integer.class, long.class, Long.class, float.class, Float.class, double.class,
+                Double.class);
+        if (new Double(String.valueOf(actual)) <= expected) {
             throw new AssertionException(format("Actual is not greater than! identifier=%s actual=%s expected=%s",
                     identifier, actual, expected));
         }
@@ -172,7 +199,7 @@ public final class Assert {
     public static void assertNoNullKeysOrValues(Map<?, ?> map) {
         for (Entry<?, ?> entry : map.entrySet()) {
             check(KEY, entry.getKey()).isNotNull();
-            check(KEY, entry.getValue()).isNotNull();
+            check(VALUE, entry.getValue()).isNotNull();
         }
     }
 }

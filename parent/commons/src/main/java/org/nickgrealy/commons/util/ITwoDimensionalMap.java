@@ -1,6 +1,6 @@
 package org.nickgrealy.commons.util;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * 
@@ -13,7 +13,7 @@ public interface ITwoDimensionalMap<A, B, V> {
 
     void put(A a, B b, V v);
 
-    void put(A a, List<B> b1, V v);
+    void put(A a, Collection<B> b1, V v);
 
     V get(A a, B b);
 

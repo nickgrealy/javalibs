@@ -2,7 +2,9 @@ package org.nickgrealy.commons.reflection;
 
 import static org.nickgrealy.commons.validation.Assert.check;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -28,10 +30,27 @@ public final class BeanUtil implements IBeanUtil {
     @Override
     public <I> I createBean(Class<I> clazz) {
         try {
-            return clazz.newInstance();
+            Constructor<I> constructor = clazz.getDeclaredConstructor();
+            I returnVal;
+            if (!constructor.isAccessible()) {
+                constructor.setAccessible(true);
+                returnVal = constructor.newInstance();
+                constructor.setAccessible(false);
+            } else {
+                returnVal = constructor.newInstance();
+            }
+            return returnVal;
         } catch (InstantiationException e) {
             throw new BeanException(e);
         } catch (IllegalAccessException e) {
+            throw new BeanException(e);
+        } catch (IllegalArgumentException e) {
+            throw new BeanException(e);
+        } catch (InvocationTargetException e) {
+            throw new BeanException(e);
+        } catch (SecurityException e) {
+            throw new BeanException(e);
+        } catch (NoSuchMethodException e) {
             throw new BeanException(e);
         }
     }

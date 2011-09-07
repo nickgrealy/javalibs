@@ -1,9 +1,11 @@
 package org.nickgrealy.commons.conversion;
 
-import java.util.List;
+import java.util.Set;
 
 /**
- * Interface for converting an object to a target class.
+ * Interface for converting an object to a target class. For ANY references to
+ * classes, ALWAYS use the Object class as opposed to it's respective primitive
+ * class.
  * 
  * @author nick.grealy
  * @param <X>
@@ -14,7 +16,7 @@ public interface IConverter<X> {
     /**
      * Converts the given object to the target class.
      * 
-     * @param value
+     * @param fromObject
      *            given object.
      * @param targetClass
      *            target class.
@@ -22,14 +24,14 @@ public interface IConverter<X> {
      *            type of the target object.
      * @return converted object.
      */
-    <A> A convert(X value, Class<A> targetClass);
+    <A> A convert(X fromObject, Class<A> targetClass);
 
     /**
      * Returns a list of the handled target classes.
      * 
      * @return {@link List} of {@link Class}'s.
      */
-    List<Class<?>> getTargetClasses();
+    Set<Class<?>> getTargetClasses();
 
     /**
      * Returns the base class.

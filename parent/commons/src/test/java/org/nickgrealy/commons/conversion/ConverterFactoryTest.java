@@ -25,14 +25,16 @@ public class ConverterFactoryTest {
         assertTrue(factory.hasConverter(Integer.class, String.class));
         assertTrue(factory.hasConverter(Integer.class, boolean.class));
         // false
-        assertFalse(factory.hasConverter(Integer.class, Double.class));
-        assertFalse(factory.hasConverter(String.class, Integer.class));
+        assertFalse(factory.hasConverter(Integer.class, ConverterFactoryTest.class));
+        assertFalse(factory.hasConverter(ConverterFactoryTest.class, Integer.class));
     }
 
     @Test
     public void testConversion() {
         int tmp = 12;
+        Integer tmp2 = 12;
         assertEquals("12", factory.convert(tmp, String.class));
+        assertEquals("12", factory.convert(tmp2, String.class));
     }
 
     @Test

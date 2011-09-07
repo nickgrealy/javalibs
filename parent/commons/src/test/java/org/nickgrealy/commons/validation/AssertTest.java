@@ -3,7 +3,6 @@
  */
 package org.nickgrealy.commons.validation;
 
-import static org.junit.Assert.fail;
 import static org.nickgrealy.commons.validation.Assert.assertNoNullKeysOrValues;
 import static org.nickgrealy.commons.validation.Assert.check;
 
@@ -81,36 +80,73 @@ public class AssertTest {
 
     @Test
     public void isInstanceOf1() {
-        fail();
+        check(TEST, 12).isInstanceOf(String.class, Integer.class, Long.class);
+    }
+
+    @Test
+    public void isInstanceOf2() {
+        check(TEST, 12).isInstanceOf(Integer.class, Long.class);
     }
 
     @Test(expected = AssertionException.class)
-    public void isInstanceOf2() {
-        fail();
+    public void isInstanceOf3() {
+        check(TEST, 12).isInstanceOf(String.class, Long.class);
     }
 
     /* isTrue */
 
     @Test
     public void isTrue1() {
-        fail();
+        check(TEST, true).isTrue();
     }
 
     @Test(expected = AssertionException.class)
     public void isTrue2() {
-        fail();
+        check(TEST, false).isTrue();
     }
 
     /* isFalse */
 
     @Test
     public void isFalse1() {
-        fail();
+        check(TEST, false).isFalse();
     }
 
     @Test(expected = AssertionException.class)
     public void isFalse2() {
-        fail();
+        check(TEST, true).isFalse();
+    }
+
+    /* isNotPrimitive */
+
+    @Test
+    public void isNotPrimitive1() {
+        check(TEST, Integer.class).isNotPrimitive();
+    }
+
+    @Test(expected = AssertionException.class)
+    public void isNotPrimitive2() {
+        check(TEST, int.class).isNotPrimitive();
+    }
+
+    /* gt */
+
+    @Test
+    public void isGt1() {
+        check(TEST, 5).isGt(3);
+        check(TEST, 5L).isGt(3);
+        check(TEST, 5f).isGt(3);
+        check(TEST, 5.00).isGt(3);
+    }
+
+    @Test(expected = AssertionException.class)
+    public void isGt2() {
+        check(TEST, 3f).isGt(5);
+    }
+
+    @Test(expected = AssertionException.class)
+    public void isGt3() {
+        check(TEST, "blah").isGt(5);
     }
 
     /* assertNoNullKeysOrValues */

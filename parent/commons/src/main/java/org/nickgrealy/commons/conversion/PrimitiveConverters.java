@@ -6,21 +6,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.nickgrealy.commons.exceptions.NotYetImplemented;
-import org.nickgrealy.commons.exceptions.UnhandledException;
 
 /**
  * Contains a list of classes, to facilitate converting primitives.
  * 
  * @author nick.grealy
  */
-@SuppressWarnings("unchecked")
 public final class PrimitiveConverters {
 
-    private static final String UNHANDLED_CLASS_2 = "Target class is not handled! value=%s, targetClass=%s";
-    private static final String UNIMPLEMENTED_CLASS_2 = "Target class conversion is not yet implemented! "
-            + "value=%s, targetClass=%s";
-
-    private static final List<IConverter<?>> CONVERTERS = Arrays.asList(new IConverter<?>[] { new IntegerConverter() });
+    private static final List<IConverter<?>> CONVERTERS = Arrays.asList(new IConverter<?>[] { new IntegerConverter(),
+        new StringConverter(), });
 
     private PrimitiveConverters() {
     }
@@ -34,38 +29,66 @@ public final class PrimitiveConverters {
         return CONVERTERS;
     }
 
-    static final class IntegerConverter extends AbstractConverter<Integer> {
-        private static final List<Class<?>> TARGET_CLASSES = Arrays.asList(new Class<?>[] { Object.class, String.class,
-            int.class, Integer.class, boolean.class, Boolean.class, });
+    /* IConverter implementations */
 
-        @Override
-        public <A> A convert(Integer from, Class<A> toClass) {
-            if (!isTargetClass(toClass)) {
-                throw new UnhandledException(format(UNHANDLED_CLASS_2, from, toClass));
-            }
-            A returnVal = null;
-            if (Object.class.equals(toClass)) {
-                returnVal = (A) from;
-            } else if (String.class.equals(toClass)) {
-                returnVal = (A) from.toString();
-            } else if (int.class.equals(toClass) || Integer.class.equals(toClass)) {
-                returnVal = (A) from;
-            } else if (boolean.class.equals(toClass) || Boolean.class.equals(toClass)) {
-                returnVal = (A) new Boolean(from > 0);
-            } else {
-                throw new NotYetImplemented(format(UNIMPLEMENTED_CLASS_2, from, toClass));
-            }
-            return returnVal;
+    /**
+     * A converter for Integers (and int's) to Objects.
+     */
+    static final class IntegerConverter extends AbstractBaseConverter<Integer> {
+
+        public IntegerConverter() {
+            super(Boolean.class, String.class);
         }
 
         @Override
-        public List<Class<?>> getTargetClasses() {
-            return TARGET_CLASSES;
+        @SuppressWarnings("unchecked")
+        public <A> A doConversion(Integer fromObject, Class<A> targetClass) {
+            Object returnVal = null;
+            if (Boolean.class.equals(targetClass)) {
+                returnVal = new Boolean(fromObject > 0);
+            } else if (String.class.equals(targetClass)) {
+                returnVal = fromObject.toString();
+            } else {
+                throw new NotYetImplemented(format(UNIMPLEMENTED_CLASS_2, fromObject, targetClass));
+            }
+            return (A) returnVal;
         }
 
         @Override
         public Class<Integer> getBaseClass() {
             return Integer.class;
+        }
+
+    }
+
+    /**
+     * A converter for Strings to Objects.
+     */
+    static final class StringConverter extends AbstractBaseConverter<String> {
+
+        public StringConverter() {
+            super(Integer.class, Double.class, Boolean.class);
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public <A> A doConversion(String fromObject, Class<A> targetClass) {
+            Object returnVal = null;
+            if (Integer.class.equals(targetClass)) {
+                returnVal = new Integer(fromObject);
+            } else if (Double.class.equals(targetClass)) {
+                returnVal = new Double(fromObject);
+            } else if (Boolean.class.equals(targetClass)) {
+                returnVal = new Boolean(fromObject);
+            } else {
+                throw new NotYetImplemented(format(UNIMPLEMENTED_CLASS_2, fromObject, targetClass));
+            }
+            return (A) returnVal;
+        }
+
+        @Override
+        public Class<String> getBaseClass() {
+            return String.class;
         }
 
     }
