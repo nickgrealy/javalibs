@@ -1,11 +1,11 @@
 package org.nickgrealy.commons.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import java.util.Map;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.nickgrealy.commons.exceptions.AssertionException;
 
@@ -26,10 +26,9 @@ public class NotNullableMapTest {
         map = new NotNullableMap<Object, Object>();
     }
 
-    @Ignore
     @Test
     public void testConstructor() {
-
+        fail();
     }
 
     /* put */

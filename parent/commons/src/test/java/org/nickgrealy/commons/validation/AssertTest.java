@@ -3,6 +3,7 @@
  */
 package org.nickgrealy.commons.validation;
 
+import static org.junit.Assert.fail;
 import static org.nickgrealy.commons.validation.Assert.assertNoNullKeysOrValues;
 import static org.nickgrealy.commons.validation.Assert.check;
 
@@ -10,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.nickgrealy.commons.exceptions.AssertionException;
 
@@ -79,44 +79,38 @@ public class AssertTest {
 
     /* isInstanceOf */
 
-    @Ignore
     @Test
     public void isInstanceOf1() {
-        // TODO
+        fail();
     }
 
-    @Ignore
     @Test(expected = AssertionException.class)
     public void isInstanceOf2() {
-        // TODO
+        fail();
     }
 
     /* isTrue */
 
-    @Ignore
     @Test
     public void isTrue1() {
-        // TODO
+        fail();
     }
 
-    @Ignore
     @Test(expected = AssertionException.class)
     public void isTrue2() {
-        // TODO
+        fail();
     }
 
     /* isFalse */
 
-    @Ignore
     @Test
     public void isFalse1() {
-        // TODO
+        fail();
     }
 
-    @Ignore
     @Test(expected = AssertionException.class)
     public void isFalse2() {
-        // TODO
+        fail();
     }
 
     /* assertNoNullKeysOrValues */
