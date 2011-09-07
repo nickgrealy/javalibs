@@ -27,7 +27,9 @@ Checkstyle for org.nickgrealy domain.
       <property name="tokens" value="ANNOTATION_DEF,ANNOTATION_FIELD_DEF,CLASS_DEF,CTOR_DEF,ENUM_CONSTANT_DEF,ENUM_DEF,INTERFACE_DEF,METHOD_DEF,PARAMETER_DEF,VARIABLE_DEF"/>
     </module>
     <module name="MissingDeprecated"/>
-    <module name="AbstractClassName"/>
+    <module name="AbstractClassName">
+      <property name="format" value="^Abstract.*$"/>
+    </module>
     <module name="ClassTypeParameterName"/>
     <module name="ConstantName"/>
     <module name="LocalFinalVariableName"/>
@@ -63,7 +65,7 @@ Checkstyle for org.nickgrealy domain.
     <module name="EmptyForInitializerPad"/>
     <module name="EmptyForIteratorPad"/>
     <module name="NoWhitespaceAfter">
-      <property name="tokens" value="LNOT,DOT,BNOT,DEC,UNARY_MINUS,UNARY_PLUS,INC,ARRAY_INIT"/>
+      <property name="tokens" value="LNOT,DOT,BNOT,DEC,UNARY_MINUS,UNARY_PLUS,INC"/>
     </module>
     <module name="NoWhitespaceBefore"/>
     <module name="OperatorWrap">
@@ -128,7 +130,6 @@ Checkstyle for org.nickgrealy domain.
     </module>
     <module name="JUnitTestCase"/>
     <module name="MagicNumber"/>
-    <module name="MissingCtor"/>
     <module name="MissingSwitchDefault"/>
     <module name="ModifiedControlVariable"/>
     <module name="MultipleStringLiterals">
@@ -173,6 +174,7 @@ Checkstyle for org.nickgrealy domain.
     <module name="ArrayTypeStyle"/>
     <module name="Indentation"/>
     <module name="TodoComment"/>
+    <module name="JavadocType"/>
   </module>
   <module name="FileLength"/>
   <module name="FileTabCharacter"/>

@@ -1,0 +1,7 @@
+
+syntax: regexp
+target
+.settings
+.checkstyle
+.classpath
+.project
