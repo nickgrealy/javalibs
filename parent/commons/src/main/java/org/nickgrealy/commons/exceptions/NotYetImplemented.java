@@ -1,5 +1,13 @@
 package org.nickgrealy.commons.exceptions;
 
+/**
+ * Thrown when (the logic) for an executed section of code has not yet been
+ * implemented.
+ * <p/>
+ * <b>N.B.</b> Use as a placeholder/safety net for incomplete methods.
+ * 
+ * @author nick.grealy
+ */
 public class NotYetImplemented extends RuntimeException {
 
     private static final long serialVersionUID = 6790222551768044978L;

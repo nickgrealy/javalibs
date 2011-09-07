@@ -3,10 +3,11 @@
  */
 package org.nickgrealy.commons.util;
 
+import static org.nickgrealy.commons.validation.Assert.check;
+
 import java.util.Collection;
 import java.util.Map;
 
-import org.nickgrealy.commons.reflection.BeanUtil;
 import org.nickgrealy.commons.reflection.IBeanUtil;
 
 /**
@@ -16,20 +17,17 @@ import org.nickgrealy.commons.reflection.IBeanUtil;
  */
 public final class MapUtil {
 
-    private static final IBeanUtil BEAN_UTIL = BeanUtil.getInstance();
-
-    private static final MapUtil INSTANCE = new MapUtil();
-
-    private MapUtil() {
-    }
+    private final IBeanUtil beanUtil;
 
     /**
-     * Returns the Singleton.
+     * Constructs a MapUtil.
      * 
-     * @return MapUtil
+     * @param beanUtil
+     *            required.
      */
-    public static MapUtil getInstance() {
-        return INSTANCE;
+    public MapUtil(IBeanUtil beanUtil) {
+        check("beanUtil", beanUtil).isNotNull();
+        this.beanUtil = beanUtil;
     }
 
     /**
@@ -49,7 +47,7 @@ public final class MapUtil {
     @SuppressWarnings("unchecked")
     public <K, V> void mapByField(Collection<V> objects, String field, Map<K, V> map) {
         for (V object : objects) {
-            final Object key = BEAN_UTIL.getProperty(object, field);
+            final Object key = beanUtil.getProperty(object, field);
             if (key != null) {
                 map.put((K) key, object);
             }

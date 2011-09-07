@@ -8,24 +8,21 @@ import java.util.Map.Entry;
 
 import org.nickgrealy.commons.exceptions.BeanException;
 
+/**
+ * The BeanUtil class facilitates:
+ * <ul>
+ * <li>creating an Object from a Class.</li>
+ * <li>getting/setting fields on an Object.</li>
+ * <li>copying fields between two Objects.</li>
+ * </ul>
+ * 
+ * @author nick.grealy
+ */
 public final class BeanUtil implements IBeanUtil {
 
-    private static final IBeanUtil INSTANCE = new BeanUtil();
     private static final String PROPERTIES = "properties";
     private static final String TO = "to";
     private static final String FROM = "from";
-
-    private BeanUtil() {
-    }
-
-    /**
-     * BeanUtil.
-     * 
-     * @return implementation
-     */
-    public static IBeanUtil getInstance() {
-        return INSTANCE;
-    }
 
     /** {@inheritDoc} */
     @Override

@@ -8,11 +8,14 @@ import java.util.Map.Entry;
 import org.nickgrealy.commons.exceptions.AssertionException;
 
 /**
- * Used to make assertions. Throws a {@link AssertionException} if assertion is
- * disproved.
+ * Used to make assertions. Throws an {@link AssertionException} if the
+ * assertion is disproved.
  * <p/>
- * All assertions have an object identifier, to facilitate object
+ * N.B. The constructor takes an object identifier, to facilitate object
  * identification.
+ * <p/>
+ * Example usage:<br/>
+ * <code>check("My string").isNotNull();</code>
  * 
  * @author nick.grealy
  * 
@@ -63,7 +66,7 @@ public final class Assert {
     }
 
     /**
-     * Asserts an object is null.
+     * Asserts actual is null.
      * 
      * @return this.
      */
@@ -75,8 +78,7 @@ public final class Assert {
     }
 
     /**
-     * Asserts an object is true. Anything else will cause an
-     * {@link AssertionException}.
+     * Asserts actual is true.
      * 
      * @return this.
      */
@@ -89,8 +91,7 @@ public final class Assert {
     }
 
     /**
-     * Asserts an object is false. Anything else will cause an
-     * {@link AssertionException}.
+     * Asserts actual is false.
      * 
      * @return this.
      */
@@ -103,7 +104,7 @@ public final class Assert {
     }
 
     /**
-     * Asserts two objects are equal (using .equals method).
+     * Asserts actual and expected are equal (using .equals()).
      * 
      * @param expected
      *            expected object
@@ -119,7 +120,7 @@ public final class Assert {
     }
 
     /**
-     * Asserts actual is an instance of clazz.
+     * Asserts actual is an instance of any of the givenClasses.
      * 
      * @param givenClasses
      *            Class<?>...
@@ -151,6 +152,7 @@ public final class Assert {
      * @return this.
      */
     public Assert gt(Integer expected) {
+        // TODO Test logic!
         isNotNull();
         isInstanceOf(byte.class, Byte.class, short.class, Short.class, int.class, Integer.class, long.class,
                 Long.class, float.class, Float.class, double.class, Double.class);

@@ -1,44 +1,53 @@
 package org.nickgrealy.commons.util;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * A TwoDimensionalMap. Suggested uses include:
- * - loading data from csv file.
- * - storing converter methods.
+ * A TwoDimensionalMap. Suggested uses include: - loading data from csv file. -
+ * storing converter methods.
  */
-public class TwoDimensionalMap<A, B, V> extends HashMap<A, Map<B, V>> {
+public class TwoDimensionalMap<A, B, V> extends NotNullableMap<A, NotNullableMap<B, V>> implements
+        ITwoDimensionalMap<A, B, V> {
 
-	private static final long serialVersionUID = -2776843647697897210L;
+    private Map<B, V> nullSafeGet(A a) {
+        NotNullableMap<B, V> map2;
+        if (containsKey(a)) {
+            map2 = get(a);
+        } else {
+            map2 = new NotNullableMap<B, V>();
+            put(a, map2);
+        }
+        return map2;
+    }
 
-	public void put(A a, B b, V v){
-		Map<B, V> map = get(a);
-		if (map == null){
-			map = new HashMap<B, V>();
-			put(a, map);
-		}	
-		map.put(b, v);
-	}
+    /** {@inheritDoc} */
+    @Override
+    public void put(A a, B b, V v) {
+        nullSafeGet(a).put(b, v);
+    }
 
-	public void put(A a, List<B> b1, V v){
-		Map<B, V> map = get(a);
-		if (map == null){
-			map = new HashMap<B, V>();
-			put(a, map);
-		}	
-		for (B b : b1) {
-			map.put(b, v);
-		}
-	}
+    /** {@inheritDoc} */
+    @Override
+    public void put(A a, List<B> b1, V v) {
+        for (B b : b1) {
+            nullSafeGet(a).put(b, v);
+        }
+    }
 
-	public V get(A a, B b){
-		Map<B, V> map = get(a);
-		if (map != null){
-			return map.get(b);
-		}
-		return null;
-	}
+    /** {@inheritDoc} */
+    @Override
+    public V get(A a, B b) {
+        if (containsKey(a, b)) {
+            return get(a).get(b);
+        }
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean containsKey(A a, B b) {
+        return containsKey(a) && get(a).containsKey(b);
+    }
 
 }

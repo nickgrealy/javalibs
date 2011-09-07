@@ -13,6 +13,7 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.nickgrealy.commons.reflection.BeanUtil;
 
 /**
  * Methods: mapByField
@@ -20,6 +21,8 @@ import org.junit.Test;
  * @author nick.grealy
  */
 public class MapUtilTest {
+
+    private static final MapUtil mapUtil = new MapUtil(new BeanUtil());
 
     private Collection<TestObject> testObjects;
 
@@ -32,7 +35,7 @@ public class MapUtilTest {
     @Test
     public void mapByField() {
         Map<String, TestObject> map = new HashMap<String, TestObject>();
-        MapUtil.getInstance().mapByField(testObjects, "field", map);
+        mapUtil.mapByField(testObjects, "field", map);
         assertEquals(3, map.size());
         assertNotNull(map.get("a"));
         assertNotNull(map.get("b"));

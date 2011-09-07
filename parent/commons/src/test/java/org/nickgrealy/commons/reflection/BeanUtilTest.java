@@ -13,24 +13,20 @@ import org.junit.Test;
 import org.nickgrealy.commons.exceptions.BeanException;
 
 /**
- * Tests methods: <I> I createBean(Class<I> clazz);
- * <p/>
- * <I> I createBean(Class<I> clazz, Map<String, Object> properties);
- * <p/>
- * void setProperty(Object object, String field, Object property);
- * <p/>
- * Object getProperty(Object object, String field);
- * <p/>
- * void copyProperties(Object object, Map<String, Object> properties);
- * <p/>
- * void copyProperties(Object from, Object to);
- * <p/>
- * void copyProperties(Object from, Object to, String... properties);
- * <p/>
- * void copyProperties(Object from, Object to, Map<String, String> properties);
- * <p/>
- * void copyProperties(Object from, Object to, int classLevel);
- * <p/>
+ * Tests methods:
+ * <ul>
+ * <li>&lt;I&gt; I createBean(Class&lt;I&gt; clazz);</li>
+ * <li>&lt;I&gt; I createBean(Class&lt;I&gt; clazz, Map<String, Object>
+ * properties);</li>
+ * <li>void setProperty(Object object, String field, Object property);</li>
+ * <li>Object getProperty(Object object, String field);</li>
+ * <li>void copyProperties(Object object, Map<String, Object> properties);</li>
+ * <li>void copyProperties(Object from, Object to);</li>
+ * <li>void copyProperties(Object from, Object to, String... properties);</li>
+ * <li>void copyProperties(Object from, Object to, Map<String, String>
+ * properties);</li>
+ * <li>void copyProperties(Object from, Object to, int classLevel);</li>
+ * </ul>
  * 
  * @author nick.grealy
  */
@@ -38,7 +34,7 @@ public class BeanUtilTest {
 
     private static final String TEST = "test";
 
-    private final IBeanUtil beanUtil = BeanUtil.getInstance();
+    private static final IBeanUtil beanUtil = new BeanUtil();
 
     private DefaultAccessibleConstructor testBean;
     private Map<String, Object> testMap;

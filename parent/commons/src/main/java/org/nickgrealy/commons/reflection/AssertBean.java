@@ -6,29 +6,24 @@ import static org.nickgrealy.commons.validation.Assert.check;
 import java.util.Map;
 import java.util.Map.Entry;
 
-
 /**
  * Singleton implementation of the {@link IAssertBean} interface.
  * 
  * @author nick.grealy
  */
-public final class AssertBean implements IAssertBean {
-
-    private static final IAssertBean INSTANCE = new AssertBean();
+public class AssertBean implements IAssertBean {
 
     private final IBeanUtil beanUtil;
 
-    private AssertBean() {
-        beanUtil = BeanUtil.getInstance();
-    }
-
     /**
-     * Returns the singleton.
+     * Constructs the AssertBean.
      * 
-     * @return singleton.
+     * @param beanUtil
+     *            required.
      */
-    public static IAssertBean getInstance() {
-        return INSTANCE;
+    public AssertBean(IBeanUtil beanUtil) {
+        check("beanUtil", beanUtil).isNotNull();
+        this.beanUtil = beanUtil;
     }
 
     /** {@inheritDoc} */
