@@ -1,0 +1,6 @@
+maven ---
+setup dependency management in parent
+test coverage above 60%
+generate javadocs, source, and test jars
+
+binary and all-in-one jars for sub projects
