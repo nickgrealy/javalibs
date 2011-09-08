@@ -16,14 +16,14 @@ public final class ClassUtil {
 
     public ClassUtil() {
         // primitive to object map
-        primitiveToObjectClassMap.put(byte.class, Integer.class);
-        primitiveToObjectClassMap.put(short.class, Integer.class);
+        primitiveToObjectClassMap.put(byte.class, Byte.class);
+        primitiveToObjectClassMap.put(short.class, Short.class);
         primitiveToObjectClassMap.put(int.class, Integer.class);
-        primitiveToObjectClassMap.put(long.class, Integer.class);
-        primitiveToObjectClassMap.put(float.class, Integer.class);
-        primitiveToObjectClassMap.put(double.class, Integer.class);
+        primitiveToObjectClassMap.put(long.class, Long.class);
+        primitiveToObjectClassMap.put(float.class, Float.class);
+        primitiveToObjectClassMap.put(double.class, Double.class);
         primitiveToObjectClassMap.put(boolean.class, Boolean.class);
-        primitiveToObjectClassMap.put(char.class, Integer.class);
+        primitiveToObjectClassMap.put(char.class, Character.class);
     }
 
     /**

@@ -13,7 +13,7 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.nickgrealy.commons.reflection.BeanUtil;
+import org.nickgrealy.commons.reflect.BeanUtil;
 
 /**
  * Methods: mapByField
@@ -22,7 +22,11 @@ import org.nickgrealy.commons.reflection.BeanUtil;
  */
 public class MapUtilTest {
 
-    private static final MapUtil mapUtil = new MapUtil(new BeanUtil());
+    private static final MapUtil mapUtil = new MapUtil();
+
+    static {
+        mapUtil.setBeanUtil(new BeanUtil());
+    }
 
     private Collection<TestObject> testObjects;
 

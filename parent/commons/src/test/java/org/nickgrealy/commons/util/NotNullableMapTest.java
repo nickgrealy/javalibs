@@ -9,7 +9,7 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.nickgrealy.commons.exceptions.AssertionException;
+import org.nickgrealy.commons.exception.AssertionException;
 
 /**
  * Test the following methods:

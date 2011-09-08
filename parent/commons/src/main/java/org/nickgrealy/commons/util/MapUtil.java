@@ -3,29 +3,31 @@
  */
 package org.nickgrealy.commons.util;
 
-import static org.nickgrealy.commons.validation.Assert.check;
+import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 
 import java.util.Collection;
 import java.util.Map;
 
-import org.nickgrealy.commons.reflection.IBeanUtil;
+import org.nickgrealy.commons.reflect.IBeanUtil;
 
 /**
  * Map utilities.
+ * 
+ * <b>N.B.</b> A valid BeanUtil will need to be injected.
  * 
  * @author nick.grealy
  */
 public final class MapUtil {
 
-    private final IBeanUtil beanUtil;
+    private IBeanUtil beanUtil;
 
     /**
      * Constructs a MapUtil.
-     * 
-     * @param beanUtil
-     *            required.
      */
-    public MapUtil(IBeanUtil beanUtil) {
+    public MapUtil() {
+    }
+
+    public void setBeanUtil(IBeanUtil beanUtil) {
         check("beanUtil", beanUtil).isNotNull();
         this.beanUtil = beanUtil;
     }

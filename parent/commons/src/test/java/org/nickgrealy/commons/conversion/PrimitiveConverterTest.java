@@ -15,7 +15,7 @@ import java.util.Set;
 import org.junit.Test;
 import org.nickgrealy.commons.conversion.PrimitiveConverters.IntegerConverter;
 import org.nickgrealy.commons.conversion.PrimitiveConverters.StringConverter;
-import org.nickgrealy.commons.exceptions.UnhandledException;
+import org.nickgrealy.commons.exception.UnhandledException;
 
 /**
  * 

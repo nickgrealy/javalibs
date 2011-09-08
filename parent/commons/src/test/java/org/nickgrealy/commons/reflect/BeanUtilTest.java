@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.nickgrealy.commons.reflection;
+package org.nickgrealy.commons.reflect;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -10,9 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
-import org.nickgrealy.commons.exceptions.BeanException;
+import org.nickgrealy.commons.exception.BeanException;
+import org.nickgrealy.commons.reflect.BeanUtil;
+import org.nickgrealy.commons.reflect.IBeanUtil;
 
 /**
  * Tests methods:
@@ -95,7 +96,7 @@ public class BeanUtilTest {
     @Test
     public void setProperty1() {
         beanUtil.setProperty(bean1, FIELD1, FIELD_VALUE);
-        assertField1Set(bean1);
+        assertFieldsSet(bean1, true, false);
     }
 
     @Test(expected = BeanException.class)
@@ -108,7 +109,7 @@ public class BeanUtilTest {
     @Test
     public void createBean5() {
         DefaultAccessibleConstructor bean = beanUtil.createBean(DefaultAccessibleConstructor.class, fieldValueMap);
-        assertField1Set(bean);
+        assertFieldsSet(bean, true, false);
     }
 
     /* copyProperties(Object object, Map<String, Object> properties); */
@@ -116,16 +117,40 @@ public class BeanUtilTest {
     @Test
     public void copyProperties1() {
         beanUtil.copyProperties(toBean, fieldValueMap);
-        assertField1Set(toBean);
+        assertFieldsSet(toBean, true, false);
     }
 
     /* copyProperties(Object from, Object to); */
 
-    @Ignore
     @Test
     public void copyProperties2() {
-        beanUtil.copyProperties(fromBean, toBean);
-        assertField1Set(toBean);
+        ChildClass fromBean2 = new ChildClass(FIELD_VALUE);
+        ChildClass toBean2 = new ChildClass(null);
+        beanUtil.copyProperties(fromBean2, toBean2);
+        assertFieldsSet(toBean2, true, true, true);
+    }
+
+    @Test(expected = BeanException.class)
+    public void copyProperties2a() {
+        ChildClass fromBean2 = new ChildClass(FIELD_VALUE);
+        beanUtil.copyProperties(fromBean2, toBean);
+        assertFieldsSet(toBean, true, true);
+    }
+
+    @Test
+    public void copyProperties2b() {
+        // setup
+        beanUtil.setProperty(fromBean, FIELD2, FIELD_VALUE);
+        ChildClass toBean2 = new ChildClass(null);
+        beanUtil.copyProperties(fromBean, toBean2);
+        // assert
+        assertFieldsSet(toBean2, true, true, false);
+    }
+
+    @Test
+    public void copyProperties2c() {
+        int tmp = 12;
+        beanUtil.copyProperties(tmp, tmp);
     }
 
     /* copyProperties(Object from, Object to, String... properties); */
@@ -133,7 +158,7 @@ public class BeanUtilTest {
     @Test
     public void copyProperties3() {
         beanUtil.copyProperties(fromBean, toBean, FIELD1);
-        assertField1Set(toBean);
+        assertFieldsSet(toBean, true, false);
     }
 
     /* copyProperties(Object from, Object to, Map<String, String> properties); */
@@ -141,37 +166,30 @@ public class BeanUtilTest {
     @Test
     public void copyProperties4() {
         beanUtil.copyProperties(fromBean, toBean, fieldFieldMap);
-        assertField2Set(toBean);
+        assertFieldsSet(toBean, false, true);
     }
 
     /* copyProperties(Object from, Object to, int classLevel); */
 
-    @Ignore
     @Test
     public void copyProperties5() {
         ChildClass fromBean2 = new ChildClass(FIELD_VALUE);
         ChildClass toBean2 = new ChildClass(null);
-
         beanUtil.copyProperties(fromBean2, toBean2, 1);
-        assertField3Set(toBean2);
+        assertFieldsSet(toBean2, false, false, true);
     }
 
     /* utility methods */
 
-    private void assertField1Set(DefaultAccessibleConstructor bean) {
-        assertEquals(FIELD_VALUE, bean.getValue1());
-        assertEquals(null, bean.getValue2());
+    private void assertFieldsSet(DefaultAccessibleConstructor bean, boolean field1, boolean field2) {
+        assertEquals("field1", field1 ? FIELD_VALUE : null, bean.getValue1());
+        assertEquals("field2", field2 ? FIELD_VALUE : null, bean.getValue2());
     }
 
-    private void assertField2Set(DefaultAccessibleConstructor bean) {
-        assertEquals(null, bean.getValue1());
-        assertEquals(FIELD_VALUE, bean.getValue2());
-    }
-
-    private void assertField3Set(ChildClass bean) {
-        assertEquals(null, bean.getValue1());
-        assertEquals(null, bean.getValue2());
-        assertEquals(FIELD_VALUE, bean.getValue3());
+    private void assertFieldsSet(ChildClass bean, boolean field1, boolean field2, boolean field3) {
+        assertEquals("field1", field1 ? FIELD_VALUE : null, bean.getValue1());
+        assertEquals("field2", field2 ? FIELD_VALUE : null, bean.getValue2());
+        assertEquals("field3", field3 ? FIELD_VALUE : null, bean.getValue3());
     }
 
     /* utility classes for testing */
@@ -181,6 +199,7 @@ public class BeanUtilTest {
         private String field1;
         private String field2;
 
+        @SuppressWarnings("unused")
         private DefaultAccessibleConstructor() {
         }
 

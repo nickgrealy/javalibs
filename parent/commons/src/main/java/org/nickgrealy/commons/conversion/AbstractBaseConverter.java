@@ -4,16 +4,19 @@
 package org.nickgrealy.commons.conversion;
 
 import static java.lang.String.format;
-import static org.nickgrealy.commons.validation.Assert.check;
+import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.nickgrealy.commons.exceptions.UnhandledException;
+import org.nickgrealy.commons.exception.UnhandledException;
 import org.nickgrealy.commons.util.ClassUtil;
 
 /**
  * Adds base functionality to the IConverter.
+ * 
+ * <b>N.B.</b> If an object's {@link #toString()} method returns the literal
+ * "&lt;null&gt;", the object will be converted to null.
  * 
  * @author nick.grealy
  * @param <X>
@@ -71,7 +74,9 @@ public abstract class AbstractBaseConverter<X> implements IConverter<X> {
             throw new UnhandledException(format(UNHANDLED_CLASS_2, fromObject, nonPrimClass));
         }
         Object returnVal = null;
-        if (getBaseClass().equals(nonPrimClass) || Object.class.equals(nonPrimClass)) {
+        if ("<null>".equals(fromObject)) {
+            returnVal = null;
+        } else if (getBaseClass().equals(nonPrimClass) || Object.class.equals(nonPrimClass)) {
             returnVal = fromObject;
         } else {
             returnVal = doConversion(fromObject, nonPrimClass);

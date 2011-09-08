@@ -1,4 +1,4 @@
-package org.nickgrealy.commons.util.todo;
+package org.nickgrealy.commons.todo.util;
 
 public interface OneToManyMap {
     // TODO

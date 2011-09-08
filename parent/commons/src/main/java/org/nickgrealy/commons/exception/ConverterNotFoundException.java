@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.nickgrealy.commons.exceptions;
+package org.nickgrealy.commons.exception;
 
 import static java.lang.String.format;
 

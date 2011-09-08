@@ -1,4 +1,4 @@
-package org.nickgrealy.commons.exceptions;
+package org.nickgrealy.commons.exception;
 
 /**
  * Thrown when (the logic) for an executed section of code has not yet been
@@ -8,7 +8,7 @@ package org.nickgrealy.commons.exceptions;
  * 
  * @author nick.grealy
  */
-public class NotYetImplemented extends RuntimeException {
+public class NotYetImplementedException extends RuntimeException {
 
     private static final long serialVersionUID = 6790222551768044978L;
 
@@ -17,7 +17,7 @@ public class NotYetImplemented extends RuntimeException {
     /**
      * Constructs a NotYetImplemented exception with default message.
      */
-    public NotYetImplemented() {
+    public NotYetImplementedException() {
         super(METHOD_HAS_NOT_YET_BEEN_IMPLEMENTED);
     }
 
@@ -27,7 +27,7 @@ public class NotYetImplemented extends RuntimeException {
      * @param message
      *            the exception message
      */
-    public NotYetImplemented(String message) {
+    public NotYetImplementedException(String message) {
         super(message);
     }
 

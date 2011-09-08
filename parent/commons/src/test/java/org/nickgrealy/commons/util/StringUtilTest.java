@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-import org.nickgrealy.commons.exceptions.AssertionException;
+import org.nickgrealy.commons.exception.AssertionException;
 
 /**
  * 

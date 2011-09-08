@@ -1,14 +1,17 @@
-package org.nickgrealy.commons.reflection;
+package org.nickgrealy.commons.reflect;
 
-import static org.nickgrealy.commons.validation.Assert.check;
+import static java.lang.String.format;
+import static org.nickgrealy.commons.exception.BeanException.DEFAULT_CONSTRUCTOR;
+import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.nickgrealy.commons.exceptions.BeanException;
+import org.nickgrealy.commons.exception.BeanException;
 
 /**
  * The BeanUtil class facilitates:
@@ -30,7 +33,7 @@ public final class BeanUtil implements IBeanUtil {
     @Override
     public <I> I createBean(Class<I> clazz) {
         try {
-            Constructor<I> constructor = clazz.getDeclaredConstructor();
+            final Constructor<I> constructor = clazz.getDeclaredConstructor();
             I returnVal;
             if (!constructor.isAccessible()) {
                 constructor.setAccessible(true);
@@ -41,17 +44,17 @@ public final class BeanUtil implements IBeanUtil {
             }
             return returnVal;
         } catch (InstantiationException e) {
-            throw new BeanException(e);
+            throw new BeanException(DEFAULT_CONSTRUCTOR, e);
         } catch (IllegalAccessException e) {
-            throw new BeanException(e);
+            throw new BeanException(DEFAULT_CONSTRUCTOR, e);
         } catch (IllegalArgumentException e) {
-            throw new BeanException(e);
+            throw new BeanException(DEFAULT_CONSTRUCTOR, e);
         } catch (InvocationTargetException e) {
-            throw new BeanException(e);
+            throw new BeanException(DEFAULT_CONSTRUCTOR, e);
         } catch (SecurityException e) {
-            throw new BeanException(e);
+            throw new BeanException(DEFAULT_CONSTRUCTOR, e);
         } catch (NoSuchMethodException e) {
-            throw new BeanException(e);
+            throw new BeanException(DEFAULT_CONSTRUCTOR, e);
         }
     }
 
@@ -68,21 +71,31 @@ public final class BeanUtil implements IBeanUtil {
     public void setProperty(Object object, String field, Object value) {
         try {
             final Field field2 = object.getClass().getDeclaredField(field);
-            if (field2.isAccessible()) {
-                field2.set(object, value);
+            setProperty(object, field2, value);
+        } catch (SecurityException e) {
+            throw new BeanException(field, e);
+        } catch (NoSuchFieldException e) {
+            throw new BeanException(field, e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setProperty(Object object, Field field, Object value) {
+        try {
+            if (field.isAccessible()) {
+                field.set(object, value);
             } else {
-                field2.setAccessible(true);
-                field2.set(object, value);
-                field2.setAccessible(false);
+                field.setAccessible(true);
+                field.set(object, value);
+                field.setAccessible(false);
             }
         } catch (SecurityException e) {
-            throw new BeanException(e);
-        } catch (NoSuchFieldException e) {
-            throw new BeanException(e);
+            throw new BeanException(field.getName(), e);
         } catch (IllegalArgumentException e) {
-            throw new BeanException(e);
+            throw new BeanException(field.getName(), e);
         } catch (IllegalAccessException e) {
-            throw new BeanException(e);
+            throw new BeanException(field.getName(), e);
         }
     }
 
@@ -91,23 +104,33 @@ public final class BeanUtil implements IBeanUtil {
     public Object getProperty(Object object, String field) {
         try {
             final Field field2 = object.getClass().getDeclaredField(field);
+            return getProperty(object, field2);
+        } catch (SecurityException e) {
+            throw new BeanException(field, e);
+        } catch (NoSuchFieldException e) {
+            throw new BeanException(field, e);
+        }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Object getProperty(Object object, Field field) {
+        try {
             Object returnVal;
-            if (field2.isAccessible()) {
-                returnVal = field2.get(object);
+            if (field.isAccessible()) {
+                returnVal = field.get(object);
             } else {
-                field2.setAccessible(true);
-                returnVal = field2.get(object);
-                field2.setAccessible(false);
+                field.setAccessible(true);
+                returnVal = field.get(object);
+                field.setAccessible(false);
             }
             return returnVal;
         } catch (SecurityException e) {
-            throw new BeanException(e);
-        } catch (NoSuchFieldException e) {
-            throw new BeanException(e);
+            throw new BeanException(field.getName(), e);
         } catch (IllegalArgumentException e) {
-            throw new BeanException(e);
+            throw new BeanException(field.getName(), e);
         } catch (IllegalAccessException e) {
-            throw new BeanException(e);
+            throw new BeanException(field.getName(), e);
         }
     }
 
@@ -124,13 +147,7 @@ public final class BeanUtil implements IBeanUtil {
     /** {@inheritDoc} */
     @Override
     public void copyProperties(Object from, Object to) {
-        check(FROM, from).isNotNull();
-        check(TO, to).isNotNull();
-        if (!from.getClass().equals(to.getClass())) {
-            throw new BeanException("From bean class must match To bean class!");
-        }
-        // TODO Implement
-        throw new org.nickgrealy.commons.exceptions.NotYetImplemented();
+        copyProperties(from, to, DEFAULT_CLASS_DEPTH);
     }
 
     /** {@inheritDoc} */
@@ -157,14 +174,36 @@ public final class BeanUtil implements IBeanUtil {
 
     /** {@inheritDoc} */
     @Override
-    public void copyProperties(Object from, Object to, int classLevel) {
-        check(FROM, from).isNotNull();
-        check(TO, to).isNotNull();
-        if (!from.getClass().equals(to.getClass())) {
-            throw new BeanException("From bean class must match To bean class!");
-        }
-        // TODO Implement
-        throw new org.nickgrealy.commons.exceptions.NotYetImplemented();
+    public void copyProperties(Object from, Object to, int maxClassLevel) {
+        copyProperties(from, to, maxClassLevel, Modifier.FINAL);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public void copyProperties(Object from, Object to, int maxClassLevel, int ignoreFieldsWithModifiers) {
+        check(FROM, from).isNotNull();
+        check(TO, to).isNotNull();
+        if (!from.getClass().isAssignableFrom(to.getClass())) {
+            throw new BeanException(format(
+                    "'From' bean class must be assignable from the 'To' bean class! fromClass=%s toClass=%s",
+                    from.getClass(), to.getClass()));
+        }
+        // Iterate up through parent classes, copying fields as we go...
+        int currCLassLevel = 1;
+        Class<?> tmp = from.getClass();
+        final int ignoredModifiers = ignoreFieldsWithModifiers & Modifier.FINAL;
+        while (currCLassLevel <= maxClassLevel && tmp != null && !tmp.equals(Object.class)) {
+            final Field[] fields = tmp.getDeclaredFields();
+            for (Field field : fields) {
+                // Ignore fields if they have these modifiers...
+                if ((field.getModifiers() & ignoredModifiers) == ignoredModifiers) {
+                    continue;
+                }
+                // Do copy...
+                setProperty(to, field, getProperty(from, field));
+            }
+            tmp = tmp.getSuperclass();
+            ++currCLassLevel;
+        }
+    }
 }

@@ -9,7 +9,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.nickgrealy.commons.exceptions.ConverterNotFoundException;
+import org.nickgrealy.commons.exception.ConverterNotFoundException;
 
 /**
  * 

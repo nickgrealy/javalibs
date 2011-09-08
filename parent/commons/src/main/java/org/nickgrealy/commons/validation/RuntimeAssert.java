@@ -5,7 +5,7 @@ import static java.lang.String.format;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.nickgrealy.commons.exceptions.AssertionException;
+import org.nickgrealy.commons.exception.AssertionException;
 import org.nickgrealy.commons.util.ClassUtil;
 import org.nickgrealy.commons.util.StringUtil;
 
@@ -19,10 +19,12 @@ import org.nickgrealy.commons.util.StringUtil;
  * Example usage:<br/>
  * <code>check("My string").isNotNull();</code>
  * 
+ * TODO Decide whether to use static assert methods, or "builder" objects.
+ * 
  * @author nick.grealy
  * 
  */
-public final class Assert {
+public final class RuntimeAssert {
 
     public static final String KEY = "key";
     public static final String VALUE = "value";
@@ -41,7 +43,7 @@ public final class Assert {
     private final Object actual;
     private final String identifier;
 
-    private Assert(String identifier, Object actual) {
+    private RuntimeAssert(String identifier, Object actual) {
         this.actual = actual;
         this.identifier = identifier;
     }
@@ -55,8 +57,8 @@ public final class Assert {
      *            Object
      * @return this.
      */
-    public static Assert check(String identifier, Object actual) {
-        return new Assert(identifier, actual);
+    public static RuntimeAssert check(String identifier, Object actual) {
+        return new RuntimeAssert(identifier, actual);
     }
 
     /**
@@ -64,7 +66,7 @@ public final class Assert {
      * 
      * @return this.
      */
-    public Assert isNotNull() {
+    public RuntimeAssert isNotNull() {
         if (actual == null) {
             throw new AssertionException(format(ASSERT_NOTNULL_MESG_1, identifier));
         }
@@ -76,7 +78,7 @@ public final class Assert {
      * 
      * @return this.
      */
-    public Assert isNull() {
+    public RuntimeAssert isNull() {
         if (actual != null) {
             throw new AssertionException(format(ASSERT_NULL_MESG_1, identifier));
         }
@@ -88,7 +90,7 @@ public final class Assert {
      * 
      * @return this.
      */
-    public Assert isNotPrimitive() {
+    public RuntimeAssert isNotPrimitive() {
         isNotNull();
         isInstanceOf(Class.class);
         if (classUtil.isPrimitiveClass((Class<?>) actual)) {
@@ -102,7 +104,7 @@ public final class Assert {
      * 
      * @return this.
      */
-    public Assert isTrue() {
+    public RuntimeAssert isTrue() {
         isNotNull();
         if (!Boolean.TRUE.equals(actual)) {
             throw new AssertionException(format("Actual value is not true! field=%s actual=%s", identifier, actual));
@@ -115,7 +117,7 @@ public final class Assert {
      * 
      * @return this.
      */
-    public Assert isFalse() {
+    public RuntimeAssert isFalse() {
         isNotNull();
         if (!Boolean.FALSE.equals(actual)) {
             throw new AssertionException(format("Actual value is not false! field=%s actual=%s", identifier, actual));
@@ -130,7 +132,7 @@ public final class Assert {
      *            expected object
      * @return this.
      */
-    public Assert equalz(Object expected) {
+    public RuntimeAssert equalz(Object expected) {
         if (expected == null) {
             isNull();
         } else if (!expected.equals(actual)) {
@@ -148,7 +150,7 @@ public final class Assert {
      *            Class<?>...
      * @return this.
      */
-    public Assert isInstanceOf(Class<?> givenClass, Class<?>... givenClasses) {
+    public RuntimeAssert isInstanceOf(Class<?> givenClass, Class<?>... givenClasses) {
         check("givenClass", givenClass).isNotNull();
         check("givenClasses", givenClasses).isNotNull();
         isNotNull(); // actual is not null
@@ -178,7 +180,7 @@ public final class Assert {
      *            Integer
      * @return this.
      */
-    public Assert isGt(Integer expected) {
+    public RuntimeAssert isGt(Integer expected) {
         // TODO Test logic!
         isNotNull();
         isInstanceOf(int.class, Integer.class, long.class, Long.class, float.class, Float.class, double.class,
@@ -188,6 +190,29 @@ public final class Assert {
                     identifier, actual, expected));
         }
         return this;
+    }
+
+    /* Static Asserts */
+
+    /**
+     * Performs a boiler plate test on the objects. If 'expected' is null,
+     * assert 'actual' is null too (and vice versa).
+     * 
+     * @param expected
+     *            Object
+     * @param actual
+     *            Object
+     * @return true if expected and actual are not null, otherwise false if both
+     *         are null.
+     */
+    public static boolean checkIfNotNull(Object expected, Object actual) {
+        if (expected == null) {
+            check(ACTUAL, actual).isNull();
+            return false;
+        } else {
+            check(ACTUAL, actual).isNotNull();
+            return true;
+        }
     }
 
     /**

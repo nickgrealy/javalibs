@@ -1,9 +1,9 @@
 package org.nickgrealy.commons.util;
 
-import static org.nickgrealy.commons.validation.Assert.KEY;
-import static org.nickgrealy.commons.validation.Assert.VALUE;
-import static org.nickgrealy.commons.validation.Assert.assertNoNullKeysOrValues;
-import static org.nickgrealy.commons.validation.Assert.check;
+import static org.nickgrealy.commons.validation.RuntimeAssert.KEY;
+import static org.nickgrealy.commons.validation.RuntimeAssert.VALUE;
+import static org.nickgrealy.commons.validation.RuntimeAssert.assertNoNullKeysOrValues;
+import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 
 import java.util.Collection;
 import java.util.HashMap;

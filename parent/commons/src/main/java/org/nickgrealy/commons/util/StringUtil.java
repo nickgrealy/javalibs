@@ -3,7 +3,7 @@
  */
 package org.nickgrealy.commons.util;
 
-import static org.nickgrealy.commons.validation.Assert.check;
+import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 
 import java.util.Arrays;
 import java.util.Collection;

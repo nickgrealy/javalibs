@@ -3,15 +3,15 @@
  */
 package org.nickgrealy.commons.validation;
 
-import static org.nickgrealy.commons.validation.Assert.assertNoNullKeysOrValues;
-import static org.nickgrealy.commons.validation.Assert.check;
+import static org.nickgrealy.commons.validation.RuntimeAssert.assertNoNullKeysOrValues;
+import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.nickgrealy.commons.exceptions.AssertionException;
+import org.nickgrealy.commons.exception.AssertionException;
 
 /**
  * Methods: equalz, isNotNull, isNull, isTrue, isFalse, isInstanceOf,

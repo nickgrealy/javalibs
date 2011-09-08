@@ -3,7 +3,7 @@ package org.nickgrealy.commons.conversion;
 import java.util.List;
 import java.util.Set;
 
-import org.nickgrealy.commons.exceptions.ConverterNotFoundException;
+import org.nickgrealy.commons.exception.ConverterNotFoundException;
 import org.nickgrealy.commons.util.ClassUtil;
 import org.nickgrealy.commons.util.ITwoDimensionalMap;
 import org.nickgrealy.commons.util.TwoDimensionalMap;

@@ -5,7 +5,7 @@ import static java.lang.String.format;
 import java.util.Arrays;
 import java.util.List;
 
-import org.nickgrealy.commons.exceptions.NotYetImplemented;
+import org.nickgrealy.commons.exception.NotYetImplementedException;
 
 /**
  * Contains a list of classes, to facilitate converting primitives.
@@ -49,7 +49,7 @@ public final class PrimitiveConverters {
             } else if (String.class.equals(targetClass)) {
                 returnVal = fromObject.toString();
             } else {
-                throw new NotYetImplemented(format(UNIMPLEMENTED_CLASS_2, fromObject, targetClass));
+                throw new NotYetImplementedException(format(UNIMPLEMENTED_CLASS_2, fromObject, targetClass));
             }
             return (A) returnVal;
         }
@@ -67,7 +67,7 @@ public final class PrimitiveConverters {
     static final class StringConverter extends AbstractBaseConverter<String> {
 
         public StringConverter() {
-            super(Integer.class, Double.class, Boolean.class);
+            super(Integer.class, Double.class, Boolean.class, Float.class);
         }
 
         @Override
@@ -78,10 +78,12 @@ public final class PrimitiveConverters {
                 returnVal = new Integer(fromObject);
             } else if (Double.class.equals(targetClass)) {
                 returnVal = new Double(fromObject);
+            } else if (Float.class.equals(targetClass)) {
+                returnVal = new Float(fromObject);
             } else if (Boolean.class.equals(targetClass)) {
                 returnVal = new Boolean(fromObject);
             } else {
-                throw new NotYetImplemented(format(UNIMPLEMENTED_CLASS_2, fromObject, targetClass));
+                throw new NotYetImplementedException(format(UNIMPLEMENTED_CLASS_2, fromObject, targetClass));
             }
             return (A) returnVal;
         }

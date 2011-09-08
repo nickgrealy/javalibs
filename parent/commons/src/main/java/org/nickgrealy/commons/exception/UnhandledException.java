@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.nickgrealy.commons.exceptions;
+package org.nickgrealy.commons.exception;
 
 /**
  * Thrown when an unhandled object is encountered.

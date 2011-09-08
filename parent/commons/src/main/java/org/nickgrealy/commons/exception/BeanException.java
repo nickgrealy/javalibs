@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.nickgrealy.commons.exceptions;
+package org.nickgrealy.commons.exception;
 
 /**
  * Used to wrap Bean related exceptions.
@@ -10,14 +10,9 @@ package org.nickgrealy.commons.exceptions;
  */
 public class BeanException extends RuntimeException {
 
+    public static final String DEFAULT_CONSTRUCTOR = "DefaultConstructor";
+    public static final String FIELD = "Field=";
     private static final long serialVersionUID = -6830864219098335713L;
-
-    /**
-     * Constructs a BeanException.
-     */
-    public BeanException() {
-        super();
-    }
 
     /**
      * Constructs a BeanException.
@@ -32,23 +27,13 @@ public class BeanException extends RuntimeException {
     /**
      * Constructs a BeanException.
      * 
-     * @param cause
-     *            Throwable
-     */
-    public BeanException(Throwable cause) {
-        super(cause);
-    }
-
-    /**
-     * Constructs a BeanException.
-     * 
      * @param message
      *            String
      * @param cause
      *            Throwable
      */
-    public BeanException(String message, Throwable cause) {
-        super(message, cause);
+    public BeanException(String field, Throwable cause) {
+        super(FIELD + field, cause);
     }
 
 }
