@@ -19,11 +19,11 @@ package org.nickgrealy.testy.data;
  * 
  * @author nick.grealy
  */
-public final class TestDataGenerator {
+public final class DataGenerator {
 
     private static long generatedId;
 
-    private TestDataGenerator() {
+    private DataGenerator() {
     }
 
     public static long getId() {
