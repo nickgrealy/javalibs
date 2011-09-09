@@ -1,7 +1,7 @@
 package org.nickgrealy.testy.validation;
 
 import static java.lang.String.format;
-import static org.junit.Assert.assertNotNull;
+import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 import static org.nickgrealy.testy.validation.Assert.checkIfNotNull;
 import static org.nickgrealy.testy.validation.Assert.checkIfNullOrEquals;
 
@@ -16,29 +16,34 @@ import org.nickgrealy.commons.reflect.IBeanUtil;
 /**
  * Facilitates comparing the fields from two objects for equality.
  * 
+ * <b>N.B.</b> A valid BeanUtil will need to be injected.
+ * 
  * @author nick.grealy
  */
 public class AssertBean implements IAssertBean {
 
+    private static final String BEAN_UTIL = "beanUtil";
+
     private static final String MUST_BE_ASSIGNABLE_2 = "'expected' bean class must be assignable "
             + "from the 'actual' bean class! expectedClass=%s actualClass=%s";
 
-    private final IBeanUtil beanUtil;
+    private IBeanUtil beanUtil;
 
     /**
      * Constructs the AssertBean.
-     * 
-     * @param beanUtil
-     *            required.
      */
-    public AssertBean(IBeanUtil beanUtil) {
-        assertNotNull("beanUtil", beanUtil);
+    public AssertBean() {
+    }
+
+    public void setBeanUtil(IBeanUtil beanUtil) {
+        check(BEAN_UTIL, beanUtil).isNotNull();
         this.beanUtil = beanUtil;
     }
 
     /** {@inheritDoc} */
     @Override
     public void assertEquals(Object expected, Object actual, final String... fields) {
+        check(BEAN_UTIL, beanUtil).isNotNull();
         if (checkIfNotNull(expected, actual)) {
             for (String field : fields) {
                 Assert.checkIfNullOrEquals(field, beanUtil.getProperty(expected, field),
@@ -50,6 +55,7 @@ public class AssertBean implements IAssertBean {
     /** {@inheritDoc} */
     @Override
     public void assertEquals(Object expected, Object actual, Map<String, String> fieldsMap) {
+        check(BEAN_UTIL, beanUtil).isNotNull();
         if (checkIfNotNull(expected, actual)) {
             for (Entry<String, String> entry : fieldsMap.entrySet()) {
                 Assert.checkIfNullOrEquals(entry.toString(), beanUtil.getProperty(expected, entry.getKey()),
@@ -73,6 +79,7 @@ public class AssertBean implements IAssertBean {
     /** {@inheritDoc} */
     @Override
     public void assertEquals(Object expected, Object actual, int maxClassLevel, int ignoreFieldsWithModifiers) {
+        check(BEAN_UTIL, beanUtil).isNotNull();
         if (checkIfNotNull(expected, actual)) {
             if (!expected.getClass().isAssignableFrom(actual.getClass())) {
                 throw new BeanException(format(MUST_BE_ASSIGNABLE_2, expected.getClass(), actual.getClass()));

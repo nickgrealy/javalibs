@@ -49,6 +49,7 @@ public final class MapUtil {
     @SuppressWarnings("unchecked")
     public <K, V> void mapByField(Collection<V> objects, String field, Map<K, V> map) {
         for (V object : objects) {
+            check("beanUtil", beanUtil).isNotNull();
             final Object key = beanUtil.getProperty(object, field);
             if (key != null) {
                 map.put((K) key, object);

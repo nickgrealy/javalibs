@@ -3,8 +3,7 @@
  */
 package org.nickgrealy.commons.reflect;
 
-import java.util.Arrays;
-import java.util.Iterator;
+import org.nickgrealy.commons.util.StringUtil;
 
 /**
  * 
@@ -12,23 +11,20 @@ import java.util.Iterator;
  */
 public class BeanPathUtil {
 
-    private static final String BEAN_PATH_DELIM = "\\.";
-    private static final String BEAN_PATH = ".";
+    /*
+     * No external dependencies, so make this class a "utility" class. i.e.
+     * static methods, final class, private constructor.
+     */
+
+    public static final String BEAN_PATH_DELIM_REGEX = "\\.";
+    public static final String BEAN_PATH_DELIM = ".";
 
     public static String[] pathToFields(String beanPath) {
-        return beanPath.split(BEAN_PATH_DELIM);
+        return beanPath.split(BEAN_PATH_DELIM_REGEX);
     }
 
     public static String fieldsToPath(String... fields) {
-        StringBuffer sb = new StringBuffer();
-        final Iterator<String> iterator = Arrays.asList(fields).iterator();
-        if (iterator.hasNext()) {
-            sb.append(iterator.next());
-            while (iterator.hasNext()) {
-                sb.append(BEAN_PATH).append(iterator.next());
-            }
-        }
-        return sb.toString();
+        return StringUtil.concat(BEAN_PATH_DELIM, (Object[]) fields).toString();
     }
 
 }

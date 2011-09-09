@@ -29,7 +29,7 @@ public class SmartBeanBuilder<X> {
     private static final String VALUES_LENGTH = "values.length";
     private static final String VALUES = "values";
 
-    private BeanUtil beanUtil;
+    private IBeanUtil beanUtil;
     private ConverterFactory converterFactory;
     private final Class<X> clazz;
     private final Field[] fields;
@@ -51,6 +51,16 @@ public class SmartBeanBuilder<X> {
         } catch (NoSuchFieldException e) {
             throw new BeanException(fields[index], e);
         }
+    }
+
+    public void setBeanUtil(IBeanUtil beanUtil) {
+        check("beanUtil", beanUtil).isNotNull();
+        this.beanUtil = beanUtil;
+    }
+
+    public void setConverterFactory(ConverterFactory converterFactory) {
+        check("converterFactory", converterFactory).isNotNull();
+        this.converterFactory = converterFactory;
     }
 
     public X buildBean(String... values) {
@@ -91,16 +101,6 @@ public class SmartBeanBuilder<X> {
             beans.add(bean);
         }
         return beans;
-    }
-
-    public void setBeanUtil(BeanUtil beanUtil) {
-        check("beanUtil", beanUtil).isNotNull();
-        this.beanUtil = beanUtil;
-    }
-
-    public void setConverterFactory(ConverterFactory converterFactory) {
-        check("converterFactory", converterFactory).isNotNull();
-        this.converterFactory = converterFactory;
     }
 
 }

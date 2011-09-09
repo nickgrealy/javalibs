@@ -13,33 +13,51 @@ import java.util.Iterator;
  * 
  * @author nick.grealy
  */
-public class StringUtil {
+public final class StringUtil {
 
+    /*
+     * No external dependencies, so make this class a "utility" class. i.e.
+     * static methods, final class, private constructor.
+     */
+
+    private static final String DELIMITER = "delimiter";
     private static final String COLLECTION = "collection";
     private static final String ARRAY = "array";
+
     private static final String ARR_START = "[";
     private static final String ARR_END = "]";
-    private static final String ARR_DELIM = ", ";
+    public static final String ARR_DELIM = ", ";
+    public static final String BLANK_DELIM = "";
 
-    public String toString(Object[] array) {
+    private StringUtil() {
+    }
+
+    public static String toString(Object... array) {
         check(ARRAY, array).isNotNull();
-        return buildString(Arrays.asList(array)).toString();
+        return toString(Arrays.asList(array));
     }
 
-    public String toString(Collection<?> collection) {
+    public static String toString(Collection<?> collection) {
         check(COLLECTION, collection).isNotNull();
-        return buildString(collection).toString();
+        return concat(ARR_DELIM, collection).prepend(ARR_START).append(ARR_END).toString();
     }
 
-    private StringBuilder buildString(Collection<?> collection) {
-        final StringBuilder sb = new StringBuilder(ARR_START);
+    public static SimpleStringBuilder concat(String delimiter, Object... array) {
+        check(ARRAY, array).isNotNull();
+        return concat(delimiter, Arrays.asList(array));
+    }
+
+    public static SimpleStringBuilder concat(String delimiter, Collection<?> collection) {
+        check(COLLECTION, collection).isNotNull();
+        check(DELIMITER, collection).isNotNull();
+        final SimpleStringBuilder sb = new SimpleStringBuilder();
         final Iterator<?> iterator = collection.iterator();
         if (iterator.hasNext()) {
             sb.append(iterator.next());
+            while (iterator.hasNext()) {
+                sb.append(delimiter).append(iterator.next());
+            }
         }
-        while (iterator.hasNext()) {
-            sb.append(ARR_DELIM).append(iterator.next());
-        }
-        return sb.append(ARR_END);
+        return sb;
     }
 }
