@@ -13,9 +13,6 @@ import java.util.Collection;
  */
 public final class Assert {
 
-    /**
-     * 
-     */
     private static final String FIELD_AND_EXPECTED_2 = "field='%s', expected='%s'";
     private static final String ACTUAL = "actual";
     private static final String EXPECTED = "expected";

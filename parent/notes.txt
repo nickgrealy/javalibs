@@ -1,3 +1,27 @@
+maven
+DONE	setup dependency management in parent
+DONE	generate javadocs, source, and test jars
+
+project
+-	setup project for automated deployments and web frontend testing
+
+plugins
+-	check test coverage above 60% and build reports
+-	generate binary (AOT Java compilers vs JIT)
+		http://www.excelsior-usa.com/jet.html
+		http://gcc.gnu.org/java/
+-	code obfuscation - http://jee-bpel-soa.blogspot.com/2009/07/obfuscating-java-code-with-proguard-and.html
+- 	all-in-one jars (import required contents only from other jars)
+- 	copy gnu (GPL vs lGPL) license to pom.xml, project directory, and file headers.
+
+optional (setup)
+-	version control	(svn, mercurial, git, etc)
+- 	buildserver	(bamboo, jenkins, hudson, etc)
+- 	artifact repo	(filesystem, artifactory, nexus, etc)
+
+
+
+
 commons -----
 
 bean
@@ -23,17 +47,17 @@ creates generated test data for given fields with generated id
 preStartupTest
 postStartupTest
 onSuccessfulPreStartupTest
-onFailedPreStartup(Excpetinos)
+onFailedPreStartup(Excpetions)
 onSuccessfulPostStartupTest ... etc
 Notify listeners
 
 external "health" tests
 internal "health" tests (self test)
-built in application tests - e.g. on startup, 
-check required servers are up, 
-ports are connectable, 
-services are available (e.g. http/soap/etc), 
-database is available, tables exist, 
+built in application tests - e.g. on startup,
+check required servers are up,
+ports are connectable,
+services are available (e.g. http/soap/etc),
+database is available, tables exist,
 internet (server) is available.
 config files exist and are accessible/writable?
 - logs failed dependencies

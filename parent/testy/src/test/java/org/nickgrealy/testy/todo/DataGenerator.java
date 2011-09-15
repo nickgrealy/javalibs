@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.nickgrealy.testy.data;
+package org.nickgrealy.testy.todo;
 
 /**
  * Generates test data for the following scenarios.
