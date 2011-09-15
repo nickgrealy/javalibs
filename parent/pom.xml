@@ -108,6 +108,7 @@
 				<artifactId>loady</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+
 			<!-- External -->
 			<dependency>
 				<groupId>junit</groupId>
