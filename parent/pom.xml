@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.nickgrealy</groupId>
 	<artifactId>parent</artifactId>
@@ -8,7 +8,7 @@
 	<packaging>pom</packaging>
 	<name>parent</name>
 	<description>The parent pom.</description>
-	
+
 	<modules>
 		<module>commons</module>
 		<module>syncy</module>
@@ -23,11 +23,11 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
-	
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
+
 	<build>
 		<pluginManagement>
 			<!-- Compiler -->
@@ -83,7 +83,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<!-- Internal -->
@@ -97,6 +97,7 @@
 				<artifactId>testy</artifactId>
 				<version>${project.version}</version>
 				<type>test-jar</type>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
@@ -114,6 +115,11 @@
 				<artifactId>junit</artifactId>
 				<version>4.8.2</version>
 				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>3.0.6.RELEASE</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

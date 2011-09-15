@@ -18,8 +18,8 @@ public class SmartBeanBuilderTest {
     @Test
     public void buildBean() {
         // setup
-        SmartBeanBuilder<TestClass> builder = new SmartBeanBuilder<TestClass>(TestClass.class, "a", "b", "c", "d", "e",
-                "f");
+        SmartBeanBuilder<TestClass> builder = new SmartBeanBuilder<TestClass>(TestClass.class, new String[] { "a", "b",
+            "c", "d", "e", "f" });
         builder.setBeanUtil(new BeanUtil());
         builder.setConverterFactory(new ConverterFactory(PrimitiveConverters.getAllConverters()));
         TestClass bean = builder.buildBean("test", "1", "2.3", "4.5f", "true", "<null>");

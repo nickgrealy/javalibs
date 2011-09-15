@@ -1,5 +1,7 @@
 package org.nickgrealy.commons.conversion;
 
+import static org.nickgrealy.commons.conversion.AbstractBaseConverter.getAssignableClass;
+
 import java.util.List;
 import java.util.Set;
 
@@ -24,13 +26,15 @@ public class ConverterFactory {
      * Constructor for a ConverterFactory.
      * 
      * @param converters
-     *            a list of {@link IConverter}'s.
+     *            an array of a list of {@link IConverter}'s.
      */
-    public ConverterFactory(List<IConverter<?>> converters) {
+    public ConverterFactory(List<IConverter<?>>... converters) {
         fieldsMap = new TwoDimensionalMap<Class<?>, Class<?>, IConverter<?>>();
-        for (IConverter<?> converter : converters) {
-            final Set<Class<?>> classes = converter.getTargetClasses();
-            fieldsMap.put(converter.getBaseClass(), classes, converter);
+        for (List<IConverter<?>> converterList : converters) {
+            for (IConverter<?> converter : converterList) {
+                final Set<Class<?>> classes = converter.getTargetClasses();
+                fieldsMap.put(converter.getBaseClass(), classes, converter);
+            }
         }
     }
 
@@ -71,7 +75,8 @@ public class ConverterFactory {
         // ensure we're NOT dealing with primitives...
         final Class<A> newFrom = (Class<A>) classUtil.convertPrimitiveToObjectClass(from.getClass());
         final Class<B> newTo = (Class<B>) classUtil.convertPrimitiveToObjectClass(to);
-        final IConverter<?> converter = fieldsMap.get(newFrom, newTo);
+        final Class<?> toClass = getAssignableClass(newTo);
+        final IConverter<?> converter = fieldsMap.get(newFrom, toClass);
         if (converter == null) {
             throw new ConverterNotFoundException(newFrom, newTo);
         }

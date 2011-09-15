@@ -35,7 +35,7 @@ public class SmartBeanBuilder<X> {
     private final Field[] fields;
     private final int numFields;
 
-    public SmartBeanBuilder(Class<X> clazz, String... fields) {
+    public SmartBeanBuilder(Class<X> clazz, String[] fields) {
         check(FIELDS, fields).isNotNull();
         check(CLAZZ, clazz).isNotNull();
         this.numFields = fields.length;

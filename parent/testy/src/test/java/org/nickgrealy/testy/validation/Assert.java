@@ -1,5 +1,6 @@
 package org.nickgrealy.testy.validation;
 
+import static java.lang.String.format;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -12,6 +13,10 @@ import java.util.Collection;
  */
 public final class Assert {
 
+    /**
+     * 
+     */
+    private static final String FIELD_AND_EXPECTED_2 = "field='%s', expected='%s'";
     private static final String ACTUAL = "actual";
     private static final String EXPECTED = "expected";
 
@@ -52,18 +57,19 @@ public final class Assert {
         return checkIfNotNull(null, expected, actual);
     }
 
-    public static boolean checkIfNotNull(String message, Object expected, Object actual) {
+    public static boolean checkIfNotNull(String field, Object expected, Object actual) {
+        String message = format(FIELD_AND_EXPECTED_2, field, expected);
         if (expected == null) {
-            assertNull(message != null ? message : ACTUAL, actual);
+            assertNull(message, actual);
             return false;
         } else {
-            assertNotNull(message != null ? message : ACTUAL, actual);
+            assertNotNull(message, actual);
             return true;
         }
     }
 
     public static void checkIfNullOrEquals(String field, Object e1, Object a1) {
-        if (checkIfNotNull(e1, a1)) {
+        if (checkIfNotNull(field, e1, a1)) {
             assertEquals(field, e1, a1);
         }
     }
