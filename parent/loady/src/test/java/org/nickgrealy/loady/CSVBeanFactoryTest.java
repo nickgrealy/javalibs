@@ -18,8 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.Ignore;
+import org.junit.Assert;
 import org.junit.Test;
+import org.nickgrealy.commons.exception.AssertionException;
 import org.nickgrealy.commons.reflect.BeanUtil;
 import org.nickgrealy.testy.validation.AssertBean;
 import org.springframework.util.ResourceUtils;
@@ -30,30 +31,28 @@ import org.springframework.util.ResourceUtils;
  */
 public class CSVBeanFactoryTest {
 
-    // TODO Ignore just for this commit... enable later!
-    @Ignore
     @Test
-    public void loadCsv() throws FileNotFoundException, URISyntaxException {
+    public void csv() throws FileNotFoundException, URISyntaxException {
         // setup
-        List<Integer> collObj = new ArrayList<Integer>();
-        collObj.add(5);
-        collObj.add(6);
-        collObj.add(7);
-        collObj.add(8);
-        List<Integer> listObj = new ArrayList<Integer>();
-        listObj.add(9);
-        listObj.add(10);
-        listObj.add(11);
-        listObj.add(12);
-        Set<Integer> setObj = new HashSet<Integer>();
-        setObj.add(13);
-        setObj.add(14);
-        setObj.add(15);
-        setObj.add(16);
-        Map<String, Integer> mapObj = new HashMap<String, Integer>();
-        mapObj.put("A", 17);
-        mapObj.put("B", 18);
-        mapObj.put("C", 19);
+        List<String> collObj = new ArrayList<String>();
+        collObj.add("5");
+        collObj.add("6");
+        collObj.add("7");
+        collObj.add("8");
+        List<String> listObj = new ArrayList<String>();
+        listObj.add("9");
+        listObj.add("10");
+        listObj.add("11");
+        listObj.add("12");
+        Set<String> setObj = new HashSet<String>();
+        setObj.add("13");
+        setObj.add("14");
+        setObj.add("15");
+        setObj.add("16");
+        Map<String, String> mapObj = new HashMap<String, String>();
+        mapObj.put("A", "17");
+        mapObj.put("B", "18");
+        mapObj.put("C", "19");
         SimpleBean expected = new SimpleBean();
         expected.nullObj1 = null;
         expected.nullObj2 = null;
@@ -90,9 +89,30 @@ public class CSVBeanFactoryTest {
         assertEquals(1, csvBeans.size());
         assertTrue(csvBeans.containsKey(SimpleBean.class));
         List<?> beans = csvBeans.get(SimpleBean.class);
-        assertEquals(2, beans.size());
+        assertEquals(1, beans.size());
         AssertBean assertBean = new AssertBean();
         assertBean.setBeanUtil(new BeanUtil());
         assertBean.assertEquals(expected, beans.get(0), 1);
+    }
+    
+    @Test(expected = AssertionException.class)
+    public void csvInvalidTest() throws FileNotFoundException{
+        // execute - 10,000 objects.
+        File csvFolder = ResourceUtils.getFile("classpath:csv-invalid");
+        new CSVBeanFactory().loadCsvFolder(csvFolder);
+        Assert.fail("Should've thrown exception already!");
+        }
+    
+    @Test(timeout=10000)
+    public void csvLoadTest() throws FileNotFoundException{
+        // execute - 10,000 objects.
+        File csvFolder = ResourceUtils.getFile("classpath:csv-load");
+        Map<Class<?>, List<?>> csvBeans = new CSVBeanFactory().loadCsvFolder(csvFolder);
+        // assert
+        assertNotNull(csvBeans);
+        assertEquals(1, csvBeans.size());
+        assertTrue(csvBeans.containsKey(SimpleBean.class));
+        List<?> beans = csvBeans.get(SimpleBean.class);
+        assertEquals(10000, beans.size());
     }
 }

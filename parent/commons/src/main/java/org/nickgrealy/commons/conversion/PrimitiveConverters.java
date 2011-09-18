@@ -5,12 +5,16 @@ import static java.lang.String.format;
 import java.io.File;
 import java.lang.reflect.Array;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.nickgrealy.commons.exception.NotConvertableException;
 import org.nickgrealy.commons.exception.NotYetImplementedException;
 
 /**
@@ -72,19 +76,8 @@ public final class PrimitiveConverters {
      */
     static final class StringConverter extends AbstractBaseConverter<String> {
 
-        /**
-         * 
-         */
-        private static final String COLLECTION_DELIMITER = ",";
-
-        // byte a02 = -1;
-        // short a03 = -1;
-        // int a04 = -1;
-        // long a05 = -1;
-        // float a06 = -1;
-        // double a07 = -1;
-        // boolean a08 = false;
-        // char a09 = '-';
+        private static final String MAP_KEYVALUE_DELIMITER = "->";
+		private static final String COLLECTION_DELIMITER = ",";
 
         public StringConverter() {
             super(Byte.class, Short.class, Integer.class, Long.class, Float.class, Double.class, Boolean.class,
@@ -119,17 +112,32 @@ public final class PrimitiveConverters {
             } else if (isAssignableClass(Array.class, targetClass)) {
                 returnVal = fromObject.split(COLLECTION_DELIMITER);
             } else if (isAssignableClass(Set.class, targetClass)) {
-                returnVal = null;
-            } else if (isAssignableClass(List.class, targetClass)) {
-                returnVal = null;
-            } else if (isAssignableClass(Collection.class, targetClass)) {
-                returnVal = null;
+                returnVal = new HashSet(Arrays.asList(fromObject.split(COLLECTION_DELIMITER)));
+            } else if (isAssignableClass(Collection.class, targetClass) || isAssignableClass(List.class, targetClass)) {
+            	// e.g. "1,2,3,4"
+                returnVal = Arrays.asList(fromObject.split(COLLECTION_DELIMITER));
             } else if (isAssignableClass(Map.class, targetClass)) {
-                returnVal = null;
+            	// e.g. "A->1,B->2"
+            	String[] entries = fromObject.split(COLLECTION_DELIMITER);
+            	Map<String, String> map = new HashMap<String, String>();
+            	for (String entry : entries) {
+            		String[] keyVal = entry.split(MAP_KEYVALUE_DELIMITER);
+            		if (keyVal.length == 2){
+            			map.put(keyVal[0], keyVal[1]);
+            		} else {
+            			Class<? extends IConverter<?>> clazz = getClass();
+						throw new NotConvertableException("KEY->VALUE", fromObject, clazz);
+            		}
+				}
+                returnVal = map;
             } else if (isAssignableClass(File.class, targetClass)) {
-                returnVal = null;
+                returnVal = new File(fromObject);
             } else if (isAssignableClass(URI.class, targetClass)) {
-                returnVal = null;
+                try {
+					returnVal = new URI(fromObject);
+				} catch (URISyntaxException e) {
+					throw new NotConvertableException(URI.class.toString(), fromObject, getClass(), e);
+				}
             } else {
                 throw new NotYetImplementedException(format(UNIMPLEMENTED_CLASS_2, fromObject, targetClass));
             }

@@ -1,9 +1,7 @@
 package org.nickgrealy.testy.validation;
 
 import static java.lang.String.format;
-import static org.nickgrealy.commons.validation.RuntimeAssert.check;
-import static org.nickgrealy.testy.validation.Assert.checkIfNotNull;
-import static org.nickgrealy.testy.validation.Assert.checkIfNullOrEquals;
+import static org.nickgrealy.testy.validation.Assert.assertIfNotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -36,17 +34,17 @@ public class AssertBean implements IAssertBean {
     }
 
     public void setBeanUtil(IBeanUtil beanUtil) {
-        check(BEAN_UTIL, beanUtil).isNotNull();
+    	org.junit.Assert.assertNotNull(BEAN_UTIL, beanUtil);
         this.beanUtil = beanUtil;
     }
 
     /** {@inheritDoc} */
     @Override
     public void assertEquals(Object expected, Object actual, final String... fields) {
-        check(BEAN_UTIL, beanUtil).isNotNull();
-        if (checkIfNotNull(expected, actual)) {
+        org.junit.Assert.assertNotNull(BEAN_UTIL, beanUtil);
+        if (assertIfNotNull("Objects", expected, actual)) {
             for (String field : fields) {
-                Assert.checkIfNullOrEquals(field, beanUtil.getProperty(expected, field),
+            	Assert.assertEquals(field, beanUtil.getProperty(expected, field),
                         beanUtil.getProperty(actual, field));
             }
         }
@@ -55,10 +53,10 @@ public class AssertBean implements IAssertBean {
     /** {@inheritDoc} */
     @Override
     public void assertEquals(Object expected, Object actual, Map<String, String> fieldsMap) {
-        check(BEAN_UTIL, beanUtil).isNotNull();
-        if (checkIfNotNull(expected, actual)) {
+    	org.junit.Assert.assertNotNull(BEAN_UTIL, beanUtil);
+        if (assertIfNotNull("Objects", expected, actual)) {
             for (Entry<String, String> entry : fieldsMap.entrySet()) {
-                Assert.checkIfNullOrEquals(entry.toString(), beanUtil.getProperty(expected, entry.getKey()),
+            	Assert.assertEquals(entry.toString(), beanUtil.getProperty(expected, entry.getKey()),
                         beanUtil.getProperty(actual, entry.getValue()));
             }
         }
@@ -79,8 +77,8 @@ public class AssertBean implements IAssertBean {
     /** {@inheritDoc} */
     @Override
     public void assertEquals(Object expected, Object actual, int maxClassLevel, int ignoreFieldsWithModifiers) {
-        check(BEAN_UTIL, beanUtil).isNotNull();
-        if (checkIfNotNull(expected, actual)) {
+    	org.junit.Assert.assertNotNull(BEAN_UTIL, beanUtil);
+        if (assertIfNotNull("Objects", expected, actual)) {
             if (!expected.getClass().isAssignableFrom(actual.getClass())) {
                 throw new BeanException(format(MUST_BE_ASSIGNABLE_2, expected.getClass(), actual.getClass()));
             }
@@ -96,7 +94,7 @@ public class AssertBean implements IAssertBean {
                         continue;
                     }
                     // Do assert...
-                    checkIfNullOrEquals(field.getName(), beanUtil.getProperty(expected, field),
+                    Assert.assertEquals(field.getName(), beanUtil.getProperty(expected, field),
                             beanUtil.getProperty(actual, field));
                 }
                 tmp = tmp.getSuperclass();
