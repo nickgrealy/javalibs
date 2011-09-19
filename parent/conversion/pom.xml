@@ -7,10 +7,18 @@
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<artifactId>commons</artifactId>
-	<name>commons</name>
-	<description>Common utilities.</description>
+	<artifactId>conversion</artifactId>
+	<name>conversion</name>
+	<description>Conversion Utilities.</description>
 	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>commons</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>test</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

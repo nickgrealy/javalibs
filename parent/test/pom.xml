@@ -7,13 +7,18 @@
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<artifactId>commons</artifactId>
-	<name>commons</name>
-	<description>Common utilities.</description>
+	<artifactId>test</artifactId>
+	<name>test</name>
+	<description>Project to faciliate testing.</description>
 	<dependencies>
+		<dependency>
+			<groupId>org.nickgrealy</groupId>
+			<artifactId>commons</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 </project>

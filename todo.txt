@@ -1,0 +1,3 @@
+convert String -> java.util.Date / (any util class?)
+AssertBean - use proxy class methods?
+clean up poms.
