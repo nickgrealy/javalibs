@@ -103,7 +103,7 @@ public class CSVBeanFactoryTest {
         Assert.fail("Should've thrown exception already!");
         }
     
-    @Test(timeout=10000)
+    @Test(timeout=15000)
     public void csvLoadTest() throws FileNotFoundException{
         // execute - 10,000 objects.
         File csvFolder = ResourceUtils.getFile("classpath:csv-load");
