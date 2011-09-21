@@ -1,29 +1,28 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.conversion;
 
-import static java.lang.String.format;
-import static org.nickgrealy.commons.validation.RuntimeAssert.check;
+import org.nickgrealy.commons.exception.UnhandledException;
+import org.nickgrealy.commons.util.ClassUtil;
+import org.nickgrealy.conversion.SpecialTargetTypes.AnyTarget;
+import org.nickgrealy.conversion.SpecialTargetTypes.Array;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import org.nickgrealy.commons.exception.UnhandledException;
-import org.nickgrealy.commons.util.ClassUtil;
-import org.nickgrealy.conversion.target.AnyTarget;
-import org.nickgrealy.conversion.target.Array;
+import static java.lang.String.format;
+import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 
 /**
  * Adds base functionality to the IConverter.
- * 
+ * <p/>
  * <b>N.B.</b> If an object's {@link #toString()} method returns the literal
  * "&lt;null&gt;", the object will be converted to null.
- * 
- * @author nick.grealy
- * @param <X>
- *            Base object type. For primitives, use the respective Object (e.g.
+ *
+ * @param <X> Base object type. For primitives, use the respective Object (e.g.
  *            int, use Integer).
+ * @author nick.grealy
  */
 public abstract class AbstractBaseConverter<X> implements IConverter<X> {
 
@@ -45,7 +44,7 @@ public abstract class AbstractBaseConverter<X> implements IConverter<X> {
 
     /**
      * Creates a converter, with at least one target class.
-     * 
+     *
      * @param targetClass
      * @param targetClasses
      */
@@ -62,13 +61,17 @@ public abstract class AbstractBaseConverter<X> implements IConverter<X> {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Set<Class<?>> getTargetClasses() {
         return targetAssignableClasses;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @SuppressWarnings("unchecked")
     public final <A> A convert(X fromObject, Class<A> targetClass) {
@@ -78,8 +81,8 @@ public abstract class AbstractBaseConverter<X> implements IConverter<X> {
         // ensure we're NOT dealing with primitives...
         final Class<A> nonPrimClass = (Class<A>) classUtil.convertPrimitiveToObjectClass(targetClass);
         boolean wildcardAccepted = hasTargetClass(AnyTarget.class);
-		boolean classAccepted = hasTargetClass(nonPrimClass);
-		if (!classAccepted && !wildcardAccepted) {
+        boolean classAccepted = hasTargetClass(nonPrimClass);
+        if (!classAccepted && !wildcardAccepted) {
             throw new UnhandledException(format(UNHANDLED_CLASS_2, fromObject, nonPrimClass));
         }
         Object returnVal = null;
@@ -95,9 +98,8 @@ public abstract class AbstractBaseConverter<X> implements IConverter<X> {
 
     /**
      * Determines if the given class is a target class.
-     * 
-     * @param clazz
-     *            Class<?>
+     *
+     * @param clazz Class<?>
      * @return true if class is a target class.
      */
     public boolean hasTargetClass(Class<?> clazz) {
@@ -127,11 +129,9 @@ public abstract class AbstractBaseConverter<X> implements IConverter<X> {
      * <li>if (targetClass = Object.class || X.class) then return fromObject</li>
      * </ul>
      * have already been performed.
-     * 
-     * @param fromObject
-     *            will never be null.
-     * @param targetClass
-     *            will never be null.
+     *
+     * @param fromObject  will never be null.
+     * @param targetClass will never be null.
      * @return converted object.
      */
     protected abstract <A> A doConversion(X fromObject, Class<A> targetClass);
