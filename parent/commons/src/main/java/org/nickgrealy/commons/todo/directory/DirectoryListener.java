@@ -5,7 +5,7 @@ package org.nickgrealy.commons.todo.directory;
 
 /**
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public interface DirectoryListener {
 

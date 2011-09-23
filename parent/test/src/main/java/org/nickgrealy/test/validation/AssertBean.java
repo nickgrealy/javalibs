@@ -16,7 +16,7 @@ import org.nickgrealy.commons.reflect.IBeanUtil;
  * 
  * <b>N.B.</b> A valid BeanUtil will need to be injected.
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class AssertBean implements IAssertBean {
 

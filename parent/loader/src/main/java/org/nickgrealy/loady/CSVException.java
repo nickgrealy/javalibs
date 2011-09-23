@@ -5,7 +5,7 @@ package org.nickgrealy.loady;
 
 /**
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class CSVException extends RuntimeException {
 

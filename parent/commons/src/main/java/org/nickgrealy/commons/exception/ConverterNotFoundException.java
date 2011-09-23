@@ -7,7 +7,7 @@ import static java.lang.String.format;
 
 /**
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class ConverterNotFoundException extends RuntimeException {
 

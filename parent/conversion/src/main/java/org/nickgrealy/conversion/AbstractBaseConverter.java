@@ -22,7 +22,7 @@ import static org.nickgrealy.commons.validation.RuntimeAssert.check;
  *
  * @param <X> Base object type. For primitives, use the respective Object (e.g.
  *            int, use Integer).
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public abstract class AbstractBaseConverter<X> implements IConverter<X> {
 

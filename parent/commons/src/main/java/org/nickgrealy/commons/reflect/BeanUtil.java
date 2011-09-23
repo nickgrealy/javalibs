@@ -1,8 +1,6 @@
 package org.nickgrealy.commons.reflect;
 
-import static java.lang.String.format;
-import static org.nickgrealy.commons.exception.BeanException.DEFAULT_CONSTRUCTOR;
-import static org.nickgrealy.commons.validation.RuntimeAssert.check;
+import org.nickgrealy.commons.exception.BeanException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -11,7 +9,9 @@ import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.nickgrealy.commons.exception.BeanException;
+import static java.lang.String.format;
+import static org.nickgrealy.commons.exception.BeanException.DEFAULT_CONSTRUCTOR;
+import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 
 /**
  * The BeanUtil class facilitates:
@@ -20,8 +20,8 @@ import org.nickgrealy.commons.exception.BeanException;
  * <li>getting/setting fields on an Object.</li>
  * <li>copying fields between two Objects.</li>
  * </ul>
- * 
- * @author nick.grealy
+ *
+ * @author nickgrealy@gmail.com
  */
 public final class BeanUtil implements IBeanUtil {
 
@@ -29,7 +29,9 @@ public final class BeanUtil implements IBeanUtil {
     private static final String TO = "to";
     private static final String FROM = "from";
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <I> I createBean(Class<I> clazz) {
         try {
@@ -44,21 +46,23 @@ public final class BeanUtil implements IBeanUtil {
             }
             return returnVal;
         } catch (InstantiationException e) {
-            throw new BeanException(DEFAULT_CONSTRUCTOR, e);
+            throw new BeanException(clazz, DEFAULT_CONSTRUCTOR, e);
         } catch (IllegalAccessException e) {
-            throw new BeanException(DEFAULT_CONSTRUCTOR, e);
+            throw new BeanException(clazz, DEFAULT_CONSTRUCTOR, e);
         } catch (IllegalArgumentException e) {
-            throw new BeanException(DEFAULT_CONSTRUCTOR, e);
+            throw new BeanException(clazz, DEFAULT_CONSTRUCTOR, e);
         } catch (InvocationTargetException e) {
-            throw new BeanException(DEFAULT_CONSTRUCTOR, e);
+            throw new BeanException(clazz, DEFAULT_CONSTRUCTOR, e);
         } catch (SecurityException e) {
-            throw new BeanException(DEFAULT_CONSTRUCTOR, e);
+            throw new BeanException(clazz, DEFAULT_CONSTRUCTOR, e);
         } catch (NoSuchMethodException e) {
-            throw new BeanException(DEFAULT_CONSTRUCTOR, e);
+            throw new BeanException(clazz, DEFAULT_CONSTRUCTOR, e);
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public <I> I createBean(Class<I> clazz, Map<String, Object> properties) {
         final I bean = createBean(clazz);
@@ -66,20 +70,18 @@ public final class BeanUtil implements IBeanUtil {
         return bean;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setProperty(Object object, String field, Object value) {
-        try {
-            final Field field2 = object.getClass().getDeclaredField(field);
+            final Field field2 = getFieldRecursively(object.getClass(),field);
             setProperty(object, field2, value);
-        } catch (SecurityException e) {
-            throw new BeanException(field, e);
-        } catch (NoSuchFieldException e) {
-            throw new BeanException(field, e);
-        }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setProperty(Object object, Field field, Object value) {
         try {
@@ -91,28 +93,42 @@ public final class BeanUtil implements IBeanUtil {
                 field.setAccessible(false);
             }
         } catch (SecurityException e) {
-            throw new BeanException(field.getName(), e);
+            throw new BeanException(field, e);
         } catch (IllegalArgumentException e) {
-            throw new BeanException(field.getName(), e);
+            throw new BeanException(field, e);
         } catch (IllegalAccessException e) {
-            throw new BeanException(field.getName(), e);
+            throw new BeanException(field, e);
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Field getFieldRecursively(Class<?> clazz, String field) {
+        try {
+            return clazz.getDeclaredField(field);
+        } catch (NoSuchFieldException e) {
+            if (clazz.getSuperclass() != null) {
+                return getFieldRecursively(clazz.getSuperclass(), field);
+            } else {
+                throw new BeanException(clazz, field, e);
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object getProperty(Object object, String field) {
-        try {
-            final Field field2 = object.getClass().getDeclaredField(field);
-            return getProperty(object, field2);
-        } catch (SecurityException e) {
-            throw new BeanException(field, e);
-        } catch (NoSuchFieldException e) {
-            throw new BeanException(field, e);
-        }
+        final Field field2 = getFieldRecursively(object.getClass(), field);
+        return getProperty(object, field2);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Object getProperty(Object object, Field field) {
         try {
@@ -126,15 +142,17 @@ public final class BeanUtil implements IBeanUtil {
             }
             return returnVal;
         } catch (SecurityException e) {
-            throw new BeanException(field.getName(), e);
+            throw new BeanException(field, e);
         } catch (IllegalArgumentException e) {
-            throw new BeanException(field.getName(), e);
+            throw new BeanException(field, e);
         } catch (IllegalAccessException e) {
-            throw new BeanException(field.getName(), e);
+            throw new BeanException(field, e);
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void copyProperties(Object object, Map<String, Object> properties) {
         check("object", object).isNotNull();
@@ -144,13 +162,17 @@ public final class BeanUtil implements IBeanUtil {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void copyProperties(Object from, Object to) {
         copyProperties(from, to, DEFAULT_CLASS_DEPTH);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void copyProperties(Object from, Object to, String... properties) {
         check(FROM, from).isNotNull();
@@ -161,7 +183,9 @@ public final class BeanUtil implements IBeanUtil {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void copyProperties(Object from, Object to, Map<String, String> properties) {
         check(FROM, from).isNotNull();
@@ -172,13 +196,17 @@ public final class BeanUtil implements IBeanUtil {
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void copyProperties(Object from, Object to, int maxClassLevel) {
         copyProperties(from, to, maxClassLevel, Modifier.FINAL);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void copyProperties(Object from, Object to, int maxClassLevel, int ignoreFieldsWithModifiers) {
         check(FROM, from).isNotNull();

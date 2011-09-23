@@ -1,19 +1,16 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.commons.reflect;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.nickgrealy.commons.exception.BeanException;
-import org.nickgrealy.commons.reflect.BeanUtil;
-import org.nickgrealy.commons.reflect.IBeanUtil;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests methods:
@@ -30,8 +27,8 @@ import org.nickgrealy.commons.reflect.IBeanUtil;
  * properties);</li>
  * <li>void copyProperties(Object from, Object to, int classLevel);</li>
  * </ul>
- * 
- * @author nick.grealy
+ *
+ * @author nickgrealy@gmail.com
  */
 public class BeanUtilTest {
 
@@ -179,6 +176,19 @@ public class BeanUtilTest {
         assertFieldsSet(toBean2, false, false, true);
     }
 
+    /* getFieldRecursively(Class<?> clazz, String field); */
+
+    @Test
+    public void getFieldRecursively1() {
+        assertNotNull(beanUtil.getFieldRecursively(ExtendsAbstractClass.class, "field2"));
+        assertNotNull(beanUtil.getFieldRecursively(ExtendsAbstractClass.class, "field1"));
+    }
+
+    @Test(expected = BeanException.class)
+    public void getFieldRecursively2() {
+        assertNotNull(beanUtil.getFieldRecursively(ExtendsAbstractClass.class, "field3"));
+    }
+
     /* utility methods */
 
     private void assertFieldsSet(DefaultAccessibleConstructor bean, boolean field1, boolean field2) {
@@ -254,5 +264,14 @@ public class BeanUtilTest {
             // NOOP
         }
     }
+
+    static abstract class AbstractClass {
+        String field1;
+    }
+
+    static class ExtendsAbstractClass extends AbstractClass {
+        String field2;
+    }
+
 
 }

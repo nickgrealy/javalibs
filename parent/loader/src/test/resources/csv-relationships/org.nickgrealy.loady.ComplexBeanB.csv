@@ -1,2 +1,2 @@
-"id","name","simple.id","simple2.name","collection.id","set.id"
-1,"testReferenceOtherBeanClass",1,"bean2","1,2","1,2"
+"id","name","simple.id","simple2.name","collection.id","list.id","set.id"
+1,"testReferenceOtherBeanClass",1,"bean2","1,2","1,2","1,2"

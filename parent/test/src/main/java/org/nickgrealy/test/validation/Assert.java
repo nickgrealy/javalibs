@@ -15,7 +15,7 @@ import java.util.Map.Entry;
 /**
  * Assert methods.
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public final class Assert {
 

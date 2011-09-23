@@ -15,7 +15,7 @@ import org.nickgrealy.conversion.PrimitiveConverters;
 
 /**
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class ConverterFactoryTest {
 

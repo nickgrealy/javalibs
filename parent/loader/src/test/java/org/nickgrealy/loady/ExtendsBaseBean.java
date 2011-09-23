@@ -1,13 +1,9 @@
-/**
- * 
- */
 package org.nickgrealy.loady;
 
 /**
- * 
  * @author nickgrealy@gmail.com
  */
-public enum SimpleEnum {
+public class ExtendsBaseBean extends BaseBean {
 
-    INIT, ENUM01, ENUM02;
+    String extendsField;
 }

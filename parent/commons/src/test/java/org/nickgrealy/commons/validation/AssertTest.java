@@ -17,7 +17,7 @@ import org.nickgrealy.commons.exception.AssertionException;
  * Methods: equalz, isNotNull, isNull, isTrue, isFalse, isInstanceOf,
  * assertNoNullKeysOrValues
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class AssertTest {
 

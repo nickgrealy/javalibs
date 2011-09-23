@@ -4,7 +4,7 @@ import java.util.Collection;
 
 /**
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  * @param <A>
  * @param <B>
  * @param <V>

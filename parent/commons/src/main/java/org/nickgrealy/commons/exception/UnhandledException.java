@@ -6,7 +6,7 @@ package org.nickgrealy.commons.exception;
 /**
  * Thrown when an unhandled object is encountered.
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class UnhandledException extends RuntimeException {
 

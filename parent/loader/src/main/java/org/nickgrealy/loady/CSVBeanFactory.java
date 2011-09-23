@@ -1,31 +1,26 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.loady;
 
-import static org.nickgrealy.commons.validation.RuntimeAssert.check;
+import au.com.bytecode.opencsv.CSVReader;
+import org.nickgrealy.commons.reflect.BeanUtil;
+import org.nickgrealy.commons.util.NotNullableMap;
+import org.nickgrealy.conversion.SmartBeanBuilder;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
 
-import org.nickgrealy.commons.reflect.BeanUtil;
-import org.nickgrealy.commons.util.NotNullableMap;
-import org.nickgrealy.conversion.ConverterFactory;
-import org.nickgrealy.conversion.PrimitiveConverters;
-import org.nickgrealy.conversion.SmartBeanBuilder;
-
-import au.com.bytecode.opencsv.CSVReader;
+import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 
 /**
- * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class CSVBeanFactory {
+
+    private static final int NOT_INSTANTIABLE_MODIFIER = Modifier.ABSTRACT | Modifier.INTERFACE;
 
     public Map<Class<?>, List<?>> loadCsvFolder(File csvFolder) {
         return loadFolder(csvFolder, new CSVFileFilter());
@@ -50,7 +45,10 @@ public class CSVBeanFactory {
         String name = csvFile.getName();
         try {
             Class<?> clazz = Class.forName(name.substring(0, name.length() - 4));
-            aggregatedMap.put(clazz, loadCsv(csvFile, clazz));
+//            Modifier.isAbstract(clazz.getModifiers())
+            if ((clazz.getModifiers() & NOT_INSTANTIABLE_MODIFIER) == 0) {
+                aggregatedMap.put(clazz, loadCsv(csvFile, clazz));
+            }
         } catch (ClassNotFoundException e) {
             throw new CSVException(e);
         }
@@ -66,17 +64,9 @@ public class CSVBeanFactory {
             check("columnHeaders", columnHeaders).isNotNull();
 
             // setup strategy
-            SmartBeanBuilder<T> builder = new SmartBeanBuilder<T>(clazz, columnHeaders);
-            builder.setBeanUtil(new BeanUtil());
             List<String[]> readAll = csvReader.readAll();
+            SmartBeanBuilder<T> builder = new SmartBeanBuilder<T>(clazz, columnHeaders);
             return builder.buildBeans(readAll);
-            // Didn't work :(
-            // ColumnPositionMappingStrategy<T> strat = new
-            // ColumnPositionMappingStrategy<T>();
-            // strat.setType(clazz);
-            // strat.setColumnMapping(columnHeaders);
-            // CsvToBean<T> csv = new CsvToBean<T>();
-            // return csv.parse(strat, csvReader);
         } catch (FileNotFoundException e) {
             throw new CSVException(e);
         } catch (IOException e) {

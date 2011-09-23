@@ -13,7 +13,7 @@ import org.nickgrealy.commons.exception.AssertionException;
 
 /**
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class StringUtilTest {
 

@@ -3,7 +3,7 @@ package org.nickgrealy.commons.exception;
 /**
  * Thrown when an assertion is disproved.
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class AssertionException extends RuntimeException {
 

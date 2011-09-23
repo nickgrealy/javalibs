@@ -14,7 +14,7 @@ import org.nickgrealy.commons.util.TwoDimensionalMap;
  * ConverterFactory facilitates managing a list of {@link IConverter}'s, and
  * exposing them through the convert() method.
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class ConverterFactory {
 

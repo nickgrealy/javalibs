@@ -18,7 +18,7 @@ import java.util.Set;
  * This provides the developer with the confidence to know that this map will
  * ONLY ever return valid (i.e. not null) objects.
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  * 
  * @param <K>
  *            Key

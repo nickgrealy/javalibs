@@ -21,7 +21,7 @@ import org.nickgrealy.commons.util.StringUtil;
  * 
  * TODO Decide whether to use static assert methods, or "builder" objects.
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  * 
  */
 public final class RuntimeAssert {

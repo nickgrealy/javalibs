@@ -3,15 +3,20 @@
  */
 package org.nickgrealy.commons.exception;
 
+import java.lang.reflect.Field;
+
+import static java.lang.String.*;
+
 /**
  * Used to wrap Bean related exceptions.
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class BeanException extends RuntimeException {
 
-    public static final String DEFAULT_CONSTRUCTOR = "DefaultConstructor";
-    public static final String FIELD = "Field=";
+    public static final String DEFAULT_CONSTRUCTOR = "DefaultNoArgsConstructor";
+    private static final String EXCEPTION_FIELD_2 = "class='%s' field='%s'";
+    private static final String EXCEPTION_CONSTRUCTOR_2 = "Exception occurred attempting to construct the bean! class='%s' field='%s'";
     private static final long serialVersionUID = -6830864219098335713L;
 
     /**
@@ -27,13 +32,25 @@ public class BeanException extends RuntimeException {
     /**
      * Constructs a BeanException.
      * 
-     * @param message
+     * @param field
      *            String
      * @param cause
      *            Throwable
      */
-    public BeanException(String field, Throwable cause) {
-        super(FIELD + field, cause);
+    public BeanException(Class<?> clazz, String field, Throwable cause) {
+        super(buildMessage(clazz, field), cause);
+    }
+
+    public BeanException(Field field, Throwable cause) {
+        super(buildMessage(field.getDeclaringClass(), field.getName()), cause);
+    }
+
+    private static String buildMessage(Class<?> clazz, String field){
+        if (DEFAULT_CONSTRUCTOR.equals(field)){
+            return format(EXCEPTION_CONSTRUCTOR_2, clazz, field);
+        } else {
+            return format(EXCEPTION_FIELD_2, clazz, field);
+        }
     }
 
 }

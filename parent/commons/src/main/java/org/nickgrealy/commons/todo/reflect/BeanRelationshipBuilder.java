@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 /**
  * Requires something like a: Class -> Field -> Value -> Bean map... :S
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public abstract class BeanRelationshipBuilder {
 

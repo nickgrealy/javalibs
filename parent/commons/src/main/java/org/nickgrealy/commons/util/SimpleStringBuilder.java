@@ -6,7 +6,7 @@ package org.nickgrealy.commons.util;
 /**
  * Not pretty but does the job.
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class SimpleStringBuilder {
 

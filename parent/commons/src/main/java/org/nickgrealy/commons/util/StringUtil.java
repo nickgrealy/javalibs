@@ -11,7 +11,7 @@ import java.util.Iterator;
 
 /**
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public final class StringUtil {
 

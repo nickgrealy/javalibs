@@ -1,35 +1,37 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.loady;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.junit.Assert;
 import org.junit.Test;
 import org.nickgrealy.commons.exception.AssertionException;
 import org.nickgrealy.commons.reflect.BeanUtil;
+import org.nickgrealy.conversion.exception.BeanBuilderException;
 import org.nickgrealy.test.validation.AssertBean;
 import org.springframework.util.ResourceUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.*;
+
+import static org.junit.Assert.*;
+
 /**
- * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class CSVBeanFactoryTest {
+
+    // tested
+    public static final String CLASSPATH_CSV_POJO = "classpath:csv-pojo";
+    public static final String CLASSPATH_CSV_INVALID1 = "classpath:csv-invalid1";
+    public static final String CLASSPATH_CSV_INVALID2 = "classpath:csv-invalid2";
+    public static final String CLASSPATH_CSV_LOAD = "classpath:csv-load";
+    public static final String CLASSPATH_CSV_INHERITANCE = "classpath:csv-inheritance";
+    // TODO not tested
+    public static final String CLASSPATH_CSV_RELATIONSHIPS = "classpath:csv-relationships";
 
     @Test
     public void csv() throws FileNotFoundException, URISyntaxException {
@@ -74,7 +76,7 @@ public class CSVBeanFactoryTest {
         expected.a17 = 'B';
         expected.stringObj = "Hello";
         expected.enumObj = SimpleEnum.ENUM02;
-        expected.arrayObj = new Object[] { "1", "2", "3", "4" };
+        expected.arrayObj = new Object[]{"1", "2", "3", "4"};
         expected.collObj = collObj;
         expected.listObj = listObj;
         expected.setObj = setObj;
@@ -82,7 +84,7 @@ public class CSVBeanFactoryTest {
         expected.fileObj = new File("/root/helloworld.txt");
         expected.uriObj = new URI("http://www.google.com");
         // execute
-        File csvFolder = ResourceUtils.getFile("classpath:csv");
+        File csvFolder = ResourceUtils.getFile(CLASSPATH_CSV_POJO);
         Map<Class<?>, List<?>> csvBeans = new CSVBeanFactory().loadCsvFolder(csvFolder);
         // assert
         assertNotNull(csvBeans);
@@ -94,19 +96,45 @@ public class CSVBeanFactoryTest {
         assertBean.setBeanUtil(new BeanUtil());
         assertBean.assertEquals(expected, beans.get(0), 1);
     }
-    
+
     @Test(expected = AssertionException.class)
-    public void csvInvalidTest() throws FileNotFoundException{
+    public void csvInvalid1Test() throws FileNotFoundException {
         // execute - 10,000 objects.
-        File csvFolder = ResourceUtils.getFile("classpath:csv-invalid");
+        File csvFolder = ResourceUtils.getFile(CLASSPATH_CSV_INVALID1);
         new CSVBeanFactory().loadCsvFolder(csvFolder);
         Assert.fail("Should've thrown exception already!");
-        }
-    
-    @Test(timeout=15000)
-    public void csvLoadTest() throws FileNotFoundException{
+    }
+
+    @Test(expected = BeanBuilderException.class)
+    public void csvInvalid2Test() throws FileNotFoundException {
         // execute - 10,000 objects.
-        File csvFolder = ResourceUtils.getFile("classpath:csv-load");
+        File csvFolder = ResourceUtils.getFile(CLASSPATH_CSV_INVALID2);
+        new CSVBeanFactory().loadCsvFolder(csvFolder);
+        Assert.fail("Should've thrown exception already!");
+    }
+
+    @Test
+    public void csvInheritanceTest() throws FileNotFoundException {
+        // execute - 10,000 objects.
+        File csvFolder = ResourceUtils.getFile(CLASSPATH_CSV_INHERITANCE);
+        Map<Class<?>, List<?>> classListMap = new CSVBeanFactory().loadCsvFolder(csvFolder);
+        assertEquals(3, classListMap.size());
+        // TODO Check values
+    }
+
+    @Test
+    public void csvRelationshipsTest() throws FileNotFoundException {
+        // execute - 10,000 objects.
+        File csvFolder = ResourceUtils.getFile(CLASSPATH_CSV_RELATIONSHIPS);
+        Map<Class<?>, List<?>> classListMap = new CSVBeanFactory().loadCsvFolder(csvFolder);
+        assertEquals(2, classListMap.size());
+        // TODO Check values
+    }
+
+    @Test(timeout = 15000)
+    public void csvLoadTest() throws FileNotFoundException {
+        // execute - 10,000 objects.
+        File csvFolder = ResourceUtils.getFile(CLASSPATH_CSV_LOAD);
         Map<Class<?>, List<?>> csvBeans = new CSVBeanFactory().loadCsvFolder(csvFolder);
         // assert
         assertNotNull(csvBeans);

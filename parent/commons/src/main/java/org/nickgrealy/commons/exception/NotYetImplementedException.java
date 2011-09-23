@@ -6,7 +6,7 @@ package org.nickgrealy.commons.exception;
  * <p/>
  * <b>N.B.</b> Use as a placeholder/safety net for incomplete methods.
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class NotYetImplementedException extends RuntimeException {
 

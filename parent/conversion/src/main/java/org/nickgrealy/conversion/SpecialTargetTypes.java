@@ -1,7 +1,7 @@
 package org.nickgrealy.conversion;
 
 /**
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public interface SpecialTargetTypes {
 

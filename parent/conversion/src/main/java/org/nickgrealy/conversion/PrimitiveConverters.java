@@ -11,7 +11,7 @@ import org.nickgrealy.conversion.impl.StringConverter;
 /**
  * Contains a list of classes, to facilitate converting primitives.
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public final class PrimitiveConverters {
 

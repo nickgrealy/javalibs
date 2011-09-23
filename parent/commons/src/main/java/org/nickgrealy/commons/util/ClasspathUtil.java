@@ -8,7 +8,7 @@ import java.io.InputStream;
 /**
  * See {@link org.springframework.util.ResourceUtils}
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class ClasspathUtil {
 

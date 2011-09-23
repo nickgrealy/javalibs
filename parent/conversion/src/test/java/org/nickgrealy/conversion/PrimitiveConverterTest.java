@@ -18,7 +18,7 @@ import org.nickgrealy.conversion.PrimitiveConverters.IntegerConverter;
 
 /**
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class PrimitiveConverterTest {
 

@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Use reflection to directly access objects.
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public interface IBeanUtil {
 
@@ -27,6 +27,8 @@ public interface IBeanUtil {
     Object getProperty(Object object, String field);
 
     Object getProperty(Object object, Field field);
+
+    Field getFieldRecursively(Class<?> clazz, String field);
 
     void copyProperties(Object object, Map<String, Object> properties);
 

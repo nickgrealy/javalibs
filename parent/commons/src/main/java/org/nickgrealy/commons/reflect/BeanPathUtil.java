@@ -7,7 +7,7 @@ import org.nickgrealy.commons.util.StringUtil;
 
 /**
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class BeanPathUtil {
 
@@ -25,6 +25,10 @@ public class BeanPathUtil {
 
     public static String fieldsToPath(String... fields) {
         return StringUtil.concat(BEAN_PATH_DELIM, (Object[]) fields).toString();
+    }
+
+    public static boolean isSingleBeanPath(String beanPath){
+        return !beanPath.contains(BEAN_PATH_DELIM);
     }
 
 }

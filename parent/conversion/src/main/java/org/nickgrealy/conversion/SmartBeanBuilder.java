@@ -1,26 +1,28 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.conversion;
 
-import static org.nickgrealy.commons.validation.RuntimeAssert.check;
+import org.nickgrealy.commons.reflect.BeanPathUtil;
+import org.nickgrealy.commons.reflect.BeanUtil;
+import org.nickgrealy.commons.reflect.IBeanUtil;
+import org.nickgrealy.conversion.exception.BeanBuilderException;
+import org.nickgrealy.conversion.impl.StringConverter;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.nickgrealy.commons.exception.BeanException;
-import org.nickgrealy.commons.reflect.IBeanUtil;
-import org.nickgrealy.conversion.impl.StringConverter;
+import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 
 /**
  * Builds beans, not stupid.
- * 
+ * <p/>
  * <b>N.B.</b> A valid BeanUtil and ConverterFactory will need to be injected.
  * For convenience, the default ConverterFactory uses a StringConverter.
- * 
- * @author nick.grealy
+ *
+ * @author nickgrealy@gmail.com
  */
 public class SmartBeanBuilder<X> {
 
@@ -32,10 +34,11 @@ public class SmartBeanBuilder<X> {
     private static final String VALUES_LENGTH = "values.length";
     private static final String VALUES = "values";
 
-    private IBeanUtil beanUtil;
+    private IBeanUtil beanUtil = new BeanUtil();
     private ConverterFactory converterFactory = new ConverterFactory(Arrays.asList(new StringConverter()));
     private final Class<X> clazz;
-    private final Field[] fields;
+    private final List<Field> fields;
+    private final List<Integer> joinFields;
     private final int numFields;
 
     public SmartBeanBuilder(Class<X> clazz, String[] fields) {
@@ -43,22 +46,20 @@ public class SmartBeanBuilder<X> {
         check(CLAZZ, clazz).isNotNull();
         this.numFields = fields.length;
         this.clazz = clazz;
-        this.fields = new Field[numFields];
-        int index = 0;
-        try {
-            for (; index < numFields; ++index) {
-                this.fields[index] = clazz.getDeclaredField(fields[index]);
+        this.fields = new LinkedList<Field>();
+        this.joinFields = new LinkedList<Integer>();
+        for (int index = 0; index < numFields; ++index) {
+            if (BeanPathUtil.isSingleBeanPath(fields[index])) {
+                // Determine which fields can be populated straight away...
+                this.fields.add(beanUtil.getFieldRecursively(clazz, fields[index]));
+            } else {
+                // and which will need to be joined later on...
+                String[] beanPaths = BeanPathUtil.pathToFields(fields[index]);
+                check(fields[index], beanPaths.length).equalz(2);
+                this.fields.add(beanUtil.getFieldRecursively(clazz, beanPaths[0]));
+                joinFields.add(index);
             }
-        } catch (SecurityException e) {
-            throw new BeanException(fields[index], e);
-        } catch (NoSuchFieldException e) {
-            throw new BeanException(fields[index], e);
         }
-    }
-
-    public void setBeanUtil(IBeanUtil beanUtil) {
-        check("beanUtil", beanUtil).isNotNull();
-        this.beanUtil = beanUtil;
     }
 
     public void setConverterFactory(ConverterFactory converterFactory) {
@@ -74,7 +75,6 @@ public class SmartBeanBuilder<X> {
 
     public List<X> buildBeans(List<String[]> valuesList) {
         // Check inputs...
-        check(BEAN_UTIL, beanUtil).isNotNull();
         check(CONVERTER_FACTORY, converterFactory).isNotNull();
         check(LIST, valuesList).isNotNull();
         for (String[] values : valuesList) {
@@ -86,22 +86,39 @@ public class SmartBeanBuilder<X> {
 
     /**
      * Builds the bean, but doesn't do any of the error checking.
-     * 
-     * @param values
+     *
+     * @param checkedValues
      * @return
      */
     private List<X> buildBeansNoChecks(List<String[]> checkedValues) {
+        // setup
+        int rowNum = 0;
+        int colNum;
+        String fromValue = null;
+        Class<?> targetClass = null;
         List<X> beans = new LinkedList<X>();
         for (String[] values : checkedValues) {
+            rowNum++;
+            colNum = 0;
             // Create bean...
             X bean = beanUtil.createBean(clazz);
             // Iterate over fields...
-            for (int i = 0; i < numFields; ++i) {
-                Class<?> targetClass = fields[i].getType();
-                Object targetValue = converterFactory.convert(values[i], targetClass);
-                beanUtil.setProperty(bean, fields[i], targetValue);
+            try {
+                for (Field field : fields) {
+                    if (joinFields.contains(colNum)) {
+                        // TODO Join field with object...
+                    } else {
+                        targetClass = field.getType();
+                        fromValue = values[colNum];
+                        Object targetValue = converterFactory.convert(fromValue, targetClass);
+                        beanUtil.setProperty(bean, field, targetValue);
+                    }
+                    colNum++;
+                }
+                beans.add(bean);
+            } catch (Throwable t) {
+                throw new BeanBuilderException(rowNum, colNum, fromValue, targetClass, t);
             }
-            beans.add(bean);
         }
         return beans;
     }

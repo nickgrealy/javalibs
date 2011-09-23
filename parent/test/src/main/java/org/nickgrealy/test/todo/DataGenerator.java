@@ -17,7 +17,7 @@ package org.nickgrealy.test.todo;
  * <li>generated test data w generated id</li>
  * </ul>
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public final class DataGenerator {
 

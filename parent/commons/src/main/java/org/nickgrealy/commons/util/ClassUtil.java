@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public final class ClassUtil {
 

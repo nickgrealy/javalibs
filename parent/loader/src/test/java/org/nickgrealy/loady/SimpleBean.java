@@ -15,7 +15,7 @@ import java.util.Set;
 
 /**
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class SimpleBean {
 
@@ -24,7 +24,7 @@ public class SimpleBean {
     Object nullObj2 = new Object();
 
     // primitives
-    byte a02 = -1;
+    public byte a02 = -1;
     short a03 = -1;
     int a04 = -1;
     long a05 = -1;

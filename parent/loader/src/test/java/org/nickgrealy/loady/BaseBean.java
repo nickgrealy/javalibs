@@ -1,13 +1,10 @@
-/**
- * 
- */
 package org.nickgrealy.loady;
 
 /**
- * 
  * @author nickgrealy@gmail.com
  */
-public enum SimpleEnum {
+public class BaseBean {
 
-    INIT, ENUM01, ENUM02;
+    String linkedField;
+    String baseField;
 }

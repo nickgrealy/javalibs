@@ -24,7 +24,7 @@ import org.nickgrealy.commons.exception.AssertionException;
  * </ul>
  * 
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class NotNullableMapTest {
 

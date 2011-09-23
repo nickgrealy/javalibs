@@ -18,7 +18,7 @@ import org.nickgrealy.commons.reflect.BeanUtil;
 /**
  * Methods: mapByField
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class MapUtilTest {
 

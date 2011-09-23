@@ -7,7 +7,7 @@ import java.util.Set;
  * classes, ALWAYS use the Object class as opposed to it's respective primitive
  * class.
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  * @param <X>
  *            Base object type.
  */

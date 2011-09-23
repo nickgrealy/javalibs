@@ -9,7 +9,7 @@ import org.junit.Test;
 
 /**
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class BeanPathTest {
 

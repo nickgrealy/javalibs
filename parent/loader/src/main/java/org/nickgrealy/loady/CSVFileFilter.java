@@ -8,7 +8,7 @@ import java.io.FileFilter;
 
 /**
  * 
- * @author nick.grealy
+ * @author nickgrealy@gmail.com
  */
 public class CSVFileFilter implements FileFilter {
 
