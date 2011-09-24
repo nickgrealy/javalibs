@@ -52,9 +52,9 @@ public class CSVBeanLoader extends AbstractBeanLoader {
 			check("columnHeaders", tmp).isNotNull();
 			List<String> columnHeaders = Arrays.asList(tmp);
 			// read in data...
-			List<List<? extends Object>> readAll = new LinkedList<List<? extends Object>>();
+			List<List<Object>> readAll = new LinkedList<List<Object>>();
 			while ((tmp = csvReader.readNext()) != null) {
-				readAll.add(Arrays.asList(tmp));
+				readAll.add(Arrays.asList((Object[])tmp));
 			}
 			return Arrays.asList(BeanMetaModelUtil.build(clazz, columnHeaders,
 					readAll));

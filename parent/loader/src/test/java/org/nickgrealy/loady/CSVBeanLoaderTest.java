@@ -26,8 +26,7 @@ import static org.junit.Assert.*;
 /**
  * @author nickgrealy@gmail.com
  */
-@Ignore
-public class CSVBeanFactoryTest {
+public class CSVBeanLoaderTest {
 	
 	private IAssertBean assertBean = new AssertBean();
 
@@ -40,7 +39,7 @@ public class CSVBeanFactoryTest {
     public static final String CLASSPATH_CSV_RELATIONSHIPS = "classpath:csv-relationships";
 
     @Test
-    public void csv() throws FileNotFoundException, URISyntaxException {
+    public void csvPojo() throws FileNotFoundException, URISyntaxException {
         // setup
         List<String> collObj = new ArrayList<String>();
         collObj.add("5");
@@ -115,6 +114,7 @@ public class CSVBeanFactoryTest {
         fail("Should've thrown exception already!");
     }
 
+    @Ignore
     @Test
     public void csvInheritanceTest() throws FileNotFoundException {
         // expected values
@@ -138,7 +138,8 @@ public class CSVBeanFactoryTest {
         assertEquals(3, tmp.size());
         assertBean.assertEquals(eab1, tmp.get(0));
     }
-
+    
+    @Ignore
     @Test
     public void csvRelationshipsTest() throws FileNotFoundException {
         // execute

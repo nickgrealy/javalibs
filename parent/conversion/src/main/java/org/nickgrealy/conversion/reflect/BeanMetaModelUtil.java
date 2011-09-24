@@ -22,7 +22,7 @@ public class BeanMetaModelUtil {
 	private static final IBeanUtil beanUtil = new BeanUtil();
 
 	public static BeanMetaModel build(Class<?> clazz, List<String> fieldsBeanPath,
-			List<List<? extends Object>> values) {
+			List<List<Object>> values) {
 		// Setup
 		List<Field> fields = new LinkedList<Field>();
 		Map<Field, Field> relationships = new NotNullableMap<Field, Field>();

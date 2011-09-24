@@ -16,6 +16,8 @@ public interface IBeanUtil {
      */
     int DEFAULT_CLASS_DEPTH = 3;
 
+    boolean isInstantiable(Class<?> clazz);
+    
     <I> I createBean(Class<I> clazz);
 
     <I> I createBean(Class<I> clazz, Map<String, Object> properties);

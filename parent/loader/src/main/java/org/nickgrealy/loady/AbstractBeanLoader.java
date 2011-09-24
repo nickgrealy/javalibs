@@ -7,13 +7,10 @@ import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.lang.reflect.Modifier;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import org.nickgrealy.commons.util.MapUtil;
-import org.nickgrealy.commons.util.NotNullableMap;
 import org.nickgrealy.conversion.reflect.BeanMetaModel;
 import org.nickgrealy.conversion.reflect.SmartBeanBuilder;
 
@@ -21,13 +18,6 @@ import org.nickgrealy.conversion.reflect.SmartBeanBuilder;
  * @author nickgrealy@gmail.com
  */
 public abstract class AbstractBeanLoader {
-
-	private static final int NOT_INSTANTIABLE_MODIFIER = Modifier.ABSTRACT
-			| Modifier.INTERFACE;
-	// if (class.getModfiiers & NOTINSTA... == 0) i.e. they dont' have the
-	// abstract and interface modifiers...
-
-	private static final MapUtil mapUtil = new MapUtil();
 
 	public Map<Class<?>, List<?>> loadFolder(File folder) {
 		return loadFolder(folder, getFileFilter());
@@ -51,11 +41,9 @@ public abstract class AbstractBeanLoader {
 		for (File file : files) {
 			metaModelsList.addAll(load(file));
 		}
-		Map<Class<?>, BeanMetaModel> metaModelsMap = mapUtil.mapByField(
-				metaModelsList, "clazz",
-				new NotNullableMap<Class<?>, BeanMetaModel>());
-		SmartBeanBuilder<Object> builder = new SmartBeanBuilder<Object>();
-		return builder.buildBeans(metaModelsMap);
+		// build beans from the meta models...
+		SmartBeanBuilder builder = new SmartBeanBuilder();
+		return builder.buildBeans(metaModelsList);
 	}
 
 	/**

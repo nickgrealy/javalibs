@@ -29,6 +29,14 @@ public final class BeanUtil implements IBeanUtil {
     private static final String TO = "to";
     private static final String FROM = "from";
 
+	private static final int NOT_INSTANTIABLE_MODIFIERS = Modifier.ABSTRACT
+			| Modifier.INTERFACE;
+    
+	@Override
+    public boolean isInstantiable(Class<?> clazz){
+    	return (clazz.getModifiers() & NOT_INSTANTIABLE_MODIFIERS) == 0;
+    }
+    
     /**
      * {@inheritDoc}
      */
