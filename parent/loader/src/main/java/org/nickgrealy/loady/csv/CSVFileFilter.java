@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.nickgrealy.loady;
+package org.nickgrealy.loady.csv;
 
 import java.io.File;
 import java.io.FileFilter;

@@ -8,6 +8,7 @@ import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 import java.util.Collection;
 import java.util.Map;
 
+import org.nickgrealy.commons.reflect.BeanUtil;
 import org.nickgrealy.commons.reflect.IBeanUtil;
 
 /**
@@ -19,7 +20,7 @@ import org.nickgrealy.commons.reflect.IBeanUtil;
  */
 public final class MapUtil {
 
-    private IBeanUtil beanUtil;
+    private IBeanUtil beanUtil = new BeanUtil();
 
     /**
      * Constructs a MapUtil.
@@ -47,7 +48,7 @@ public final class MapUtil {
      *            Value
      */
     @SuppressWarnings("unchecked")
-    public <K, V> void mapByField(Collection<V> objects, String field, Map<K, V> map) {
+    public <K, V> Map<K, V> mapByField(Collection<V> objects, String field, Map<K, V> map) {
         for (V object : objects) {
             check("beanUtil", beanUtil).isNotNull();
             final Object key = beanUtil.getProperty(object, field);
@@ -55,7 +56,7 @@ public final class MapUtil {
                 map.put((K) key, object);
             }
         }
-
+        return map;
     }
 
 }

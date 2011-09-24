@@ -12,8 +12,8 @@ import org.junit.Test;
 import org.nickgrealy.commons.reflect.BeanUtil;
 import org.nickgrealy.conversion.ConverterFactory;
 import org.nickgrealy.conversion.PrimitiveConverters;
-import org.nickgrealy.conversion.SmartBeanBuilder;
 import org.nickgrealy.conversion.impl.StringConverter;
+import org.nickgrealy.conversion.reflect.SmartBeanBuilder;
 
 /**
  * 

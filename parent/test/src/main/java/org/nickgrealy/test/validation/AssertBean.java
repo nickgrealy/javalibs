@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.nickgrealy.commons.exception.BeanException;
+import org.nickgrealy.commons.reflect.BeanUtil;
 import org.nickgrealy.commons.reflect.IBeanUtil;
 
 /**
@@ -25,17 +26,12 @@ public class AssertBean implements IAssertBean {
     private static final String MUST_BE_ASSIGNABLE_2 = "'expected' bean class must be assignable "
             + "from the 'actual' bean class! expectedClass=%s actualClass=%s";
 
-    private IBeanUtil beanUtil;
+    private IBeanUtil beanUtil = new BeanUtil();
 
     /**
      * Constructs the AssertBean.
      */
     public AssertBean() {
-    }
-
-    public void setBeanUtil(IBeanUtil beanUtil) {
-    	org.junit.Assert.assertNotNull(BEAN_UTIL, beanUtil);
-        this.beanUtil = beanUtil;
     }
 
     /** {@inheritDoc} */

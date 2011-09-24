@@ -1,11 +1,14 @@
 /**
  *
  */
-package org.nickgrealy.conversion;
+package org.nickgrealy.conversion.reflect;
 
+import org.nickgrealy.commons.exception.NotYetImplementedException;
 import org.nickgrealy.commons.reflect.BeanPathUtil;
 import org.nickgrealy.commons.reflect.BeanUtil;
 import org.nickgrealy.commons.reflect.IBeanUtil;
+import org.nickgrealy.commons.util.NotNullableMap;
+import org.nickgrealy.conversion.ConverterFactory;
 import org.nickgrealy.conversion.exception.BeanBuilderException;
 import org.nickgrealy.conversion.impl.StringConverter;
 
@@ -13,6 +16,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 
@@ -36,11 +40,15 @@ public class SmartBeanBuilder<X> {
 
     private IBeanUtil beanUtil = new BeanUtil();
     private ConverterFactory converterFactory = new ConverterFactory(Arrays.asList(new StringConverter()));
-    private final Class<X> clazz;
-    private final List<Field> fields;
-    private final List<Integer> joinFields;
-    private final int numFields;
+    private Class<X> clazz;
+    private List<Field> fields;
+    private List<Integer> joinFields;
+    private int numFields;
 
+    public SmartBeanBuilder(){
+    	
+    }
+    
     public SmartBeanBuilder(Class<X> clazz, String[] fields) {
         check(FIELDS, fields).isNotNull();
         check(CLAZZ, clazz).isNotNull();
@@ -82,6 +90,11 @@ public class SmartBeanBuilder<X> {
             check(VALUES_LENGTH, values.length).equalz(numFields);
         }
         return buildBeansNoChecks(valuesList);
+    }
+    
+    public NotNullableMap<Class<?>, List<?>> buildBeans(Map<Class<?>, BeanMetaModel> metaModelsMap){
+        // TODO Build beans from metaModels...
+    	throw new NotYetImplementedException();
     }
 
     /**
