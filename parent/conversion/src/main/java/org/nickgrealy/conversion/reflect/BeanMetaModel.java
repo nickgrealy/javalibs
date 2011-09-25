@@ -3,9 +3,11 @@ package org.nickgrealy.conversion.reflect;
 import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.nickgrealy.commons.exception.BeanException;
 import org.nickgrealy.commons.validation.Validatable;
 
 /**
@@ -21,6 +23,7 @@ public class BeanMetaModel implements Validatable {
 	private List<Field> fields;
 	private Map<Field, Field> relationships;
 	private List<List<Object>> values;
+	private Map<Integer, Object> alreadyImplementedBeans = new HashMap<Integer, Object>();
 
 	public BeanMetaModel(Class<?> clazz, List<Field> fields,
 			Map<Field, Field> relationships, List<List<Object>> values) {
@@ -45,6 +48,35 @@ public class BeanMetaModel implements Validatable {
 
 	public Map<Field, Field> getRelationships() {
 		return relationships;
+	}
+	
+	/* Utility methods */
+	
+	public void addImplementedBeanOverride(int index, Object bean){
+		alreadyImplementedBeans.put(index, bean);
+	}
+	
+	public int getIndex(Field critField, Object critValue){
+		// validation
+		check("critValue", critValue).isNotNull();
+		check("critField", critField).isNotNull();
+		if (!hasField(critField)){
+			throw new BeanException("Field does not exist in MetaModel!", critField);
+		}
+		// logic
+		int fieldIndex = fields.indexOf(critField);
+		int index = 0;
+		for (List<Object> valuesList : values) {
+			if(critValue.equals(valuesList.get(fieldIndex))){
+				return index;
+			}
+			index++;
+		}
+		throw new BeanException("Could not locate bean with the given field value! value=" + critValue, critField);
+	}
+	
+	public boolean hasField(Field critField){
+		return fields.contains(critField);
 	}
 	
 	/** {@inheritDoc} */

@@ -15,7 +15,7 @@ import static java.lang.String.*;
 public class BeanException extends RuntimeException {
 
     public static final String DEFAULT_CONSTRUCTOR = "DefaultNoArgsConstructor";
-    private static final String EXCEPTION_FIELD_2 = "class='%s' field='%s'";
+    private static final String EXCEPTION_FIELD_2 = " class='%s' field='%s'";
     private static final String EXCEPTION_CONSTRUCTOR_2 = "Exception occurred attempting to construct the bean! class='%s' field='%s'";
     private static final long serialVersionUID = -6830864219098335713L;
 
@@ -43,6 +43,10 @@ public class BeanException extends RuntimeException {
 
     public BeanException(Field field, Throwable cause) {
         super(buildMessage(field.getDeclaringClass(), field.getName()), cause);
+    }
+
+    public BeanException(String message, Field field) {
+        super(message + buildMessage(field.getDeclaringClass(), field.getName()));
     }
 
     private static String buildMessage(Class<?> clazz, String field){
