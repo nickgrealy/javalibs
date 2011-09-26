@@ -8,8 +8,8 @@ import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 import java.util.Collection;
 import java.util.Map;
 
-import org.nickgrealy.commons.reflect.BeanUtil;
-import org.nickgrealy.commons.reflect.IBeanUtil;
+import org.nickgrealy.commons.reflect.BeanPropertyAccessor;
+import org.nickgrealy.commons.reflect.IBeanPropertyAccessor;
 
 /**
  * Map utilities.
@@ -20,17 +20,12 @@ import org.nickgrealy.commons.reflect.IBeanUtil;
  */
 public final class MapUtil {
 
-    private IBeanUtil beanUtil = new BeanUtil();
+    private static IBeanPropertyAccessor beanPropertyAccessor = BeanPropertyAccessor.INSTANCE;
 
     /**
      * Constructs a MapUtil.
      */
-    public MapUtil() {
-    }
-
-    public void setBeanUtil(IBeanUtil beanUtil) {
-        check("beanUtil", beanUtil).isNotNull();
-        this.beanUtil = beanUtil;
+    private MapUtil() {
     }
 
     /**
@@ -48,10 +43,9 @@ public final class MapUtil {
      *            Value
      */
     @SuppressWarnings("unchecked")
-    public <K, V> Map<K, V> mapByField(Collection<V> objects, String field, Map<K, V> map) {
+    public static <K, V, MapType extends Map<K, V>> MapType mapByField(Collection<V> objects, String field, MapType map) {
         for (V object : objects) {
-            check("beanUtil", beanUtil).isNotNull();
-            final Object key = beanUtil.getProperty(object, field);
+            final Object key = beanPropertyAccessor.getProperty(object, field);
             if (key != null) {
                 map.put((K) key, object);
             }

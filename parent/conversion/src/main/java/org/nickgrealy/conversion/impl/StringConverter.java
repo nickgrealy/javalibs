@@ -2,6 +2,7 @@ package org.nickgrealy.conversion.impl;
 
 import org.nickgrealy.commons.exception.NotYetImplementedException;
 import org.nickgrealy.conversion.AbstractBaseConverter;
+import org.nickgrealy.conversion.ConversionConstants;
 import org.nickgrealy.conversion.IConverter;
 import org.nickgrealy.conversion.SpecialTargetTypes.AnyTarget;
 import org.nickgrealy.conversion.SpecialTargetTypes.Array;
@@ -16,11 +17,10 @@ import java.text.DateFormat;
 import java.util.*;
 
 import static java.lang.String.format;
+import static org.nickgrealy.conversion.ConversionConstants.*;
 
 public final class StringConverter extends AbstractBaseConverter<String> {
 
-    private static final String MAP_KEYVALUE_DELIMITER = ">";
-    private static final String COLLECTION_DELIMITER = ",";
 
     public StringConverter() {
         super(Byte.class, Short.class, Integer.class, Long.class, Float.class,

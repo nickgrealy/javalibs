@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.nickgrealy.commons.exception.ConverterNotFoundException;
 import org.nickgrealy.commons.util.ClassUtil;
-import org.nickgrealy.commons.util.ITwoDimensionalMap;
+import org.nickgrealy.commons.util.base.ITwoDimensionalMap;
 import org.nickgrealy.commons.util.TwoDimensionalMap;
 
 /**
@@ -17,8 +17,6 @@ import org.nickgrealy.commons.util.TwoDimensionalMap;
  * @author nickgrealy@gmail.com
  */
 public class ConverterFactory {
-
-	private final ClassUtil classUtil = new ClassUtil();
 
 	private final ITwoDimensionalMap<Class<?>, Class<?>, IConverter<?>> fieldsMap;
 
@@ -47,8 +45,8 @@ public class ConverterFactory {
 	 */
 	public boolean hasConverter(Class<?> from, Class<?> to) {
 		// ensure we're NOT dealing with primitives...
-		final Class<?> newFrom = classUtil.convertPrimitiveToObjectClass(from);
-		final Class<?> newTo = classUtil.convertPrimitiveToObjectClass(to);
+		final Class<?> newFrom = ClassUtil.convertPrimitiveToObjectClass(from);
+		final Class<?> newTo = ClassUtil.convertPrimitiveToObjectClass(to);
 		return fieldsMap.containsKey(newFrom, newTo);
 	}
 
@@ -71,9 +69,9 @@ public class ConverterFactory {
 			return null;
 		}
 		// ensure we're NOT dealing with primitives...
-		final Class<A> newFrom = (Class<A>) classUtil
+		final Class<A> newFrom = (Class<A>) ClassUtil
 				.convertPrimitiveToObjectClass(from.getClass());
-		final Class<B> newTo = (Class<B>) classUtil
+		final Class<B> newTo = (Class<B>) ClassUtil
 				.convertPrimitiveToObjectClass(to);
 		final Class<?> toClass = getAssignableClass(newTo);
 		final IConverter<?> converter = fieldsMap.get(newFrom, toClass);

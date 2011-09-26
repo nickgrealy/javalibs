@@ -1,11 +1,12 @@
 package org.nickgrealy.commons.util;
 
+import org.nickgrealy.commons.util.base.ITwoDimensionalMap;
+
 import java.util.Collection;
 import java.util.Map;
 
 /**
- * A TwoDimensionalMap. Suggested uses include: - loading data from csv file. -
- * storing converter methods.
+ * A TwoDimensionalMap.
  */
 public class TwoDimensionalMap<A, B, V> extends NotNullableMap<A, NotNullableMap<B, V>> implements
         ITwoDimensionalMap<A, B, V> {

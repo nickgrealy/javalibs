@@ -8,7 +8,7 @@ import java.util.Map;
  * 
  * @author nickgrealy@gmail.com
  */
-public interface IBeanUtil {
+public interface IBeanPropertyAccessor {
 
     /**
      * The default depth to copy fields from. See

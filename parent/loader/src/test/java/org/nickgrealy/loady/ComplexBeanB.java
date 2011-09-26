@@ -16,4 +16,21 @@ public class ComplexBeanB {
     Collection<ComplexBeanA> collection;
     List<ComplexBeanA> list;
     Set<ComplexBeanA> set;
+
+    public ComplexBeanB() {
+    }
+
+    public ComplexBeanB(Long id, String name, ComplexBeanA simple, ComplexBeanA simple2, Collection<ComplexBeanA> collection, List<ComplexBeanA> list, Set<ComplexBeanA> set) {
+        this.id = id;
+        this.name = name;
+        this.simple = simple;
+        this.simple2 = simple2;
+        this.collection = collection;
+        this.list = list;
+        this.set = set;
+    }
+
+    public String toString(){
+        return id + " - " + name;
+    }
 }

@@ -9,10 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-import org.nickgrealy.commons.reflect.BeanUtil;
-import org.nickgrealy.conversion.ConverterFactory;
-import org.nickgrealy.conversion.PrimitiveConverters;
-import org.nickgrealy.conversion.impl.StringConverter;
 import org.nickgrealy.conversion.reflect.BeanMetaModel;
 import org.nickgrealy.conversion.reflect.BeanMetaModelUtil;
 import org.nickgrealy.conversion.reflect.SmartBeanBuilder;
@@ -34,10 +30,10 @@ public class SmartBeanBuilderTest {
 				.asList(new Object[] { "test", "1", "2.3", "4.5f", "true",
 						"<null>" }));
 		// build
-		BeanMetaModel bmm = BeanMetaModelUtil.build(TestClass.class, fields,
-				values);
-		TestClass bean = (TestClass) builder.buildBeans(bmm).get(0);
-		// assert
+		BeanMetaModel bmm = BeanMetaModelUtil.build(TestClass.class, fields, values);
+        builder.buildBeans(Arrays.asList(new BeanMetaModel[]{bmm}));
+        TestClass bean = (TestClass) bmm.getImplementedBeans()[0];
+        // assert
 		assertEquals("test", bean.a);
 		assertEquals(1, bean.b);
 		assertEquals((Double) 2.3, (Double) bean.c);

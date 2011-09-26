@@ -37,8 +37,6 @@ public final class RuntimeAssert {
     private static final String ASSERT_NULL_MESG_1 = "Actual must be null! field=%s";
     private static final String ASSERT_NOTPRIMITIVE_MESG_2 = "Actual must not be a primitive class! field=%s actual=%s";
 
-    private final ClassUtil classUtil = new ClassUtil();
-
     private final Object actual;
     private final String identifier;
 
@@ -92,7 +90,7 @@ public final class RuntimeAssert {
     public RuntimeAssert isNotPrimitive() {
         isNotNull();
         isInstanceOf(Class.class);
-        if (classUtil.isPrimitiveClass((Class<?>) actual)) {
+        if (ClassUtil.isPrimitiveClass((Class<?>) actual)) {
             throw new AssertionException(format(ASSERT_NOTPRIMITIVE_MESG_2, identifier, actual));
         }
         return this;

@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.nickgrealy.commons.reflect.BeanPathUtil;
-import org.nickgrealy.commons.reflect.BeanUtil;
-import org.nickgrealy.commons.reflect.IBeanUtil;
+import org.nickgrealy.commons.reflect.BeanPropertyAccessor;
+import org.nickgrealy.commons.reflect.IBeanPropertyAccessor;
 import org.nickgrealy.commons.util.NotNullableMap;
 
 /**
@@ -19,27 +19,25 @@ import org.nickgrealy.commons.util.NotNullableMap;
 s */
 public class BeanMetaModelUtil {
 
-	private static final IBeanUtil beanUtil = new BeanUtil();
+	private static final IBeanPropertyAccessor BEAN_PROPERTY_ACCESSOR = BeanPropertyAccessor.INSTANCE;
 
-	public static BeanMetaModel build(Class<?> clazz, List<String> fieldsBeanPath,
+	public static <X> BeanMetaModel build(Class<X> clazz, List<String> fieldsBeanPath,
 			List<List<Object>> values) {
 		// Setup
 		List<Field> fields = new LinkedList<Field>();
-		Map<Field, Field> relationships = new NotNullableMap<Field, Field>();
+		Map<Field, String> relationships = new NotNullableMap<Field, String>();
 		// Determine which fields have relationships based on bean path...
 		for (String field : fieldsBeanPath) {
 			// if (bean path has no relationship) ...
 			if (BeanPathUtil.isSingleBeanPath(field)) {
-				fields.add(beanUtil.getFieldRecursively(clazz, field));
+				fields.add(BEAN_PROPERTY_ACCESSOR.getFieldRecursively(clazz, field));
 			} else {
 				String[] beanPaths = BeanPathUtil.pathToFields(field);
 				check(field, beanPaths.length).equalz(2);
-				Field localField = beanUtil.getFieldRecursively(clazz,
+				Field localField = BEAN_PROPERTY_ACCESSOR.getFieldRecursively(clazz,
 						beanPaths[0]);
-				Field targetField = beanUtil.getFieldRecursively(localField
-						.getType(), beanPaths[1]);
 				fields.add(localField);
-				relationships.put(localField, targetField);
+				relationships.put(localField, beanPaths[1]);
 			}
 		}
 		return new BeanMetaModel(clazz, fields, relationships, values);

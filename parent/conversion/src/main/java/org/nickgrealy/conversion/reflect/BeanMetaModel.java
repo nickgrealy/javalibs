@@ -3,9 +3,7 @@ package org.nickgrealy.conversion.reflect;
 import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.nickgrealy.commons.exception.BeanException;
 import org.nickgrealy.commons.validation.Validatable;
@@ -19,19 +17,22 @@ public class BeanMetaModel implements Validatable {
 
 	public static final String CLASS_VARIABLE = "clazz";
 
+    public static final int FIELD_VALUE_NOT_FOUND = -1;
+
 	private Class<?> clazz;
 	private List<Field> fields;
-	private Map<Field, Field> relationships;
+	private Map<Field, String> relationships;
 	private List<List<Object>> values;
-	private Map<Integer, Object> alreadyImplementedBeans = new HashMap<Integer, Object>();
+	private Object[] implementedBeans;
 
 	public BeanMetaModel(Class<?> clazz, List<Field> fields,
-			Map<Field, Field> relationships, List<List<Object>> values) {
+			Map<Field, String> relationships, List<List<Object>> values) {
 		super();
 		this.clazz = clazz;
 		this.fields = fields;
 		this.relationships = relationships;
 		this.values = values;
+        implementedBeans = new Object[values.size()];
 	}
 
 	public Class<?> getClazz() {
@@ -46,16 +47,22 @@ public class BeanMetaModel implements Validatable {
 		return values;
 	}
 
-	public Map<Field, Field> getRelationships() {
+	public Map<Field, String> getRelationships() {
 		return relationships;
 	}
-	
-	/* Utility methods */
-	
-	public void addImplementedBeanOverride(int index, Object bean){
-		alreadyImplementedBeans.put(index, bean);
-	}
-	
+
+    public Object[] getImplementedBeans() {
+        return implementedBeans;
+    }
+
+    /* Utility methods */
+
+    /**
+     *
+     * @param critField
+     * @param critValue
+     * @return index of the record. {@link #FIELD_VALUE_NOT_FOUND} if matching record not found.
+     */
 	public int getIndex(Field critField, Object critValue){
 		// validation
 		check("critValue", critValue).isNotNull();
@@ -72,7 +79,7 @@ public class BeanMetaModel implements Validatable {
 			}
 			index++;
 		}
-		throw new BeanException("Could not locate bean with the given field value! value=" + critValue, critField);
+        return FIELD_VALUE_NOT_FOUND;
 	}
 	
 	public boolean hasField(Field critField){

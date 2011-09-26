@@ -3,25 +3,19 @@
  */
 package org.nickgrealy.conversion.reflect;
 
-import org.nickgrealy.commons.exception.NotYetImplementedException;
-import org.nickgrealy.commons.reflect.BeanPathUtil;
-import org.nickgrealy.commons.reflect.BeanUtil;
-import org.nickgrealy.commons.reflect.IBeanUtil;
+import org.nickgrealy.commons.exception.BeanException;
+import org.nickgrealy.commons.reflect.BeanPropertyAccessor;
+import org.nickgrealy.commons.reflect.IBeanPropertyAccessor;
 import org.nickgrealy.commons.util.MapUtil;
 import org.nickgrealy.commons.util.NotNullableMap;
+import org.nickgrealy.conversion.ConversionConstants;
 import org.nickgrealy.conversion.ConverterFactory;
+import org.nickgrealy.conversion.comparator.ClassDepthComparator;
 import org.nickgrealy.conversion.exception.BeanBuilderException;
 import org.nickgrealy.conversion.impl.StringConverter;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 
@@ -30,168 +24,142 @@ import static org.nickgrealy.commons.validation.RuntimeAssert.check;
  * <p/>
  * <b>N.B.</b> A valid BeanUtil and ConverterFactory will need to be injected.
  * For convenience, the default ConverterFactory uses a StringConverter.
- * 
+ *
  * @author nickgrealy@gmail.com
  */
 public class SmartBeanBuilder {
 
-	private static final String LIST = "list";
-	private static final String CLAZZ = "clazz";
-	private static final String FIELDS = "fields";
-	private static final String CONVERTER_FACTORY = "converterFactory";
-	private static final String BEAN_UTIL = "beanUtil";
-	private static final String VALUES_LENGTH = "values.length";
-	private static final String VALUES = "values";
+    private static final String LIST = "list";
+    private static final String CLAZZ = "clazz";
+    private static final String FIELDS = "fields";
+    private static final String CONVERTER_FACTORY = "converterFactory";
+    private static final String BEAN_UTIL = "beanUtil";
+    private static final String VALUES_LENGTH = "values.length";
+    private static final String VALUES = "values";
 
-	private static final MapUtil mapUtil = new MapUtil();
-	private IBeanUtil beanUtil = new BeanUtil();
-	private ConverterFactory converterFactory = new ConverterFactory(Arrays
-			.asList(new StringConverter()));
-//	private Class<X> clazz;
-//	private List<Field> fields;
-//	private List<Integer> joinFields;
-//	private int numFields;
+    private static final IBeanPropertyAccessor BEAN_PROPERTY_ACCESSOR = BeanPropertyAccessor.INSTANCE;
 
-	public SmartBeanBuilder() {
+    private ConverterFactory converterFactory = new ConverterFactory(Arrays.asList(new StringConverter()));
 
-	}
+    private List<? extends SmartBeanBuilderProcessor> processors = Arrays.asList(new BeanRelationshipsWeaver());
 
-//	public SmartBeanBuilder(Class<X> clazz, String[] fields) {
-//		check(FIELDS, fields).isNotNull();
-//		check(CLAZZ, clazz).isNotNull();
-//		this.numFields = fields.length;
-//		this.clazz = clazz;
-//		this.fields = new LinkedList<Field>();
-//		this.joinFields = new LinkedList<Integer>();
-//		for (int index = 0; index < numFields; ++index) {
-//			if (BeanPathUtil.isSingleBeanPath(fields[index])) {
-//				// Determine which fields can be populated straight away...
-//				this.fields.add(beanUtil.getFieldRecursively(clazz,
-//						fields[index]));
-//			} else {
-//				// and which will need to be joined later on...
-//				String[] beanPaths = BeanPathUtil.pathToFields(fields[index]);
-//				check(fields[index], beanPaths.length).equalz(2);
-//				this.fields.add(beanUtil.getFieldRecursively(clazz,
-//						beanPaths[0]));
-//				joinFields.add(index);
-//			}
-//		}
-//	}
-//
-//	public void setConverterFactory(ConverterFactory converterFactory) {
-//		check("converterFactory", converterFactory).isNotNull();
-//		this.converterFactory = converterFactory;
-//	}
-//
-//	public X buildBean(String... values) {
-//		List<String[]> valuesList = new LinkedList<String[]>();
-//		valuesList.add(values);
-//		return buildBeans(valuesList).get(0);
-//	}
-//
-//	public List<X> buildBeans(List<String[]> valuesList) {
-//		// Check inputs...
-//		check(CONVERTER_FACTORY, converterFactory).isNotNull();
-//		check(LIST, valuesList).isNotNull();
-//		for (String[] values : valuesList) {
-//			check(VALUES, values).isNotNull();
-//			check(VALUES_LENGTH, values.length).equalz(numFields);
-//		}
-//		return buildBeansNoChecks(valuesList);
-//	}
+    public SmartBeanBuilder() {
 
-	/**
-	 * Build beans from metaModels.
-	 * 
-	 * @param metaModelsList
-	 * @return
-	 */
-	public NotNullableMap<Class<?>, List<?>> buildBeans(List<BeanMetaModel> metaModelsList){
+    }
+
+    /**
+     * Build beans from metaModels.
+     *
+     * @param metaModelsList
+     * @return
+     */
+    public Map<Class<?>, List<?>> buildBeans(List<BeanMetaModel> metaModelsList) {
         // setup 
-    	check("metaModelsList", metaModelsList).isNotNull();
-		Map<Class<?>, BeanMetaModel> metaModelsMap = mapUtil.mapByField(
-				metaModelsList, BeanMetaModel.CLASS_VARIABLE,
-				new NotNullableMap<Class<?>, BeanMetaModel>());
-		List<Class<?>> buildOrder = new LinkedList<Class<?>>(metaModelsMap.keySet());
-		Collections.sort(buildOrder, new ChildFirstComparator(buildOrder));
-		// TODO consolidate inheritance bean meta models...
-		// build beans
-		NotNullableMap<Class<?>, List<?>> beansByClassMap = new NotNullableMap<Class<?>, List<?>>();
-		
-		for (Class<?> clazz : buildOrder) {
-			if (beanUtil.isInstantiable(clazz)){
-				// check if first field is an inheritance field...
-				BeanMetaModel bmm = metaModelsMap.get(clazz);
-				beansByClassMap.put(clazz, buildBeans(bmm));
-			}
-		}
-		return beansByClassMap;
-    }
-	
-	private List<List<Class<?>>> consolidateInheritanceBeanMetaModels(){
-		// TODO
-		return null;
-	}
-
-	public List<Object> buildBeans(BeanMetaModel bmm){
-    	// pre-checks and setup...
-    	bmm.validate();
-    	return buildBeansNoChecks(bmm.getClazz(), bmm.getFields(), bmm.getRelationships(), bmm.getValues());
+        check("metaModelsList", metaModelsList).isNotNull();
+        for (BeanMetaModel beanMetaModel : metaModelsList) {
+            beanMetaModel.validate();
+        }
+        Map<Class<?>, BeanMetaModel> metaModelsMap = MapUtil.mapByField(
+                metaModelsList, BeanMetaModel.CLASS_VARIABLE,
+                new NotNullableMap<Class<?>, BeanMetaModel>());
+        List<Class<?>> buildOrder = new LinkedList<Class<?>>(metaModelsMap.keySet());
+        Collections.sort(buildOrder, new ClassDepthComparator(buildOrder));
+        Map<Class<?>, List<?>> beansByClassMap = new NotNullableMap<Class<?>, List<?>>();
+        // pre-process meta models
+        for (SmartBeanBuilderProcessor processor : processors) {
+            processor.preProcess(metaModelsMap);
+        }
+        // build logic
+        for (Class<?> clazz : buildOrder) {
+            if (BEAN_PROPERTY_ACCESSOR.isInstantiable(clazz)) {
+                BeanMetaModel base = metaModelsMap.get(clazz);
+                buildBeans(base, metaModelsMap);
+                beansByClassMap.put(clazz, Arrays.asList(base.getImplementedBeans()));
+            }
+        }
+        // post-process meta models
+        for (SmartBeanBuilderProcessor processor : processors) {
+            processor.postProcess(metaModelsMap);
+        }
+        return beansByClassMap;
     }
 
-	/**
-	 * Builds the bean, but doesn't do any of the error checking.
-	 * 
-	 * @param checkedValues
-	 * @return
-	 */
-	private List<Object> buildBeansNoChecks(Class<?> clazz, 
-			List<Field> fields, 
-			Map<Field, Field> relationships, 
-			List<List<Object>> checkedValues) {
-		// setup
-		int rowNum = 0;
-		int colNum;
-		Object fromValue = null;
-		Class<?> targetClass = null;
-		List<Object> beans = new LinkedList<Object>();
-		for (List<? extends Object> values : checkedValues) {
-			rowNum++;
-			colNum = 0;
-			// Check class is instantiable...
-			if (beanUtil.isInstantiable(clazz)) {
-				// Create bean...
-				Object bean = beanUtil.createBean(clazz);
-				// Iterate over fields...
-				try {
-					Iterator<Field> fieldsIter = fields.iterator();
-					Iterator<? extends Object> valuesIter = values.iterator();
-					while (fieldsIter.hasNext() && valuesIter.hasNext()) {
-						Field field = fieldsIter.next();
-						fromValue = valuesIter.next();
-						if (relationships.keySet().contains(field)) {
-							// TODO Join field with object...
-						} else {
-							targetClass = field.getType();
-							Object targetValue = converterFactory.convert(
-									fromValue, targetClass);
-							beanUtil.setProperty(bean, field, targetValue);
-						}
-						colNum++;
-					}
-					beans.add(bean);
-				} catch (Throwable t) {
-					throw new BeanBuilderException(rowNum, colNum, fromValue,
-							targetClass, t);
-				}
-			} else {
-				// TODO
-				// log.warn(String.format("Cannot instantiate abstract class or interface! class='%s'",
-				// clazz));
-			}
-		}
-		return beans;
-	}
+    private void buildBeans(BeanMetaModel base, Map<Class<?>, BeanMetaModel> metaModelsMap) {
+        // setup
+        int size = base.getValues().size();
+        for (int rowNum = 0; rowNum < size; rowNum++) {
+            buildBean(null, rowNum, base, metaModelsMap);
+        }
+    }
 
+    /**
+     * Recursive method to build beans.<br/>
+     * <b>Behaviour:</b>
+     * <ul>
+     * <li>checks if bean is already implemented.</li>
+     * <li>ignores un-instantiable classes (i.e. abstract and interfaces).</li>
+     * <li>constructs the 'bean' if it is null.</li>
+     * <li>sets values on the bean object using the 'base' meta model.</li>
+     * <li>if the field references a parent meta model (and the value matches a parent's value), it will import fields from the parent object.</li>
+     * </ul>
+     * <b>N.B.</b> Multiple parent's can be referenced, but it's recommended to only reference one parent field per parent class.
+     *
+     * @param base
+     * @param metaModelsMap
+     * @return
+     */
+    private void buildBean(Object bean, int rowNum, BeanMetaModel base, Map<Class<?>, BeanMetaModel> metaModelsMap) {
+        // setup
+        Object fromValue = null;
+        Class<?> targetClass = null;
+        int colNum = 0;
+        List<List<Object>> valuesList = base.getValues();
+        List<Object> values = valuesList.get(rowNum);
+        // if bean isn't already implemented...
+        if (base.getImplementedBeans()[rowNum] == null) {
+                // Create bean if it hasn't already...
+            if (bean == null) {
+                bean = BEAN_PROPERTY_ACCESSOR.createBean(base.getClazz());
+            }
+            try {
+                Iterator<Field> fieldsIter = base.getFields().iterator();
+                Iterator<? extends Object> valuesIter = values.iterator();
+                // Iterate over fields and values...
+                while (fieldsIter.hasNext() && valuesIter.hasNext()) {
+                    // setup
+                    Field field = fieldsIter.next();
+                    fromValue = valuesIter.next();
+                    Class<?> fieldClass = field.getDeclaringClass();
+                    // logic
+                    if (!base.getClazz().equals(fieldClass) && metaModelsMap.containsKey(fieldClass)) {
+                        // if field's class is not this class, import parent class values...
+                        BeanMetaModel parentMetaModel = metaModelsMap.get(fieldClass);
+                        int parentRowNum = parentMetaModel.getIndex(field, fromValue);
+                        if (parentRowNum == BeanMetaModel.FIELD_VALUE_NOT_FOUND) {
+                            if (!ConversionConstants.NULL.equals(fromValue)) {
+                                throw new BeanException("Could not locate bean with the given field value! value=" + fromValue, field);
+                            }
+                        } else {
+                            buildBean(bean, parentRowNum, parentMetaModel, metaModelsMap);
+                        }
+                    } else if (base.getRelationships().keySet().contains(field)) {
+                        // TODO Join field with related object...? (perhaps do in postprocessor, using the indexes?)
+                    } else {
+                        targetClass = field.getType();
+                        Object targetValue = converterFactory.convert(fromValue, targetClass);
+                        BEAN_PROPERTY_ACCESSOR.setProperty(bean, field, targetValue);
+                    }
+                    colNum++;
+                }
+                base.getImplementedBeans()[rowNum] = bean;
+            } catch (Throwable t) {
+                throw new BeanBuilderException(rowNum, colNum, fromValue, targetClass, t);
+            }
+        } else {
+            // TODO
+            // log.warn(String.format("Cannot instantiate abstract class or interface! class='%s'",
+            // clazz));
+        }
+
+    }
 }

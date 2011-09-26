@@ -10,7 +10,10 @@ import java.io.InputStream;
  * 
  * @author nickgrealy@gmail.com
  */
-public class ClasspathUtil {
+public final class ClasspathUtil {
+
+    private ClasspathUtil(){
+    }
 
     public static InputStream getResourceAsStream(String resource) {
         return ClasspathUtil.class.getClassLoader().getResourceAsStream(resource);

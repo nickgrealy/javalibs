@@ -38,7 +38,7 @@ public class BeanUtilTest {
     private static final String FIELD2 = "field2";
     private static final String TEST = "test";
 
-    private static final IBeanUtil beanUtil = new BeanUtil();
+    private static final IBeanPropertyAccessor BEAN_PROPERTY_ACCESSOR = BeanPropertyAccessor.INSTANCE;
 
     private DefaultAccessibleConstructor bean1;
     private DefaultAccessibleConstructor fromBean;
@@ -62,17 +62,17 @@ public class BeanUtilTest {
 
     @Test
     public void createBean1() {
-        assertTrue(null != beanUtil.createBean(DefaultAccessibleConstructor.class));
+        assertTrue(null != BEAN_PROPERTY_ACCESSOR.createBean(DefaultAccessibleConstructor.class));
     }
 
     @Test(expected = BeanException.class)
     public void createBean2() {
-        beanUtil.createBean(NoAccessibleConstructor.class);
+        BEAN_PROPERTY_ACCESSOR.createBean(NoAccessibleConstructor.class);
     }
 
     @Test(expected = BeanException.class)
     public void createBean3() {
-        beanUtil.createBean(NoDefaultConstructor.class);
+        BEAN_PROPERTY_ACCESSOR.createBean(NoDefaultConstructor.class);
     }
 
     /* getProperty */
@@ -80,32 +80,32 @@ public class BeanUtilTest {
     @Test
     public void getProperty1() {
         bean1.setValue1(TEST);
-        assertEquals(TEST, beanUtil.getProperty(bean1, FIELD1));
+        assertEquals(TEST, BEAN_PROPERTY_ACCESSOR.getProperty(bean1, FIELD1));
     }
 
     @Test(expected = BeanException.class)
     public void getProperty2() {
-        beanUtil.getProperty(bean1, INVALID_FIELD);
+        BEAN_PROPERTY_ACCESSOR.getProperty(bean1, INVALID_FIELD);
     }
 
     /* setProperty */
 
     @Test
     public void setProperty1() {
-        beanUtil.setProperty(bean1, FIELD1, FIELD_VALUE);
+        BEAN_PROPERTY_ACCESSOR.setProperty(bean1, FIELD1, FIELD_VALUE);
         assertFieldsSet(bean1, true, false);
     }
 
     @Test(expected = BeanException.class)
     public void setProperty2() {
-        beanUtil.setProperty(bean1, INVALID_FIELD, FIELD_VALUE);
+        BEAN_PROPERTY_ACCESSOR.setProperty(bean1, INVALID_FIELD, FIELD_VALUE);
     }
 
     /* createBean(Class<I> clazz, Map<String, Object> properties) */
 
     @Test
     public void createBean5() {
-        DefaultAccessibleConstructor bean = beanUtil.createBean(DefaultAccessibleConstructor.class, fieldValueMap);
+        DefaultAccessibleConstructor bean = BEAN_PROPERTY_ACCESSOR.createBean(DefaultAccessibleConstructor.class, fieldValueMap);
         assertFieldsSet(bean, true, false);
     }
 
@@ -113,7 +113,7 @@ public class BeanUtilTest {
 
     @Test
     public void copyProperties1() {
-        beanUtil.copyProperties(toBean, fieldValueMap);
+        BEAN_PROPERTY_ACCESSOR.copyProperties(toBean, fieldValueMap);
         assertFieldsSet(toBean, true, false);
     }
 
@@ -123,23 +123,23 @@ public class BeanUtilTest {
     public void copyProperties2() {
         ChildClass fromBean2 = new ChildClass(FIELD_VALUE);
         ChildClass toBean2 = new ChildClass(null);
-        beanUtil.copyProperties(fromBean2, toBean2);
+        BEAN_PROPERTY_ACCESSOR.copyProperties(fromBean2, toBean2);
         assertFieldsSet(toBean2, true, true, true);
     }
 
     @Test(expected = BeanException.class)
     public void copyProperties2a() {
         ChildClass fromBean2 = new ChildClass(FIELD_VALUE);
-        beanUtil.copyProperties(fromBean2, toBean);
+        BEAN_PROPERTY_ACCESSOR.copyProperties(fromBean2, toBean);
         assertFieldsSet(toBean, true, true);
     }
 
     @Test
     public void copyProperties2b() {
         // setup
-        beanUtil.setProperty(fromBean, FIELD2, FIELD_VALUE);
+        BEAN_PROPERTY_ACCESSOR.setProperty(fromBean, FIELD2, FIELD_VALUE);
         ChildClass toBean2 = new ChildClass(null);
-        beanUtil.copyProperties(fromBean, toBean2);
+        BEAN_PROPERTY_ACCESSOR.copyProperties(fromBean, toBean2);
         // assert
         assertFieldsSet(toBean2, true, true, false);
     }
@@ -147,14 +147,14 @@ public class BeanUtilTest {
     @Test
     public void copyProperties2c() {
         int tmp = 12;
-        beanUtil.copyProperties(tmp, tmp);
+        BEAN_PROPERTY_ACCESSOR.copyProperties(tmp, tmp);
     }
 
     /* copyProperties(Object from, Object to, String... properties); */
 
     @Test
     public void copyProperties3() {
-        beanUtil.copyProperties(fromBean, toBean, FIELD1);
+        BEAN_PROPERTY_ACCESSOR.copyProperties(fromBean, toBean, FIELD1);
         assertFieldsSet(toBean, true, false);
     }
 
@@ -162,7 +162,7 @@ public class BeanUtilTest {
 
     @Test
     public void copyProperties4() {
-        beanUtil.copyProperties(fromBean, toBean, fieldFieldMap);
+        BEAN_PROPERTY_ACCESSOR.copyProperties(fromBean, toBean, fieldFieldMap);
         assertFieldsSet(toBean, false, true);
     }
 
@@ -172,7 +172,7 @@ public class BeanUtilTest {
     public void copyProperties5() {
         ChildClass fromBean2 = new ChildClass(FIELD_VALUE);
         ChildClass toBean2 = new ChildClass(null);
-        beanUtil.copyProperties(fromBean2, toBean2, 1);
+        BEAN_PROPERTY_ACCESSOR.copyProperties(fromBean2, toBean2, 1);
         assertFieldsSet(toBean2, false, false, true);
     }
 
@@ -180,13 +180,13 @@ public class BeanUtilTest {
 
     @Test
     public void getFieldRecursively1() {
-        assertNotNull(beanUtil.getFieldRecursively(ExtendsAbstractClass.class, "field2"));
-        assertNotNull(beanUtil.getFieldRecursively(ExtendsAbstractClass.class, "field1"));
+        assertNotNull(BEAN_PROPERTY_ACCESSOR.getFieldRecursively(ExtendsAbstractClass.class, "field2"));
+        assertNotNull(BEAN_PROPERTY_ACCESSOR.getFieldRecursively(ExtendsAbstractClass.class, "field1"));
     }
 
     @Test(expected = BeanException.class)
     public void getFieldRecursively2() {
-        assertNotNull(beanUtil.getFieldRecursively(ExtendsAbstractClass.class, "field3"));
+        assertNotNull(BEAN_PROPERTY_ACCESSOR.getFieldRecursively(ExtendsAbstractClass.class, "field3"));
     }
 
     /* utility methods */

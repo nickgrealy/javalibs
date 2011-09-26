@@ -26,19 +26,12 @@ import static org.nickgrealy.commons.validation.RuntimeAssert.check;
  */
 public abstract class AbstractBaseConverter<X> implements IConverter<X> {
 
-    /**
-     * The value which represents 'null'.
-     */
-    public static final String NULL = "<null>";
-
     protected static final String UNHANDLED_CLASS_2 = "Target class is not handled! value='%s', targetClass='%s'";
     protected static final String UNIMPLEMENTED_CLASS_2 = "Target class conversion is not yet implemented! "
             + "value='%s', targetClass='%s'";
 
     private static final String BASE_CLASS = "baseClass";
     private static final String TARGET_CLASS = "targetClass";
-
-    private final ClassUtil classUtil = new ClassUtil();
 
     private final Set<Class<?>> targetAssignableClasses = new HashSet<Class<?>>();
 
@@ -79,14 +72,14 @@ public abstract class AbstractBaseConverter<X> implements IConverter<X> {
             return null;
         }
         // ensure we're NOT dealing with primitives...
-        final Class<A> nonPrimClass = (Class<A>) classUtil.convertPrimitiveToObjectClass(targetClass);
+        final Class<A> nonPrimClass = (Class<A>) ClassUtil.convertPrimitiveToObjectClass(targetClass);
         boolean wildcardAccepted = hasTargetClass(AnyTarget.class);
         boolean classAccepted = hasTargetClass(nonPrimClass);
         if (!classAccepted && !wildcardAccepted) {
             throw new UnhandledException(format(UNHANDLED_CLASS_2, fromObject, nonPrimClass));
         }
         Object returnVal = null;
-        if (NULL.equals(fromObject)) {
+        if (ConversionConstants.NULL.equals(fromObject)) {
             returnVal = null;
         } else if (getBaseClass().equals(nonPrimClass) || Object.class.equals(nonPrimClass)) {
             returnVal = fromObject;

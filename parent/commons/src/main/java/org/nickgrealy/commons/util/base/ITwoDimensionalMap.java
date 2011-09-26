@@ -1,4 +1,4 @@
-package org.nickgrealy.commons.util;
+package org.nickgrealy.commons.util.base;
 
 import java.util.Collection;
 

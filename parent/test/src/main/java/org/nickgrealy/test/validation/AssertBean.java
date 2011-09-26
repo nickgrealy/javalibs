@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.nickgrealy.commons.exception.BeanException;
-import org.nickgrealy.commons.reflect.BeanUtil;
-import org.nickgrealy.commons.reflect.IBeanUtil;
+import org.nickgrealy.commons.reflect.BeanPropertyAccessor;
+import org.nickgrealy.commons.reflect.IBeanPropertyAccessor;
 
 /**
  * Facilitates comparing the fields from two objects for equality.
@@ -19,14 +19,18 @@ import org.nickgrealy.commons.reflect.IBeanUtil;
  * 
  * @author nickgrealy@gmail.com
  */
-public class AssertBean implements IAssertBean {
-
-    private static final String BEAN_UTIL = "beanUtil";
+public final class AssertBean {
 
     private static final String MUST_BE_ASSIGNABLE_2 = "'expected' bean class must be assignable "
             + "from the 'actual' bean class! expectedClass=%s actualClass=%s";
 
-    private IBeanUtil beanUtil = new BeanUtil();
+    private static final IBeanPropertyAccessor beanPropertyAccessor = BeanPropertyAccessor.INSTANCE;
+
+    /**
+     * The default depth to copy fields from. See
+     * {@link #assertEquals(Object expected, Object actual)}.
+     */
+    private static final int DEFAULT_CLASS_DEPTH = 3;
 
     /**
      * Constructs the AssertBean.
@@ -35,45 +39,37 @@ public class AssertBean implements IAssertBean {
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void assertEquals(Object expected, Object actual, final String... fields) {
-        org.junit.Assert.assertNotNull(BEAN_UTIL, beanUtil);
+    public static void assertEquals(Object expected, Object actual, final String... fields) {
         if (assertIfNotNull("Objects", expected, actual)) {
             for (String field : fields) {
-            	Assert.assertEquals(field, beanUtil.getProperty(expected, field),
-                        beanUtil.getProperty(actual, field));
+            	Assert.assertEquals(field, beanPropertyAccessor.getProperty(expected, field),
+                        beanPropertyAccessor.getProperty(actual, field));
             }
         }
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void assertEquals(Object expected, Object actual, Map<String, String> fieldsMap) {
-    	org.junit.Assert.assertNotNull(BEAN_UTIL, beanUtil);
+    public static void assertEquals(Object expected, Object actual, Map<String, String> fieldsMap) {
         if (assertIfNotNull("Objects", expected, actual)) {
             for (Entry<String, String> entry : fieldsMap.entrySet()) {
-            	Assert.assertEquals(entry.toString(), beanUtil.getProperty(expected, entry.getKey()),
-                        beanUtil.getProperty(actual, entry.getValue()));
+            	Assert.assertEquals(entry.toString(), beanPropertyAccessor.getProperty(expected, entry.getKey()),
+                        beanPropertyAccessor.getProperty(actual, entry.getValue()));
             }
         }
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void assertEquals(Object expected, Object actual) {
+    public static void assertEquals(Object expected, Object actual) {
         assertEquals(expected, actual, DEFAULT_CLASS_DEPTH);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void assertEquals(Object expected, Object actual, int maxClassLevel) {
+    public static void assertEquals(Object expected, Object actual, int maxClassLevel) {
         assertEquals(expected, actual, maxClassLevel, Modifier.FINAL);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void assertEquals(Object expected, Object actual, int maxClassLevel, int ignoreFieldsWithModifiers) {
-    	org.junit.Assert.assertNotNull(BEAN_UTIL, beanUtil);
+    public static void assertEquals(Object expected, Object actual, int maxClassLevel, int ignoreFieldsWithModifiers) {
         if (assertIfNotNull("Objects", expected, actual)) {
             if (!expected.getClass().isAssignableFrom(actual.getClass())) {
                 throw new BeanException(format(MUST_BE_ASSIGNABLE_2, expected.getClass(), actual.getClass()));
@@ -90,8 +86,8 @@ public class AssertBean implements IAssertBean {
                         continue;
                     }
                     // Do assert...
-                    Assert.assertEquals(field.getName(), beanUtil.getProperty(expected, field),
-                            beanUtil.getProperty(actual, field));
+                    Assert.assertEquals(field.getName(), beanPropertyAccessor.getProperty(expected, field),
+                            beanPropertyAccessor.getProperty(actual, field));
                 }
                 tmp = tmp.getSuperclass();
                 ++currCLassLevel;

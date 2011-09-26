@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Test;
+import org.nickgrealy.conversion.comparator.ClassDepthComparator;
 import org.nickgrealy.test.validation.Assert;
 
 @SuppressWarnings("unchecked")
@@ -25,7 +26,7 @@ public class ChildFirstComparatorTest {
 		actual = Arrays.asList(new Class<?>[]{Class1.class, Class2a.class, Class2b.class, Class3.class});
 		expected = Arrays.asList(new Class<?>[]{Class3.class, Class2a.class, Class2b.class, Class1.class});
 		// assert
-		Collections.sort(actual, new ChildFirstComparator(actual));
+		Collections.sort(actual, new ClassDepthComparator(actual));
 		Assert.assertEquals("lists", expected, actual);
 	}
 	

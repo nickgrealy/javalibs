@@ -9,7 +9,10 @@ import org.nickgrealy.commons.util.StringUtil;
  * 
  * @author nickgrealy@gmail.com
  */
-public class BeanPathUtil {
+public final class BeanPathUtil {
+
+    private BeanPathUtil(){
+    }
 
     /*
      * No external dependencies, so make this class a "utility" class. i.e.

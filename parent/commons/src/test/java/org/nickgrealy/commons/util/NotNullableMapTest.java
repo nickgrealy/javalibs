@@ -10,6 +10,8 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.nickgrealy.commons.exception.AssertionException;
+import org.nickgrealy.commons.util.base.ExtHashMap;
+import org.nickgrealy.commons.util.base.ExtMap;
 
 /**
  * Test the following methods:
@@ -32,14 +34,14 @@ public class NotNullableMapTest {
 
     private NotNullableMap<Object, Object> map;
 
-    private Map<Object, Object> mapPass;
-    private Map<Object, Object> mapFail;
+    private ExtMap<Object, Object> mapPass;
+    private ExtMap<Object, Object> mapFail;
 
     @Before
     public void setUp() {
         map = new NotNullableMap<Object, Object>();
-        mapPass = new HashMap<Object, Object>();
-        mapFail = new HashMap<Object, Object>();
+        mapPass = new ExtHashMap<Object, Object>();
+        mapFail = new ExtHashMap<Object, Object>();
         mapPass.put(TEST, TEST);
         mapFail.put(TEST, null);
     }

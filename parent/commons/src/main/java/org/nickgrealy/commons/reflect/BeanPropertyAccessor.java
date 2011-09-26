@@ -23,7 +23,9 @@ import static org.nickgrealy.commons.validation.RuntimeAssert.check;
  *
  * @author nickgrealy@gmail.com
  */
-public final class BeanUtil implements IBeanUtil {
+public final class BeanPropertyAccessor implements IBeanPropertyAccessor {
+
+    public static final IBeanPropertyAccessor INSTANCE = new BeanPropertyAccessor();
 
     private static final String PROPERTIES = "properties";
     private static final String TO = "to";
@@ -31,6 +33,9 @@ public final class BeanUtil implements IBeanUtil {
 
 	private static final int NOT_INSTANTIABLE_MODIFIERS = Modifier.ABSTRACT
 			| Modifier.INTERFACE;
+
+    private BeanPropertyAccessor(){
+    }
     
 	@Override
     public boolean isInstantiable(Class<?> clazz){

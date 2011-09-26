@@ -1,14 +1,14 @@
 package org.nickgrealy.commons.util;
 
+import org.nickgrealy.commons.util.base.ExtHashMap;
+import org.nickgrealy.commons.util.base.ExtMap;
+
 import static org.nickgrealy.commons.validation.RuntimeAssert.KEY;
 import static org.nickgrealy.commons.validation.RuntimeAssert.VALUE;
 import static org.nickgrealy.commons.validation.RuntimeAssert.assertNoNullKeysOrValues;
 import static org.nickgrealy.commons.validation.RuntimeAssert.check;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A map wrapper, which will not allow null values to be passed in, or returned
@@ -25,16 +25,16 @@ import java.util.Set;
  * @param <V>
  *            Value
  */
-public class NotNullableMap<K, V> implements Map<K, V> {
+public class NotNullableMap<K, V> implements ExtMap<K, V> {
 
-    private final Map<K, V> underlyingMap;
+    private final ExtMap<K, V> underlyingMap;
 
     /**
      * Constructs a new map.
      */
     public NotNullableMap() {
         super();
-        underlyingMap = new HashMap<K, V>();
+        underlyingMap = new ExtHashMap<K, V>();
     }
 
     /**
@@ -43,10 +43,14 @@ public class NotNullableMap<K, V> implements Map<K, V> {
      * @param underlyingMap
      *            the underlying map
      */
-    public NotNullableMap(Map<K, V> underlyingMap) {
+    public NotNullableMap(ExtMap<K, V> underlyingMap) {
         super();
         assertNoNullKeysOrValues(underlyingMap);
         this.underlyingMap = underlyingMap;
+    }
+
+    public Map<K, V> getUnderlyingMap() {
+        return underlyingMap;
     }
 
     /** {@inheritDoc} */
@@ -140,6 +144,13 @@ public class NotNullableMap<K, V> implements Map<K, V> {
     @Override
     public Collection<V> values() {
         return underlyingMap.values();
+    }
+
+    public List<V> get(Collection<K> keys) {
+        assertKeyNotNull(keys);
+        final List<V> value = underlyingMap.get(keys);
+        assertValueNotNull(value);
+        return value;
     }
 
     /* utility methods */

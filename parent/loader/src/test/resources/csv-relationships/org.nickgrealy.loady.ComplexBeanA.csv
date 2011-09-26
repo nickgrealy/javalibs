@@ -3,7 +3,7 @@
 2,"bean2","<null>","<null>","<null>","<null>"
 3,"bean3","<null>","<null>","<null>","<null>"
 3,"bean3","<null>","<null>","<null>","<null>"
-"<null>","testGetById",1,"<","<null>","<null>"
+"<null>","testGetById",1,"<null>","<null>","<null>"
 "<null>","testGetByIdWithClash",3,"<null>","<null>","<null>"
 "<null>","testGetCollectionsById","<null>","<null>","1,2","1,2"
 "<null>","testGetCollectionsByIdWithClash","<null>","<null>","1,2,3","1,2,3"
