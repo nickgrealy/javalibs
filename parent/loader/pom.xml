@@ -23,10 +23,6 @@
             <groupId>${project.groupId}</groupId>
             <artifactId>test</artifactId>
         </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>conversion</artifactId>
-        </dependency>
         <!-- External -->
         <dependency>
             <groupId>net.sf.opencsv</groupId>

@@ -3,6 +3,7 @@ package org.nickgrealy.test.validation;
 import static java.lang.String.format;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.nickgrealy.test.validation.EntryComparator.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,9 +21,6 @@ import java.util.Map.Entry;
 public final class Assert {
 
     private static final String FIELD_AND_EXPECTED_2 = "field='%s', expected='%s'";
-
-	
-	private static final Comparator<? super Entry<Object, ?>> INSTANCE = new EntryComparator<Object, Entry<Object, ?>>();
 
     private Assert() {
     }
@@ -54,20 +52,6 @@ public final class Assert {
         }
     }
     
-    static class EntryComparator<Key, Gen extends Entry<Key, ?>> implements Comparator<Gen>{
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public int compare(Gen arg0, Gen arg1) {
-			if (arg0 == null || arg0.getKey() == null || arg1 == null || arg1.getKey() == null
-					|| !(arg0.getKey() instanceof Comparable<?>) || !(arg1.getKey() instanceof Comparable<?>)){
-				return 0;
-			}
-			return ((Comparable<Key>)arg0.getKey()).compareTo((Key)arg1.getKey());
-		}
-    	
-    }
-
 	private static void assertCollectionsEquals(Collection<?> expColl,
 			Collection<?> actColl) {
 		org.junit.Assert.assertArrayEquals(

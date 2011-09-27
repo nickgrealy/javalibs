@@ -3,7 +3,7 @@
  */
 package org.nickgrealy.commons.util;
 
-import org.nickgrealy.commons.validation.RuntimeAssert;
+import org.nickgrealy.commons.validate.RuntimeAssert;
 
 import java.util.*;
 

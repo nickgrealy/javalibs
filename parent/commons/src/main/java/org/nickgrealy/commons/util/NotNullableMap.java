@@ -3,10 +3,10 @@ package org.nickgrealy.commons.util;
 import org.nickgrealy.commons.util.base.ExtHashMap;
 import org.nickgrealy.commons.util.base.ExtMap;
 
-import static org.nickgrealy.commons.validation.RuntimeAssert.KEY;
-import static org.nickgrealy.commons.validation.RuntimeAssert.VALUE;
-import static org.nickgrealy.commons.validation.RuntimeAssert.assertNoNullKeysOrValues;
-import static org.nickgrealy.commons.validation.RuntimeAssert.check;
+import static org.nickgrealy.commons.validate.RuntimeAssert.KEY;
+import static org.nickgrealy.commons.validate.RuntimeAssert.VALUE;
+import static org.nickgrealy.commons.validate.RuntimeAssert.assertNoNullKeysOrValues;
+import static org.nickgrealy.commons.validate.RuntimeAssert.check;
 
 import java.util.*;
 

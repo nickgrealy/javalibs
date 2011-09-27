@@ -3,8 +3,6 @@
  */
 package org.nickgrealy.commons.util;
 
-import static org.nickgrealy.commons.validation.RuntimeAssert.check;
-
 import java.util.Collection;
 import java.util.Map;
 

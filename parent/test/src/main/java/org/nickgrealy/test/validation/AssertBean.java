@@ -35,7 +35,7 @@ public final class AssertBean {
     /**
      * Constructs the AssertBean.
      */
-    public AssertBean() {
+    private AssertBean() {
     }
 
     /** {@inheritDoc} */

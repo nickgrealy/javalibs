@@ -1,9 +1,7 @@
 package org.nickgrealy.commons.util;
 
-import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.nickgrealy.commons.validation.AssertTest;
 
 import java.util.*;
 
