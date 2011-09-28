@@ -1,13 +1,13 @@
 package org.nickgrealy.commons.validate;
 
-import static java.lang.String.format;
+import org.nickgrealy.commons.exception.AssertionException;
+import org.nickgrealy.commons.util.ClassUtil;
+import org.nickgrealy.commons.util.StringUtil;
 
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.nickgrealy.commons.exception.AssertionException;
-import org.nickgrealy.commons.util.ClassUtil;
-import org.nickgrealy.commons.util.StringUtil;
+import static java.lang.String.format;
 
 /**
  * Used to make assertions. Throws an {@link AssertionException} if the
@@ -18,11 +18,10 @@ import org.nickgrealy.commons.util.StringUtil;
  * <p/>
  * Example usage:<br/>
  * <code>check("My string").isNotNull();</code>
- * 
+ * <p/>
  * TODO Decide whether to use static assert methods, or "builder" objects.
- * 
+ *
  * @author nickgrealy@gmail.com
- * 
  */
 public final class RuntimeAssert {
 
@@ -47,11 +46,9 @@ public final class RuntimeAssert {
 
     /**
      * Entry point for creating an "Assert" builder.
-     * 
-     * @param identifier
-     *            String
-     * @param actual
-     *            Object
+     *
+     * @param identifier String
+     * @param actual     Object
      * @return this.
      */
     public static RuntimeAssert check(String identifier, Object actual) {
@@ -60,7 +57,7 @@ public final class RuntimeAssert {
 
     /**
      * Asserts actual is not null.
-     * 
+     *
      * @return this.
      */
     public RuntimeAssert isNotNull() {
@@ -72,7 +69,7 @@ public final class RuntimeAssert {
 
     /**
      * Asserts actual is null.
-     * 
+     *
      * @return this.
      */
     public RuntimeAssert isNull() {
@@ -84,7 +81,7 @@ public final class RuntimeAssert {
 
     /**
      * Asserts actual is not a primitive.
-     * 
+     *
      * @return this.
      */
     public RuntimeAssert isNotPrimitive() {
@@ -98,7 +95,7 @@ public final class RuntimeAssert {
 
     /**
      * Asserts actual is true.
-     * 
+     *
      * @return this.
      */
     public RuntimeAssert isTrue() {
@@ -111,7 +108,7 @@ public final class RuntimeAssert {
 
     /**
      * Asserts actual is false.
-     * 
+     *
      * @return this.
      */
     public RuntimeAssert isFalse() {
@@ -124,9 +121,8 @@ public final class RuntimeAssert {
 
     /**
      * Asserts actual and expected are equal (using .equals()).
-     * 
-     * @param expected
-     *            expected object
+     *
+     * @param expected expected object
      * @return this.
      */
     public RuntimeAssert equalz(Object expected) {
@@ -140,11 +136,9 @@ public final class RuntimeAssert {
 
     /**
      * Asserts actual is an instance of any of the givenClasses.
-     * 
-     * @param givenClass
-     *            Class<?>
-     * @param givenClasses
-     *            Class<?>...
+     *
+     * @param givenClass   Class<?>
+     * @param givenClasses Class<?>...
      * @return this.
      */
     public RuntimeAssert isInstanceOf(Class<?> givenClass, Class<?>... givenClasses) {
@@ -172,9 +166,8 @@ public final class RuntimeAssert {
 
     /**
      * Asserts actual is greater than the given Integer.
-     * 
-     * @param expected
-     *            Integer
+     *
+     * @param expected Integer
      * @return this.
      */
     public RuntimeAssert isGt(Integer expected) {
@@ -194,11 +187,9 @@ public final class RuntimeAssert {
     /**
      * Performs a boiler plate test on the objects. If 'expected' is null,
      * assert 'actual' is null too (and vice versa).
-     * 
-     * @param expected
-     *            Object
-     * @param actual
-     *            Object
+     *
+     * @param expected Object
+     * @param actual   Object
      * @return true if expected and actual are not null, otherwise false if both
      *         are null.
      */
@@ -214,9 +205,8 @@ public final class RuntimeAssert {
 
     /**
      * Asserts a map contains no null keys or values.
-     * 
-     * @param map
-     *            the map to check.
+     *
+     * @param map the map to check.
      */
     public static void assertNoNullKeysOrValues(Map<?, ?> map) {
         for (Entry<?, ?> entry : map.entrySet()) {

@@ -1,12 +1,11 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.commons.exception;
 
 import static java.lang.String.format;
 
 /**
- * 
  * @author nickgrealy@gmail.com
  */
 public class ConverterNotFoundException extends RuntimeException {

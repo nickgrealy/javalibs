@@ -1,17 +1,16 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.commons.reflect;
 
 import org.nickgrealy.commons.util.StringUtil;
 
 /**
- * 
  * @author nickgrealy@gmail.com
  */
 public final class BeanPathUtil {
 
-    private BeanPathUtil(){
+    private BeanPathUtil() {
     }
 
     /*
@@ -30,7 +29,7 @@ public final class BeanPathUtil {
         return StringUtil.concat(BEAN_PATH_DELIM, (Object[]) fields).toString();
     }
 
-    public static boolean isSingleBeanPath(String beanPath){
+    public static boolean isSingleBeanPath(String beanPath) {
         return !beanPath.contains(BEAN_PATH_DELIM);
     }
 

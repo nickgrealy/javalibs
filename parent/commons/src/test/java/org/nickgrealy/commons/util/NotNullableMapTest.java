@@ -1,17 +1,12 @@
 package org.nickgrealy.commons.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.nickgrealy.commons.exception.AssertionException;
 import org.nickgrealy.commons.util.base.ExtHashMap;
 import org.nickgrealy.commons.util.base.ExtMap;
+
+import static org.junit.Assert.*;
 
 /**
  * Test the following methods:
@@ -24,8 +19,7 @@ import org.nickgrealy.commons.util.base.ExtMap;
  * <li>putAll</li>
  * <li>remove</li>
  * </ul>
- * 
- * 
+ *
  * @author nickgrealy@gmail.com
  */
 public class NotNullableMapTest {

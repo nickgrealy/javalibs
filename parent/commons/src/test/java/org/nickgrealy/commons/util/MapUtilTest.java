@@ -1,23 +1,22 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.commons.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.nickgrealy.commons.reflect.BeanPropertyAccessor;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Methods: mapByField
- * 
+ *
  * @author nickgrealy@gmail.com
  */
 public class MapUtilTest {

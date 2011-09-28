@@ -1,23 +1,20 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.commons.convert;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.nickgrealy.commons.convert.impl.PrimitiveConverters.IntegerConverter;
+import org.nickgrealy.commons.exception.UnhandledException;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Test;
-import org.nickgrealy.commons.exception.UnhandledException;
-import org.nickgrealy.commons.convert.impl.PrimitiveConverters.IntegerConverter;
+import static org.junit.Assert.*;
 
 /**
- * 
  * @author nickgrealy@gmail.com
  */
 public class PrimitiveConverterTest {
@@ -32,10 +29,10 @@ public class PrimitiveConverterTest {
     @Test
     public void getIntegerConverterTargetClasses() {
         // expected
-        List<Class<?>> defaults = Arrays.asList(new Class<?>[] { Object.class, Integer.class });
-        List<Class<?>> expected = Arrays.asList(new Class<?>[] { String.class, Boolean.class, });
-        List<Class<?>> notExpected = Arrays.asList(new Class<?>[] { int.class, boolean.class,
-            PrimitiveConverterTest.class });
+        List<Class<?>> defaults = Arrays.asList(new Class<?>[]{Object.class, Integer.class});
+        List<Class<?>> expected = Arrays.asList(new Class<?>[]{String.class, Boolean.class,});
+        List<Class<?>> notExpected = Arrays.asList(new Class<?>[]{int.class, boolean.class,
+                PrimitiveConverterTest.class});
         Set<Class<?>> actual = intConverter.getTargetClasses();
         // assert
         assertTrue(actual.containsAll(defaults));
@@ -65,7 +62,7 @@ public class PrimitiveConverterTest {
     /**
      * Asserts that the actual list, doesn't not contain any of the notexpected
      * list.
-     * 
+     *
      * @param notexpected
      * @param actual
      */

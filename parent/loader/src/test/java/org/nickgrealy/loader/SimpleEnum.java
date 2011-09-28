@@ -1,10 +1,9 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.loader;
 
 /**
- * 
  * @author nickgrealy@gmail.com
  */
 public enum SimpleEnum {

@@ -1,11 +1,11 @@
 package org.nickgrealy.commons.convert.impl;
 
-import org.nickgrealy.commons.exception.NotConvertableException;
-import org.nickgrealy.commons.exception.NotYetImplementedException;
-import org.nickgrealy.commons.util.IConverter;
 import org.nickgrealy.commons.convert.AbstractBaseConverter;
 import org.nickgrealy.commons.convert.SpecialTargetTypes.AnyTarget;
 import org.nickgrealy.commons.convert.SpecialTargetTypes.Array;
+import org.nickgrealy.commons.exception.NotConvertableException;
+import org.nickgrealy.commons.exception.NotYetImplementedException;
+import org.nickgrealy.commons.util.IConverter;
 
 import java.io.File;
 import java.lang.reflect.Constructor;
@@ -16,7 +16,8 @@ import java.text.DateFormat;
 import java.util.*;
 
 import static java.lang.String.format;
-import static org.nickgrealy.commons.convert.ConversionConstants.*;
+import static org.nickgrealy.commons.convert.ConversionConstants.COLLECTION_DELIMITER;
+import static org.nickgrealy.commons.convert.ConversionConstants.MAP_KEYVALUE_DELIMITER;
 
 public final class StringConverter extends AbstractBaseConverter<String> {
 

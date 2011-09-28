@@ -13,13 +13,13 @@ public abstract class AbstractDirectionalComparator<X> implements Comparator<X> 
     /**
      * Sorts forwards by default.
      */
-    public AbstractDirectionalComparator(){
+    public AbstractDirectionalComparator() {
         // NOOP
     }
 
-    public AbstractDirectionalComparator(boolean orderForwards){
+    public AbstractDirectionalComparator(boolean orderForwards) {
         // Setup if non-default ordering...
-        if (!orderForwards){
+        if (!orderForwards) {
             returnVal0 = 1;
             returnVal1 = -1;
         }

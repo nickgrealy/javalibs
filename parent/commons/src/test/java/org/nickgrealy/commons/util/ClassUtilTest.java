@@ -3,7 +3,9 @@ package org.nickgrealy.commons.util;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author nickgrealy@gmail.com

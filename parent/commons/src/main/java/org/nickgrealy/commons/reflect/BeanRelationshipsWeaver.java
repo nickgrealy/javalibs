@@ -1,7 +1,7 @@
 package org.nickgrealy.commons.reflect;
 
-import org.nickgrealy.commons.convert.IConverterFactory;
 import org.nickgrealy.commons.convert.ConversionConstants;
+import org.nickgrealy.commons.convert.IConverterFactory;
 import org.nickgrealy.commons.exception.BeanBuilderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

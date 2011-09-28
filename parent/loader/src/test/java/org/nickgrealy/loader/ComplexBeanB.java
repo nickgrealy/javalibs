@@ -30,7 +30,7 @@ public class ComplexBeanB {
         this.set = set;
     }
 
-    public String toString(){
+    public String toString() {
         return id + " - " + name;
     }
 }

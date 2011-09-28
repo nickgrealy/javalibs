@@ -3,14 +3,14 @@
  */
 package org.nickgrealy.commons.reflect;
 
+import org.nickgrealy.commons.compare.ClassDepthComparator;
+import org.nickgrealy.commons.convert.ConversionConstants;
 import org.nickgrealy.commons.convert.ConverterFactory;
 import org.nickgrealy.commons.convert.impl.StringConverter;
+import org.nickgrealy.commons.exception.BeanBuilderException;
 import org.nickgrealy.commons.exception.BeanException;
 import org.nickgrealy.commons.util.MapUtil;
 import org.nickgrealy.commons.util.NotNullableMap;
-import org.nickgrealy.commons.convert.ConversionConstants;
-import org.nickgrealy.commons.compare.ClassDepthComparator;
-import org.nickgrealy.commons.exception.BeanBuilderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,14 +1,13 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.commons.reflect;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 /**
- * 
  * @author nickgrealy@gmail.com
  */
 public class BeanPathTest {

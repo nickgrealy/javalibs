@@ -3,10 +3,10 @@
  */
 package org.nickgrealy.loader;
 
-import org.nickgrealy.commons.exception.BeanBuilderException;
-import org.nickgrealy.loader.csv.CSVBeanLoader;
 import org.junit.Test;
 import org.nickgrealy.commons.exception.AssertionException;
+import org.nickgrealy.commons.exception.BeanBuilderException;
+import org.nickgrealy.loader.csv.CSVBeanLoader;
 import org.nickgrealy.test.validation.AssertBean;
 import org.springframework.util.ResourceUtils;
 
@@ -17,13 +17,13 @@ import java.net.URISyntaxException;
 import java.util.*;
 
 import static org.junit.Assert.*;
-import static org.nickgrealy.test.validation.AssertBean.*;
+import static org.nickgrealy.test.validation.AssertBean.assertEquals;
 
 /**
  * @author nickgrealy@gmail.com
  */
 public class CSVBeanLoaderTest {
-	
+
     // tested
     public static final String CSV_POJO = "classpath:csv-pojo";
     public static final String CSV_POJO_INVALID1 = "classpath:csv-pojo-invalid1";
@@ -138,7 +138,7 @@ public class CSVBeanLoaderTest {
         ComplexBeanB expected = new ComplexBeanB(1L, "testReferenceOtherBeanClass", null, null, null, null, null);
         // execute
         File csvFolder = ResourceUtils.getFile(CSV_RELATIONSHIPS);
-         Map<Class<?>, List<?>> csvBeans = new CSVBeanLoader().loadFolder(csvFolder);
+        Map<Class<?>, List<?>> csvBeans = new CSVBeanLoader().loadFolder(csvFolder);
         assertEquals(2, csvBeans.size());
 
         // ComplexBeanA
@@ -147,8 +147,8 @@ public class CSVBeanLoaderTest {
         // TODO assert values
 
         // ComplexBeanB
-        ComplexBeanA beanA1 = (ComplexBeanA)beansA.get(0);
-        ComplexBeanA beanA2 = (ComplexBeanA)beansA.get(1);
+        ComplexBeanA beanA1 = (ComplexBeanA) beansA.get(0);
+        ComplexBeanA beanA2 = (ComplexBeanA) beansA.get(1);
         expected.simple = beanA1;
         expected.simple2 = beanA2;
         expected.list = Arrays.asList(beanA1, beanA2);
@@ -157,7 +157,7 @@ public class CSVBeanLoaderTest {
         // assert
         List<?> beansB = csvBeans.get(ComplexBeanB.class);
         assertEquals(1, beansB.size());
-        ComplexBeanB beanB1 = (ComplexBeanB)beansB.get(0);
+        ComplexBeanB beanB1 = (ComplexBeanB) beansB.get(0);
         AssertBean.assertEquals(expected, beanB1);
     }
 

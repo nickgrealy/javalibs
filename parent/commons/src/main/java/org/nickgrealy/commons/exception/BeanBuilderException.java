@@ -14,15 +14,15 @@ public class BeanBuilderException extends RuntimeException {
     public static final String BEAN_NOT_FOUND_4 = "Target bean with given field value could not be found! rowNum='%s' colNum='%s' targetClass='%s' field='%s' value='%s'";
     public static final String CANNOT_DETERMINE_GENERIC_CLASS_2 = "Cannot determine generic collection type! class='%s' field='%s'";
 
-    public BeanBuilderException(Class<?> targetClass){
+    public BeanBuilderException(Class<?> targetClass) {
         super(format(CLASS_NOT_FOUND_1, targetClass));
     }
 
-    public BeanBuilderException(Field field){
+    public BeanBuilderException(Field field) {
         super(format(CANNOT_DETERMINE_GENERIC_CLASS_2, field.getDeclaringClass(), field.getName()));
     }
 
-    public BeanBuilderException(Integer rowNum, Integer colNum, Field targetField, Object targetValue){
+    public BeanBuilderException(Integer rowNum, Integer colNum, Field targetField, Object targetValue) {
         super(format(BEAN_NOT_FOUND_4, rowNum, colNum, targetField.getDeclaringClass(), targetField.getName(), targetValue));
     }
 

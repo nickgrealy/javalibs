@@ -3,11 +3,10 @@ package org.nickgrealy.commons.util.base;
 import java.util.Collection;
 
 /**
- * 
- * @author nickgrealy@gmail.com
  * @param <A>
  * @param <B>
  * @param <V>
+ * @author nickgrealy@gmail.com
  */
 public interface ITwoDimensionalMap<A, B, V> {
 

@@ -1,22 +1,22 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.commons.validate;
-
-import static org.nickgrealy.commons.validate.RuntimeAssert.assertNoNullKeysOrValues;
-import static org.nickgrealy.commons.validate.RuntimeAssert.check;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.nickgrealy.commons.exception.AssertionException;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.nickgrealy.commons.validate.RuntimeAssert.assertNoNullKeysOrValues;
+import static org.nickgrealy.commons.validate.RuntimeAssert.check;
+
 /**
  * Methods: equalz, isNotNull, isNull, isTrue, isFalse, isInstanceOf,
  * assertNoNullKeysOrValues
- * 
+ *
  * @author nickgrealy@gmail.com
  */
 public class AssertTest {

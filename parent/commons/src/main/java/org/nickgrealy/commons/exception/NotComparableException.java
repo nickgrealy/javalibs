@@ -5,7 +5,7 @@ package org.nickgrealy.commons.exception;
  */
 public class NotComparableException extends RuntimeException {
 
-    public NotComparableException(String message){
+    public NotComparableException(String message) {
         super(message);
     }
 }

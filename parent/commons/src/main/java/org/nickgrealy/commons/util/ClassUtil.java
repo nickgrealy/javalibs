@@ -1,19 +1,23 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.commons.util;
 
 import org.nickgrealy.commons.validate.RuntimeAssert;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * TODO Make into an IConverter
+ *
  * @author nickgrealy@gmail.com
  */
 public final class ClassUtil {
 
-    private ClassUtil(){
+    private ClassUtil() {
     }
 
     private static final Map<Class<?>, Class<?>> primitiveToObjectClassMap = new HashMap<Class<?>, Class<?>>();
@@ -32,7 +36,7 @@ public final class ClassUtil {
 
     /**
      * The class equivalent of (manual) autoboxing.
-     * 
+     *
      * @param clazz
      * @return
      */
@@ -45,7 +49,7 @@ public final class ClassUtil {
 
     /**
      * Determines whether the given clazz is a primitive class.
-     * 
+     *
      * @param clazz
      * @return
      */
@@ -55,6 +59,7 @@ public final class ClassUtil {
 
     /**
      * Builds a {@link OneToManyMap} of classes, to their assignable classes.
+     *
      * @param classesSet
      * @return
      */
@@ -70,11 +75,11 @@ public final class ClassUtil {
             for (int j = i + 1; j < size; j++) {
                 Class<?> a = classes[i];
                 Class<?> b = classes[j];
-                if (a.isAssignableFrom(b)){
+                if (a.isAssignableFrom(b)) {
                     classToParents.put(b, a);
                     classesSet.remove(a);
                     classesSet.remove(b);
-                } else if (b.isAssignableFrom(a)){
+                } else if (b.isAssignableFrom(a)) {
                     classToParents.put(a, b);
                     classesSet.remove(a);
                     classesSet.remove(b);

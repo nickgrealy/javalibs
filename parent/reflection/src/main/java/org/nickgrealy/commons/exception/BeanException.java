@@ -1,15 +1,15 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.commons.exception;
 
 import java.lang.reflect.Field;
 
-import static java.lang.String.*;
+import static java.lang.String.format;
 
 /**
  * Used to wrap Bean related exceptions.
- * 
+ *
  * @author nickgrealy@gmail.com
  */
 public class BeanException extends RuntimeException {
@@ -21,9 +21,8 @@ public class BeanException extends RuntimeException {
 
     /**
      * Constructs a BeanException.
-     * 
-     * @param message
-     *            String
+     *
+     * @param message String
      */
     public BeanException(String message) {
         super(message);
@@ -31,11 +30,9 @@ public class BeanException extends RuntimeException {
 
     /**
      * Constructs a BeanException.
-     * 
-     * @param field
-     *            String
-     * @param cause
-     *            Throwable
+     *
+     * @param field String
+     * @param cause Throwable
      */
     public BeanException(Class<?> clazz, String field, Throwable cause) {
         super(buildMessage(clazz, field), cause);
@@ -49,8 +46,8 @@ public class BeanException extends RuntimeException {
         super(message + buildMessage(field.getDeclaringClass(), field.getName()));
     }
 
-    private static String buildMessage(Class<?> clazz, String field){
-        if (DEFAULT_CONSTRUCTOR.equals(field)){
+    private static String buildMessage(Class<?> clazz, String field) {
+        if (DEFAULT_CONSTRUCTOR.equals(field)) {
             return format(EXCEPTION_CONSTRUCTOR_2, clazz, field);
         } else {
             return format(EXCEPTION_FIELD_2, clazz, field);

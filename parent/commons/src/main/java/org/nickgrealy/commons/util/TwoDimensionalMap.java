@@ -22,13 +22,17 @@ public class TwoDimensionalMap<A, B, V> extends NotNullableMap<A, NotNullableMap
         return map2;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void put(A a, B b, V v) {
         nullSafeGet(a).put(b, v);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void put(A a, Collection<B> b1, V v) {
         for (B b : b1) {
@@ -36,7 +40,9 @@ public class TwoDimensionalMap<A, B, V> extends NotNullableMap<A, NotNullableMap
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public V get(A a, B b) {
         if (containsKey(a, b)) {
@@ -45,7 +51,9 @@ public class TwoDimensionalMap<A, B, V> extends NotNullableMap<A, NotNullableMap
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean containsKey(A a, B b) {
         return containsKey(a) && get(a).containsKey(b);

@@ -1,22 +1,22 @@
 package org.nickgrealy.test.validation;
 
-import static java.lang.String.format;
-import static org.nickgrealy.test.validation.Assert.assertIfNotNull;
+import org.nickgrealy.commons.exception.BeanException;
+import org.nickgrealy.commons.reflect.BeanPropertyAccessor;
+import org.nickgrealy.commons.reflect.IBeanPropertyAccessor;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.nickgrealy.commons.exception.BeanException;
-import org.nickgrealy.commons.reflect.BeanPropertyAccessor;
-import org.nickgrealy.commons.reflect.IBeanPropertyAccessor;
+import static java.lang.String.format;
+import static org.nickgrealy.test.validation.Assert.assertIfNotNull;
 
 /**
  * Facilitates comparing the fields from two objects for equality.
- * 
+ * <p/>
  * <b>N.B.</b> A valid BeanUtil will need to be injected.
- * 
+ *
  * @author nickgrealy@gmail.com
  */
 public final class AssertBean {
@@ -38,37 +38,47 @@ public final class AssertBean {
     private AssertBean() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public static void assertEquals(Object expected, Object actual, final String... fields) {
         if (assertIfNotNull("Objects", expected, actual)) {
             for (String field : fields) {
-            	Assert.assertEquals(field, beanPropertyAccessor.getProperty(expected, field),
+                Assert.assertEquals(field, beanPropertyAccessor.getProperty(expected, field),
                         beanPropertyAccessor.getProperty(actual, field));
             }
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public static void assertEquals(Object expected, Object actual, Map<String, String> fieldsMap) {
         if (assertIfNotNull("Objects", expected, actual)) {
             for (Entry<String, String> entry : fieldsMap.entrySet()) {
-            	Assert.assertEquals(entry.toString(), beanPropertyAccessor.getProperty(expected, entry.getKey()),
+                Assert.assertEquals(entry.toString(), beanPropertyAccessor.getProperty(expected, entry.getKey()),
                         beanPropertyAccessor.getProperty(actual, entry.getValue()));
             }
         }
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public static void assertEquals(Object expected, Object actual) {
         assertEquals(expected, actual, DEFAULT_CLASS_DEPTH);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public static void assertEquals(Object expected, Object actual, int maxClassLevel) {
         assertEquals(expected, actual, maxClassLevel, Modifier.FINAL);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     public static void assertEquals(Object expected, Object actual, int maxClassLevel, int ignoreFieldsWithModifiers) {
         if (assertIfNotNull("Objects", expected, actual)) {
             if (!expected.getClass().isAssignableFrom(actual.getClass())) {

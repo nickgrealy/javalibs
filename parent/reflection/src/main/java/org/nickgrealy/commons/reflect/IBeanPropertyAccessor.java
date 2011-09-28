@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * Use reflection to directly access objects.
- * 
+ *
  * @author nickgrealy@gmail.com
  */
 public interface IBeanPropertyAccessor {
@@ -17,7 +17,7 @@ public interface IBeanPropertyAccessor {
     int DEFAULT_CLASS_DEPTH = 3;
 
     boolean isInstantiable(Class<?> clazz);
-    
+
     <I> I createBean(Class<I> clazz);
 
     <I> I createBean(Class<I> clazz, Map<String, Object> properties);
@@ -39,10 +39,10 @@ public interface IBeanPropertyAccessor {
     /**
      * Copies fields from the 'from' object, to the 'to' object.
      * <p/>
-     * 
+     * <p/>
      * <b>N.B.</b> Invokes {@link #copyProperties(Object, Object, int)} with
      * maxClassLevel = {@link #DEFAULT_CLASS_DEPTH}.
-     * 
+     *
      * @param from
      * @param to
      */
@@ -56,20 +56,17 @@ public interface IBeanPropertyAccessor {
      * Copies fields from the 'from' object, to the 'to' object, down to the
      * maxClassLevel.
      * <p/>
-     * 
+     * <p/>
      * <b>N.B.</b>
      * <ul>
      * <li>Fields with modifiers {@link java.lang.reflect.Modifier#FINAL} are
      * ignored.</li>
      * <li>'from' class must be assignable from the 'to' class.</li>
      * </ul>
-     * 
-     * @param from
-     *            Object
-     * @param to
-     *            Object
-     * @param maxClassLevel
-     *            the maximum number of superClasses to traverse up.
+     *
+     * @param from          Object
+     * @param to            Object
+     * @param maxClassLevel the maximum number of superClasses to traverse up.
      */
     void copyProperties(Object from, Object to, int maxClassLevel);
 
@@ -77,22 +74,18 @@ public interface IBeanPropertyAccessor {
      * Copies fields from the 'from' object, to the 'to' object, down to the
      * maxClassLevel.
      * <p/>
-     * 
+     * <p/>
      * <b>N.B.</b>
      * <ul>
      * <li>Fields with modifiers {@link java.lang.reflect.Modifier#FINAL} are
      * ALWAYS ignored.</li>
      * <li>'from' class must be assignable from the 'to' class.</li>
      * </ul>
-     * 
-     * @param from
-     *            Object
-     * @param to
-     *            Object
-     * @param maxClassLevel
-     *            the maximum number of superClasses to traverse up.
-     * @param ignoreFieldsWithModifiers
-     *            fields with these modifiers will be ignored.
+     *
+     * @param from                      Object
+     * @param to                        Object
+     * @param maxClassLevel             the maximum number of superClasses to traverse up.
+     * @param ignoreFieldsWithModifiers fields with these modifiers will be ignored.
      */
     void copyProperties(Object from, Object to, int maxClassLevel, int ignoreFieldsWithModifiers);
 

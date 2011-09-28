@@ -5,7 +5,7 @@ package org.nickgrealy.commons.exception;
  * implemented.
  * <p/>
  * <b>N.B.</b> Use as a placeholder/safety net for incomplete methods.
- * 
+ *
  * @author nickgrealy@gmail.com
  */
 public class NotYetImplementedException extends RuntimeException {
@@ -23,9 +23,8 @@ public class NotYetImplementedException extends RuntimeException {
 
     /**
      * Constructs a NotYetImplemented exception with the supplied message.
-     * 
-     * @param message
-     *            the exception message
+     *
+     * @param message the exception message
      */
     public NotYetImplementedException(String message) {
         super(message);

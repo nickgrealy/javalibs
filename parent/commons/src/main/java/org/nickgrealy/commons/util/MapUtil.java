@@ -1,19 +1,19 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.commons.util;
-
-import java.util.Collection;
-import java.util.Map;
 
 import org.nickgrealy.commons.reflect.BeanPropertyAccessor;
 import org.nickgrealy.commons.reflect.IBeanPropertyAccessor;
 
+import java.util.Collection;
+import java.util.Map;
+
 /**
  * Map utilities.
- * 
+ * <p/>
  * <b>N.B.</b> A valid BeanUtil will need to be injected.
- * 
+ *
  * @author nickgrealy@gmail.com
  */
 public final class MapUtil {
@@ -28,17 +28,12 @@ public final class MapUtil {
 
     /**
      * Puts the objects into a map, by the given field.
-     * 
-     * @param objects
-     *            Collection<O>
-     * @param field
-     *            String
-     * @param map
-     *            Map<K, V>
-     * @param <K>
-     *            Key
-     * @param <V>
-     *            Value
+     *
+     * @param objects Collection<O>
+     * @param field   String
+     * @param map     Map<K, V>
+     * @param <K>     Key
+     * @param <V>     Value
      */
     @SuppressWarnings("unchecked")
     public static <K, V, MapType extends Map<K, V>> MapType mapByField(Collection<V> objects, String field, MapType map) {

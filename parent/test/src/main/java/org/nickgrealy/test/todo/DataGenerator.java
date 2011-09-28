@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.test.todo;
 
@@ -16,7 +16,7 @@ package org.nickgrealy.test.todo;
  * <li>generated test data w override supplied fields (see BeanUtil)</li>
  * <li>generated test data w generated id</li>
  * </ul>
- * 
+ *
  * @author nickgrealy@gmail.com
  */
 public final class DataGenerator {

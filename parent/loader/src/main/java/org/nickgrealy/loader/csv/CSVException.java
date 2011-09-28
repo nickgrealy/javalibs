@@ -1,10 +1,9 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.loader.csv;
 
 /**
- * 
  * @author nickgrealy@gmail.com
  */
 public class CSVException extends RuntimeException {

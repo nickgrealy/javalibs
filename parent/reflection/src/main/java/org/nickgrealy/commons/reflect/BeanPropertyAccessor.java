@@ -31,17 +31,17 @@ public final class BeanPropertyAccessor implements IBeanPropertyAccessor {
     private static final String TARGET = "target";
     private static final String FROM = "from";
 
-	private static final int NOT_INSTANTIABLE_MODIFIERS = Modifier.ABSTRACT
-			| Modifier.INTERFACE;
+    private static final int NOT_INSTANTIABLE_MODIFIERS = Modifier.ABSTRACT
+            | Modifier.INTERFACE;
 
-    private BeanPropertyAccessor(){
+    private BeanPropertyAccessor() {
     }
-    
-	@Override
-    public boolean isInstantiable(Class<?> clazz){
-    	return (clazz.getModifiers() & NOT_INSTANTIABLE_MODIFIERS) == 0;
+
+    @Override
+    public boolean isInstantiable(Class<?> clazz) {
+        return (clazz.getModifiers() & NOT_INSTANTIABLE_MODIFIERS) == 0;
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -88,8 +88,8 @@ public final class BeanPropertyAccessor implements IBeanPropertyAccessor {
      */
     @Override
     public void setProperty(Object object, String field, Object value) {
-            final Field field2 = getFieldRecursively(object.getClass(),field);
-            setProperty(object, field2, value);
+        final Field field2 = getFieldRecursively(object.getClass(), field);
+        setProperty(object, field2, value);
     }
 
     /**
@@ -248,8 +248,8 @@ public final class BeanPropertyAccessor implements IBeanPropertyAccessor {
         }
     }
 
-    private void assertNotNull(String field, Object object){
-        if (object == null){
+    private void assertNotNull(String field, Object object) {
+        if (object == null) {
             throw new ReflectionException(field);
         }
 

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.commons.util;
 
@@ -7,12 +7,12 @@ import java.io.InputStream;
 
 /**
  * See {@link org.springframework.util.ResourceUtils}
- * 
+ *
  * @author nickgrealy@gmail.com
  */
 public final class ClasspathUtil {
 
-    private ClasspathUtil(){
+    private ClasspathUtil() {
     }
 
     public static InputStream getResourceAsStream(String resource) {

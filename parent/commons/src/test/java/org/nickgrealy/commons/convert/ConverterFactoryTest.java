@@ -1,19 +1,15 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.commons.convert;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.nickgrealy.commons.convert.impl.PrimitiveConverters;
 import org.nickgrealy.commons.exception.ConverterNotFoundException;
 
+import static org.junit.Assert.*;
+
 /**
- * 
  * @author nickgrealy@gmail.com
  */
 public class ConverterFactoryTest {

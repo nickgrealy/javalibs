@@ -2,7 +2,7 @@ package org.nickgrealy.commons.exception;
 
 /**
  * Thrown when an assertion is disproved.
- * 
+ *
  * @author nickgrealy@gmail.com
  */
 public class AssertionException extends RuntimeException {
@@ -17,9 +17,8 @@ public class AssertionException extends RuntimeException {
 
     /**
      * Constructs an AssertionException.
-     * 
-     * @param message
-     *            message
+     *
+     * @param message message
      */
     public AssertionException(String message) {
         super(message);
@@ -27,9 +26,8 @@ public class AssertionException extends RuntimeException {
 
     /**
      * Constructs an AssertionException.
-     * 
-     * @param cause
-     *            cause
+     *
+     * @param cause cause
      */
     public AssertionException(Throwable cause) {
         super(cause);
@@ -37,11 +35,9 @@ public class AssertionException extends RuntimeException {
 
     /**
      * Constructs an AssertionException.
-     * 
-     * @param message
-     *            message
-     * @param cause
-     *            cause
+     *
+     * @param message message
+     * @param cause   cause
      */
     public AssertionException(String message, Throwable cause) {
         super(message, cause);

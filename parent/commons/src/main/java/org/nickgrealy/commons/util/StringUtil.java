@@ -1,16 +1,15 @@
 /**
- * 
+ *
  */
 package org.nickgrealy.commons.util;
-
-import static org.nickgrealy.commons.validate.RuntimeAssert.check;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
+import static org.nickgrealy.commons.validate.RuntimeAssert.check;
+
 /**
- * 
  * @author nickgrealy@gmail.com
  */
 public final class StringUtil {

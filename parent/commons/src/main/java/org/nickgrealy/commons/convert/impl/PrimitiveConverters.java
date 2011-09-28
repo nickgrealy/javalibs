@@ -1,29 +1,29 @@
 package org.nickgrealy.commons.convert.impl;
 
-import static java.lang.String.format;
+import org.nickgrealy.commons.convert.AbstractBaseConverter;
+import org.nickgrealy.commons.exception.NotYetImplementedException;
+import org.nickgrealy.commons.util.IConverter;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.nickgrealy.commons.exception.NotYetImplementedException;
-import org.nickgrealy.commons.util.IConverter;
-import org.nickgrealy.commons.convert.AbstractBaseConverter;
+import static java.lang.String.format;
 
 /**
  * Contains a list of classes, to facilitate converting primitives.
- * 
+ *
  * @author nickgrealy@gmail.com
  */
 public final class PrimitiveConverters {
 
-    private static final List<IConverter<?>> CONVERTERS = Arrays.asList(new IConverter<?>[] { new IntegerConverter() });
+    private static final List<IConverter<?>> CONVERTERS = Arrays.asList(new IConverter<?>[]{new IntegerConverter()});
 
     private PrimitiveConverters() {
     }
 
     /**
      * Returns instances of the converters within this class.
-     * 
+     *
      * @return list of {@link IConverter}'s.
      */
     public static List<IConverter<?>> getAllConverters() {
